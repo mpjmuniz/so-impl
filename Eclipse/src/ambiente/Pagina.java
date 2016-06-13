@@ -3,6 +3,7 @@ package ambiente;
 import java.util.Date;
 
 public class Pagina{
+	/*	TODO: Verificar este tamanho, de acordo com os tamanhos do resto*/
 	private int tam;
 	
 	/*	Para a implementação do método de subst. LRU*/

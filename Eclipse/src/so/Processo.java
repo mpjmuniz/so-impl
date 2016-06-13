@@ -1,7 +1,5 @@
 package so;
 
-import ambiente.*;
-
 enum Estado{
 	NOVO, PRONTO, EXECUTANDO, BLOQUEADO, SUSPENSO, TERMINADO
 }
