@@ -18,8 +18,8 @@ public class Pagina{
 	/*Presente na MP*/
 	private boolean presente;
 
-	public Pagina(){
-		this.tam = 512;
+	public Pagina(int tam){
+		this.tam = tam;
 		this.modificado = false;
 		this.presente = false;
 		this.utilizado = false;
