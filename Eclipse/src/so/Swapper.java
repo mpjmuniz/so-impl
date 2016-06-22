@@ -3,6 +3,8 @@ package so;
 import java.util.ArrayList;
 import java.util.List;
 
+import ambiente.Pagina;
+
 public class Swapper{
 	/*
 	 *	1. Find the location of the desired page on the disk.
@@ -26,28 +28,28 @@ public class Swapper{
 	/*
 	 * 	swap-in-processo: Trazer da memória processo inteiro
 	 * */
-	public void swap_in_processo(int pid){
+	public void swapIn(Processo p){
 		
 	}
 	
 	/*
 	 * 	swap-out-processo: Guardar na memória processo inteiro
 	 * */
-	public void swap_out_processo(int pid){
+	public void swapOut(Processo p){
 		
 	}
 	
 	/*
 	 *	Swap-in: Traz página da memória secundária para a memória principal
 	 * */
-	public void swap_in(int end_log){
+	public void swapIn(Pagina p){
 		
 	}
 	
 	/*
 	 * 	Swap-out: Guarda página na memória
 	 * */
-	public void swap_out(){
+	public void swapOut(Pagina p){
 		
 	}
 

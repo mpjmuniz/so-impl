@@ -9,7 +9,8 @@ public class TabelaDePaginas{
 	List<Pagina> paginas;
 	int tamanho;
 
-	public TabelaDePaginas(int linhas){
+	public TabelaDePaginas(int tamanhoPagina, int linhas){
+		
 		if(linhas <= 0) 
 			throw new IllegalArgumentException("Quantidade de linhas inválida.");
 		
@@ -18,7 +19,7 @@ public class TabelaDePaginas{
 		this.tamanho = 0;
 		Pagina p;
 		for(int i = 0; i < paginas.size(); i++){
-			p = new Pagina();
+			p = new Pagina(tamanhoPagina);
 			paginas.add(p);
 			this.tamanho += p.getTam();  
 		}

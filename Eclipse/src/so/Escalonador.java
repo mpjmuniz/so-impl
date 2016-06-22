@@ -7,10 +7,13 @@ import java.util.List;
 import java.util.Queue;
 
 public class Escalonador {
+	/*
+	 * 	TODO: Implementar como Singleton
+	 * */
 	private static Queue<Processo> filaProntos = new LinkedList<Processo>();
 	private static List<Processo> suspensos = new ArrayList<Processo>();
 	private static List<Processo> executando = new ArrayList<Processo>();
-	private static Memoria memoriaPrincipal = new Memoria(1024 * 1024 * 1024, 512);
+	private static GerenciadorMemoria memoriaPrincipal = new GerenciadorMemoria(1024 * 1024 * 1024, 512);
 	private static int contadorId = 0;
 	
 	public void criarProcesso(int tam){

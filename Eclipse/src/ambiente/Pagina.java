@@ -10,12 +10,15 @@ public class Pagina{
 	private Date ultimaUtilização;
 	
 	/*Foi modificado?*/
+	@SuppressWarnings("unused")
 	private boolean modificado;
 	
 	/*	Para a implementação do método de subst. do Relógio*/
+	@SuppressWarnings("unused")
 	private boolean utilizado;
 	
 	/*Presente na MP*/
+	@SuppressWarnings("unused")
 	private boolean presente;
 
 	public Pagina(int tam){

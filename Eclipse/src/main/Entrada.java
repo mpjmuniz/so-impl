@@ -6,7 +6,11 @@ import java.io.FileNotFoundException;
 import java.util.ArrayList;
 import java.util.List;
 
+import so.Escalonador;
+import so.GerenciadorDisco;
+import so.GerenciadorMemoria;
 import so.Processo;
+import so.Swapper;
 
 public class Entrada{
 	public static void main(String[] args){
@@ -19,7 +23,15 @@ public class Entrada{
 			Scanner leitor = new Scanner(new File("src/resources/entrada.txt"));
 			String linha;
 			String[] partes;
-			List<Processo> procs = new ArrayList<Processo>();
+			/*TODO: tornar o tamanhoPagina mais interno*/
+			int tamanhoPagina = 512;
+			
+			GerenciadorMemoria memoria = new GerenciadorMemoria(1024 * 1024, tamanhoPagina);
+			GerenciadorDisco disco = new GerenciadorDisco(1024 * 1024 * 1024, tamanhoPagina);
+			Escalonador esc = new Escalonador();
+			Swapper swp = new Swapper();
+		
+			
 			Processo atual;
 
 			while(leitor.hasNextLine()){
@@ -27,7 +39,7 @@ public class Entrada{
 				partes = linha.split(" ");
 
 				//Obter processo
-				atual = obterProcessos(partes[0], procs);
+				atual = esc.obterProcesso(partes[0]);
 
 				//Obter ação
 				switch(partes[1].charAt(0)){

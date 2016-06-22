@@ -40,4 +40,9 @@ public class Processo{
 	public void terminar(){
 		this.estado = Estado.TERMINADO;
 	}
+
+	/*	Visibilidade para o pacote*/
+	void setTabela(TabelaDePaginas tp){
+		this.tabela = tp;
+	}
 }
