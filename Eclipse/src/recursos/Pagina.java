@@ -1,42 +1,29 @@
-package ambiente;
+package recursos;
 
 import java.util.Date;
 
-public class Pagina{
-	/*	TODO: Verificar este tamanho, de acordo com os tamanhos do resto*/
-	private int tam;
-	
-	/*	Para a implementação do método de subst. LRU*/
-	private Date ultimaUtilização;
-	
-	/*Foi modificado?*/
-	@SuppressWarnings("unused")
+public class Pagina {
+
+	private Date ultimaUtilizacao;
 	private boolean modificado;
-	
-	/*	Para a implementação do método de subst. do Relógio*/
-	@SuppressWarnings("unused")
 	private boolean utilizado;
-	
-	/*Presente na MP*/
-	@SuppressWarnings("unused")
 	private boolean presente;
 
-	public Pagina(int tam){
-		this.tam = tam;
+	public Pagina(){
 		this.modificado = false;
 		this.presente = false;
 		this.utilizado = false;
-		this.ultimaUtilização = new Date();
+		this.ultimaUtilizacao = new Date();
+	}
+	
+	public Date getUltimaUtilizacao() {
+		return ultimaUtilizacao;
 	}
 
-	public int getTam(){
-		return this.tam;
+	public boolean isModificado() {
+		return this.modificado;
 	}
-	
-	public Date getUltimaModificacao(){
-		return this.ultimaUtilização;
-	}
-	
+
 	/*	Trazer da memória Secundária*/
 	public void trazer(){
 		this.presente = true;
@@ -53,16 +40,24 @@ public class Pagina{
 	public void modificar(){
 		this.modificado = true;
 		/*Modo mais prático e com menos gambiarra para atualizar o instante*/
-		this.ultimaUtilização = new Date();
+		this.ultimaUtilizacao = new Date();
 	}
 	
 	public void ler(){
-		this.ultimaUtilização = new Date();
+		this.ultimaUtilizacao = new Date();
 		this.utilizado = true;
 	}
 	
 	/*	Para o algoritmo do Relógio*/
 	public void inutilizado(){
 		this.utilizado = false;
+	}
+
+	public boolean isUtilizado() {
+		return utilizado;
+	}
+
+	public boolean isPresente() {
+		return presente;
 	}
 }

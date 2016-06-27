@@ -1,22 +1,23 @@
-package so;
+package recursos;
+
+import so.TabelaDePaginas;
 
 enum Estado{
 	NOVO, PRONTO, EXECUTANDO, BLOQUEADO, SUSPENSO, TERMINADO
 }
 
-public class Processo{
+public class Processo {
+
 	private Estado estado;
 	private TabelaDePaginas tabela;
-	int id;
+	private int id;
 
-	public Processo(int id, int tamanho){
-		this.id = id;
-		if(tamanho <= 0) 
-			throw new IllegalArgumentException("Tamanho Inválido.\n");
+	public Processo(int id, int tamanho, TabelaDePaginas tp){
+		this.setId(id);		
 		this. estado = Estado.NOVO;
-		this.tabela = new TabelaDePaginas(tamanho / 4);
+		this.tabela = tp;
 	}
-
+	
 	public Estado getEstado() {
 		return estado;
 	}
@@ -40,9 +41,28 @@ public class Processo{
 	public void terminar(){
 		this.estado = Estado.TERMINADO;
 	}
-
+	
+	public TabelaDePaginas getTabela() {
+		return tabela;
+	}
+	
 	/*	Visibilidade para o pacote*/
 	void setTabela(TabelaDePaginas tp){
 		this.tabela = tp;
 	}
+
+	/**
+	 * @return the id
+	 */
+	public int getId() {
+		return id;
+	}
+
+	/**
+	 * @param id the id to set
+	 */
+	public void setId(int id) {
+		this.id = id;
+	}
+
 }

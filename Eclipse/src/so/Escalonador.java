@@ -1,26 +1,28 @@
 package so;
 
-import ambiente.*;
+import controle.Cache;
+import recursos.Processo;
+
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Queue;
 
-public class Escalonador {
-	/*
-	 * 	TODO: Implementar como Singleton
-	 * */
-	private static Queue<Processo> filaProntos = new LinkedList<Processo>();
-	private static List<Processo> suspensos = new ArrayList<Processo>();
-	private static List<Processo> executando = new ArrayList<Processo>();
-	private static GerenciadorMemoria memoriaPrincipal = new GerenciadorMemoria(1024 * 1024 * 1024, 512);
-	private static int contadorId = 0;
+public class Escalonador{
+	
+	private Cache<Escalonador> instancia;
+	
+	private Queue<Processo> filaProntos = new LinkedList<Processo>();
+	private List<Processo> suspensos = new ArrayList<Processo>();
+	private List<Processo> executando = new ArrayList<Processo>();
+	private HashMap<String, GerenciadorRecurso> bloqueados = new HashMap<>();
+	
+	public Escalonador(){
+		this.instancia = instancia.obterInstancia("src/resources/escalonador.ser");
+	}
 	
 	public void criarProcesso(int tam){
-		Processo p = new Processo(contadorId++, tam);
-		int numeroDePaginas = tam / 4;
-		//
-		
 		
 	}
 	
