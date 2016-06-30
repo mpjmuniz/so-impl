@@ -1,43 +1,69 @@
 package recursos;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Queue;
+import java.util.concurrent.LinkedBlockingDeque;
+
+import controle.Configuracao;
 
 public abstract class GerenciadorRecursos {
 
+	protected static Configuracao confs = Configuracao.obterConfiguracoes();
+	
 	protected int tamanhoTotal;
 	protected int tamanhoDisponivel;
-	protected int tamanhoPagina;
-	private List<Pagina> quadros;
+	protected List<Pagina> quadros;
+	protected List<Pagina> livres;
 
-	private Queue<Processo> aguardando;
-
+	protected Queue<Processo> aguardando;
+	
+	public GerenciadorRecursos(int tamanhoTotal){
+		this.tamanhoTotal = tamanhoTotal;
+		this.tamanhoDisponivel = tamanhoTotal;
+		
+		int tamanho = tamanhoTotal / confs.getTamanhoPagina();
+		
+		this.quadros = new ArrayList<>(tamanho);
+		//TODO otimizar
+		this.livres = new ArrayList<>(tamanho);
+		
+		Pagina atual;
+		
+		for(int i = 0; i < tamanho; i++){
+			atual = new Pagina();
+			
+			this.quadros.add(atual);
+			this.livres.add(atual);
+		}
+		
+		this.aguardando = new LinkedBlockingDeque<Processo>();
+	}
+	
 	public int getTamanhoTotal() {
-		return 0;
+		return this.tamanhoTotal;
 	}
 
 	public int getTamanhoDisponivel() {
-		return 0;
+		return this.tamanhoDisponivel;
 	}
-
-	public int getTamanhoPagina() {
-		return 0;
+	
+	/*	Tendo em mãos o endereço físico gerado pelo processador,
+	 * 	usamo-lo para ler/escrever na memoria 
+	 *  
+	 *  Note que a verificação de limites da tabela de página do processo não fica aqui
+	 * */
+	public int ler(Processo p, int enderecoFisico) {
+		aguardando.add(p);
+		//administrar tempo de espera
+		aguardando.remove(p);
+		return quadros.get(enderecoFisico).ler();
 	}
-
-	public List<Pagina> getQuadros() {
-		return null;
+	
+	public void escrever(Processo p, int enderecoFisico, int dado) {
+		aguardando.add(p);
+		//administrar tempo de espera
+		aguardando.remove(p);
+		quadros.get(enderecoFisico).modificar(dado);
 	}
-
-	void setQuadros(List<Pagina> quadros) {
-
-	}
-
-	public int ler(Processo p, int endereco) {
-		return 0;
-	}
-
-	public void escrever(Processo p, int endereco, int dado) {
-
-	}
-
 }

@@ -3,9 +3,12 @@ package so;
 import java.util.ArrayList;
 import java.util.List;
 
-import ambiente.Pagina;
+import controle.Singleton;
+import recursos.Pagina;
 
-abstract class GerenciadorRecurso {
+abstract class GerenciadorRecurso extends Singleton{
+	
+	private static final long serialVersionUID = 7295802009705502822L;
 	protected int tamanhoTotal;
 	protected int tamanhoDisponivel;
 	protected int tamanhoPagina;

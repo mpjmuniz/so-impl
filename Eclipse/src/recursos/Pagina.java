@@ -8,12 +8,14 @@ public class Pagina {
 	private boolean modificado;
 	private boolean utilizado;
 	private boolean presente;
+	private int dado;
 
 	public Pagina(){
 		this.modificado = false;
 		this.presente = false;
 		this.utilizado = false;
 		this.ultimaUtilizacao = new Date();
+		this.dado = 0;
 	}
 	
 	public Date getUltimaUtilizacao() {
@@ -37,15 +39,15 @@ public class Pagina {
 	}
 	
 	/*	Modificar Página*/
-	public void modificar(){
+	public void modificar(int dado){
 		this.modificado = true;
-		/*Modo mais prático e com menos gambiarra para atualizar o instante*/
-		this.ultimaUtilizacao = new Date();
+		this.ultimaUtilizacao = new Date();		
 	}
 	
-	public void ler(){
+	public int ler(){
 		this.ultimaUtilizacao = new Date();
 		this.utilizado = true;
+		return this.dado;
 	}
 	
 	/*	Para o algoritmo do Relógio*/

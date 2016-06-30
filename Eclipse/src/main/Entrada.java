@@ -9,7 +9,8 @@ import java.util.List;
 import so.Escalonador;
 import so.GerenciadorDisco;
 import so.GerenciadorMemoria;
-import so.Processo;
+import so.Kernel;
+import recursos.Processo;
 import so.Swapper;
 
 public class Entrada{
@@ -26,12 +27,14 @@ public class Entrada{
 			/*TODO: tornar o tamanhoPagina mais interno*/
 			int tamanhoPagina = 512;
 			
+			Kernel k = new Kernel();
+			
+			/* Jogar pro kernel */
 			GerenciadorMemoria memoria = new GerenciadorMemoria(1024 * 1024, tamanhoPagina);
 			GerenciadorDisco disco = new GerenciadorDisco(1024 * 1024 * 1024, tamanhoPagina);
 			Escalonador esc = new Escalonador();
 			Swapper swp = new Swapper();
 		
-			
 			Processo atual;
 
 			while(leitor.hasNextLine()){
@@ -39,7 +42,7 @@ public class Entrada{
 				partes = linha.split(" ");
 
 				//Obter processo
-				atual = esc.obterProcesso(partes[0]);
+				atual = k.obterProcesso(partes[0].charAt(1));
 
 				//Obter ação
 				switch(partes[1].charAt(0)){

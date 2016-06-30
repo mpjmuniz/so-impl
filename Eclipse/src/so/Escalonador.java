@@ -1,6 +1,5 @@
 package so;
 
-import controle.Cache;
 import recursos.Processo;
 
 import java.util.ArrayList;
@@ -9,9 +8,11 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Queue;
 
-public class Escalonador{
+import controle.Singleton;
+
+public class Escalonador extends Singleton{
 	
-	private Cache<Escalonador> instancia;
+	private static final long serialVersionUID = -4403178317571188702L;
 	
 	private Queue<Processo> filaProntos = new LinkedList<Processo>();
 	private List<Processo> suspensos = new ArrayList<Processo>();
@@ -19,7 +20,7 @@ public class Escalonador{
 	private HashMap<String, GerenciadorRecurso> bloqueados = new HashMap<>();
 	
 	public Escalonador(){
-		this.instancia = instancia.obterInstancia("src/resources/escalonador.ser");
+		super.obterInstancia("src/resources/escalonador.ser");
 	}
 	
 	public void criarProcesso(int tam){

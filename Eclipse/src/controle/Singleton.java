@@ -8,19 +8,18 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.io.Serializable;
 
-public class Cache<T> implements Serializable{
+public class Singleton implements Serializable{
 		
 	private static final long serialVersionUID = 107634094355526964L;
-	private volatile Cache<T> instancia;
+	protected volatile Singleton instancia;
 	
-	@SuppressWarnings("unchecked")
-	public T deserializar(String arq) throws IOException, ClassNotFoundException{
-		T instancia;
+	public Singleton deserializar(String arq) throws IOException, ClassNotFoundException{
+		Singleton instancia;
 		
 		FileInputStream config = new FileInputStream(new File(arq));
 		ObjectInputStream obj = new ObjectInputStream(config);
 		
-		instancia = (T) obj.readObject();
+		instancia = (Singleton) obj.readObject();
 		
 		obj.close();
 		config.close();
@@ -28,17 +27,16 @@ public class Cache<T> implements Serializable{
 		return instancia;
 	}
 		
-	private Cache(){}
+	private Singleton(){}
 	
-	@SuppressWarnings("unchecked")
-	public Cache<T> obterInstancia(String arq) {
+	public Singleton obterInstancia(String arq) {
         if (instancia == null) {
-            synchronized (Cache.class) {
+            synchronized (Singleton.class) {
                 if (instancia == null) {
                 	try{
-                		instancia = (Cache<T>) deserializar(arq);
+                		instancia = (Singleton) deserializar(arq);
                 	} catch(IOException | ClassNotFoundException e){
-                		instancia = new Cache<T>();
+                		instancia = new Singleton();
                 	}                	
                 }
             }

@@ -1,6 +1,11 @@
 package so;
 
+import recursos.Processo;
+
 public class GerenciadorMemoria extends GerenciadorRecurso{
+	
+	private static final long serialVersionUID = 4108299752547976951L;
+
 	/*
 	 * 	TODO: Implementar como Singleton
 	 * */
@@ -14,7 +19,6 @@ public class GerenciadorMemoria extends GerenciadorRecurso{
 	
 	public void liberarMemoria(Processo p){
 
-		p.setTabela(null);
 	}
 	
 	public int ler(Processo p, int endereco){

@@ -3,9 +3,11 @@ package so;
 import java.util.ArrayList;
 import java.util.List;
 
-import ambiente.Pagina;
+import controle.Singleton;
+import recursos.Pagina;
+import recursos.Processo;
 
-public class Swapper{
+public class Swapper extends Singleton{
 	/*
 	 *	1. Find the location of the desired page on the disk.
 	 *	2. Find a free frame:
@@ -19,7 +21,7 @@ public class Swapper{
 	 *	4. Continue the user process from where the page fault occurred.
 	 */
 	
-	private List<Integer> livres = new ArrayList<>(1024);
+	private List<Pagina> livres = new ArrayList<>(1024);
 	
 	public Swapper(){
 		

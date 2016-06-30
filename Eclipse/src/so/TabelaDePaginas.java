@@ -3,14 +3,15 @@ package so;
 import java.util.ArrayList;
 import java.util.List;
 
-import ambiente.Pagina;
+import recursos.Pagina;
+
 
 public class TabelaDePaginas{
 	List<Pagina> paginas;
 	int tamanho;
 
 	public TabelaDePaginas(int tamanhoPagina, int linhas){
-		
+	/*	
 		if(linhas <= 0) 
 			throw new IllegalArgumentException("Quantidade de linhas inválida.");
 		
@@ -23,5 +24,6 @@ public class TabelaDePaginas{
 			paginas.add(p);
 			this.tamanho += p.getTam();  
 		}
+		*/
 	}
 }

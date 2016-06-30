@@ -1,9 +1,9 @@
 package so;
 
 public class GerenciadorDisco extends GerenciadorRecurso{
-	/*
-	 * 	TODO: Implementar como Singleton
-	 * */
+	
+	private static final long serialVersionUID = -7872086859890914698L;
+
 	public GerenciadorDisco(int tamanhoTotal, int tamanhoQuadro){
 		super(tamanhoTotal, tamanhoQuadro);
 	}

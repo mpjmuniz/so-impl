@@ -1,9 +1,8 @@
 package controle;
 
-public class Configuracao {
-	
-	private Cache<Configuracao> instancia;
+public class Configuracao extends Singleton{
 
+	private static final long serialVersionUID = 6751867719979054019L;
 	private int quantidadeInicialPaginas;
 	private int tamanhoPagina;
 	private int enderecoLogico;
@@ -11,8 +10,9 @@ public class Configuracao {
 	private int tamanhoTotalMS;
 	private int tamanhoMaximoProcesso;
 	
-	private Configuracao(){
-		this.instancia = instancia.obterInstancia("src/resources/configuracoes.ser");
+	//Implementar como singleton realmente, estático
+	public Configuracao(){
+		super.obterInstancia("src/resources/configuracoes.ser");
 	}
 	
 	public void setQuantidadeInicialPaginas(int quantidadeInicialPaginas) {
@@ -63,4 +63,8 @@ public class Configuracao {
 		return this.tamanhoMaximoProcesso;
 	}
 
+	public static Configuracao obterConfiguracoes() {
+		// TODO Auto-generated method stub
+		return null;
+	}
 }
