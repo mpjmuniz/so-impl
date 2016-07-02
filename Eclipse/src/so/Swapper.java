@@ -7,7 +7,7 @@ import controle.Singleton;
 import recursos.Pagina;
 import recursos.Processo;
 
-public class Swapper extends Singleton{
+public class Swapper {
 	/*
 	 *	1. Find the location of the desired page on the disk.
 	 *	2. Find a free frame:

@@ -7,7 +7,7 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.io.Serializable;
-
+//Mantida caso sejam necessários os métodos de serialização
 public class Singleton implements Serializable{
 		
 	private static final long serialVersionUID = 107634094355526964L;

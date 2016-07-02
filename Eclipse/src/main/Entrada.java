@@ -1,16 +1,14 @@
 package main;
 
-import java.util.Scanner;
 import java.io.File;
 import java.io.FileNotFoundException;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.Scanner;
 
-import so.Escalonador;
-import so.GerenciadorDisco;
-import so.GerenciadorMemoria;
-import so.Kernel;
+import recursos.GerenciadorDisco;
+import recursos.GerenciadorMemoria;
 import recursos.Processo;
+import so.Escalonador;
+import so.Kernel;
 import so.Swapper;
 
 public class Entrada{
@@ -30,8 +28,8 @@ public class Entrada{
 			Kernel k = new Kernel();
 			
 			/* Jogar pro kernel */
-			GerenciadorMemoria memoria = new GerenciadorMemoria(1024 * 1024, tamanhoPagina);
-			GerenciadorDisco disco = new GerenciadorDisco(1024 * 1024 * 1024, tamanhoPagina);
+			GerenciadorMemoria memoria = new GerenciadorMemoria();
+			GerenciadorDisco disco = new GerenciadorDisco();
 			Escalonador esc = new Escalonador();
 			Swapper swp = new Swapper();
 		

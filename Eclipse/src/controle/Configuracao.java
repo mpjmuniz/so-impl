@@ -1,20 +1,29 @@
 package controle;
 
-public class Configuracao extends Singleton{
+public class Configuracao {
 
-	private static final long serialVersionUID = 6751867719979054019L;
+	private static volatile Configuracao instancia;
 	private int quantidadeInicialPaginas;
 	private int tamanhoPagina;
 	private int enderecoLogico;
 	private int tamanhoTotalMP;
 	private int tamanhoTotalMS;
 	private int tamanhoMaximoProcesso;
-	
-	//Implementar como singleton realmente, estático
-	public Configuracao(){
-		super.obterInstancia("src/resources/configuracoes.ser");
+
+	private Configuracao() {
 	}
-	
+
+	public static Configuracao obterInstancia() {
+		if (instancia == null) {
+			synchronized (Configuracao.class) {
+				if (instancia == null) {
+					instancia = new Configuracao();
+				}
+			}
+		}
+		return instancia;
+	}
+
 	public void setQuantidadeInicialPaginas(int quantidadeInicialPaginas) {
 		this.quantidadeInicialPaginas = quantidadeInicialPaginas;
 	}
@@ -61,10 +70,5 @@ public class Configuracao extends Singleton{
 
 	public int getTamanhoMaximoProcesso() {
 		return this.tamanhoMaximoProcesso;
-	}
-
-	public static Configuracao obterConfiguracoes() {
-		// TODO Auto-generated method stub
-		return null;
 	}
 }

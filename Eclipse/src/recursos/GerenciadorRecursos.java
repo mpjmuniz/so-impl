@@ -9,7 +9,7 @@ import controle.Configuracao;
 
 public abstract class GerenciadorRecursos {
 
-	protected static Configuracao confs = Configuracao.obterConfiguracoes();
+	protected static Configuracao confs = Configuracao.obterInstancia();
 	
 	protected int tamanhoTotal;
 	protected int tamanhoDisponivel;

@@ -1,7 +1,5 @@
 package recursos;
 
-import so.TabelaDePaginas;
-
 enum Estado{
 	NOVO, PRONTO, EXECUTANDO, BLOQUEADO, SUSPENSO, TERMINADO
 }
