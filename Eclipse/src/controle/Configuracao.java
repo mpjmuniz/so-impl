@@ -3,11 +3,11 @@ package controle;
 public class Configuracao {
 
 	private static volatile Configuracao instancia;
-	private int quantidadeInicialPaginas;
-	private int tamanhoPagina;
+	private int quantidadeInicialPaginas = 32;
+	private int tamanhoPagina = 1024;
 	private int enderecoLogico;
-	private int tamanhoTotalMP;
-	private int tamanhoTotalMS;
+	private int tamanhoTotalMP = 1024 * 1024;
+	private int tamanhoTotalMS = 1024 * 1024 * 1024;
 	private int tamanhoMaximoProcesso;
 
 	private Configuracao() {
