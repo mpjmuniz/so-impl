@@ -37,4 +37,17 @@ public class Escalonador{
 		
 	}
 	
+	public List<Processo> obterProcessos(){
+		List<Processo> uniao = new ArrayList<Processo>();
+		
+		uniao.addAll(filaProntos);
+		uniao.addAll(suspensos);
+		uniao.addAll(executando);
+		
+		for(String s : bloqueados.keySet()){
+			uniao.addAll(bloqueados.get(s).getFila());
+		}
+		
+		return uniao;
+	}
 }

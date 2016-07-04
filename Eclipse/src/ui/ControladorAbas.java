@@ -7,6 +7,7 @@ import javafx.fxml.FXML;
 import javafx.scene.control.TabPane;
 import recursos.GerenciadorDisco;
 import recursos.GerenciadorMemoria;
+import so.Escalonador;
 
 public class ControladorAbas {
 		// The reference of msgLbl will be injected by the FXML loader
@@ -28,11 +29,14 @@ public class ControladorAbas {
 		@FXML
 		private void initialize() {
 			AbaRecursos abaMemoria, abaDisco;
+			AbaProcessos abaProcessos;
 			
 			abaMemoria = new AbaRecursos("Memória Principal", new GerenciadorMemoria());
 			abaDisco = new AbaRecursos("Memória Secundária", new GerenciadorDisco());
+			abaProcessos = new AbaProcessos("Processos", new Escalonador());
 			
-			baseAbas.getTabs().addAll(abaDisco, abaMemoria);
+			
+			baseAbas.getTabs().addAll(abaDisco, abaMemoria, abaProcessos);
 		}
 		
 		@FXML
