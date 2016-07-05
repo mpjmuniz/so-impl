@@ -1,8 +1,6 @@
 package recursos;
 
-enum Estado{
-	NOVO, PRONTO, EXECUTANDO, BLOQUEADO, SUSPENSO, TERMINADO
-}
+
 
 public class Processo {
 

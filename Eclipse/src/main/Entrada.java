@@ -4,6 +4,7 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.Scanner;
 
+import controle.Configuracao;
 import recursos.GerenciadorDisco;
 import recursos.GerenciadorMemoria;
 import recursos.Processo;
@@ -23,15 +24,16 @@ public class Entrada{
 			String linha;
 			String[] partes;
 			/*TODO: tornar o tamanhoPagina mais interno*/
-			int tamanhoPagina = 512;
-			
-			Kernel k = new Kernel();
+			Configuracao conf = Configuracao.obterInstancia();
+			conf.setTamanhoPagina(512);
 			
 			/* Jogar pro kernel */
 			GerenciadorMemoria memoria = new GerenciadorMemoria();
 			GerenciadorDisco disco = new GerenciadorDisco();
 			Escalonador esc = new Escalonador();
 			Swapper swp = new Swapper();
+			
+			Kernel k = new Kernel(memoria, disco, esc, swp);
 		
 			Processo atual;
 
@@ -40,13 +42,18 @@ public class Entrada{
 				partes = linha.split(" ");
 
 				//Obter processo
-				atual = k.obterProcesso(partes[0].charAt(1));
-
+				int processID = Integer.parseInt(partes[0].substring(1));
+				
 				//Obter ação
 				switch(partes[1].charAt(0)){
 					case 'C':
+						int tam = Integer.parseInt(partes[2]);
+						k.criarProcesso(processID, tam);
 						break;
 					case 'R':
+						int index = partes[2].indexOf('(');
+						int pos = Integer.parseInt(partes[2].substring(0, index));
+						k.processoLe(processID, pos);
 						break;
 					case 'P':
 						break;
