@@ -3,6 +3,8 @@ package recursos;
 import java.util.List;
 
 import controle.Configuracao;
+import excecoes.FaltaDePagina;
+import excecoes.TamanhoInsuficiente;
 
 public class TabelaDePaginas {
 
@@ -21,5 +23,9 @@ public class TabelaDePaginas {
 
 	public List<Pagina> getPaginas() {
 		return paginas;
+	}
+	
+	public int getEndPagina(int nPagina) throws FaltaDePagina {
+		return 0;
 	}
 }

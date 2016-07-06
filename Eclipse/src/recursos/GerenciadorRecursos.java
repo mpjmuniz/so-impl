@@ -66,4 +66,12 @@ public abstract class GerenciadorRecursos {
 		aguardando.remove(p);
 		quadros.get(enderecoFisico).modificar(dado);
 	}
+	
+	public Queue<Processo> getFila(){
+		return this.aguardando;
+	} 
+	
+	public List<Pagina> getQuadros(){
+		return this.quadros;
+	}
 }

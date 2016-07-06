@@ -1,7 +1,5 @@
 package recursos;
 
-
-
 public class Processo {
 
 	private Estado estado;

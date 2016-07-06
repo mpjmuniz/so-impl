@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?import javafx.scene.Scene?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.control.TabPane?>
+
+
+<VBox fx:controller="ui.ControladorAbas" spacing="10" xmlns:fx="http://javafx.com/fxml">
+	<TabPane fx:id="baseAbas" >
+	</TabPane>
+	<HBox spacing="10" >
+		<Button text="Carregar Arquivo" />
+		<TextField fx:id="comando" prefWidth="512" />
+		<Button text="Continuar" />
+		<Button text="Pausar" />
+		<Button text="Andar" />
+		<Button text="Zerar" />
+	</HBox>
+</VBox>

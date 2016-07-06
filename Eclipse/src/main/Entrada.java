@@ -36,6 +36,7 @@ public class Entrada{
 			Kernel k = new Kernel(memoria, disco, esc, swp);
 		
 			Processo atual;
+			System.out.println("here");
 
 			while(leitor.hasNextLine()){
 				linha = leitor.nextLine();
@@ -51,8 +52,8 @@ public class Entrada{
 						k.criarProcesso(processID, tam);
 						break;
 					case 'R':
-						int index = partes[2].indexOf('(');
-						int pos = Integer.parseInt(partes[2].substring(0, index));
+						int index = partes[2].indexOf(')');
+						int pos = Integer.parseInt(partes[2].substring(1, index));
 						k.processoLe(processID, pos);
 						break;
 					case 'P':
@@ -67,6 +68,7 @@ public class Entrada{
 				
 				//Obter parâmetro (definir aqui tamanhos de página, quadro, etc)
 				System.out.println(linha);
+				leitor.close();
 			}
 		} catch (FileNotFoundException e) {
 			

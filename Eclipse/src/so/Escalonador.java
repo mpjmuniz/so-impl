@@ -44,7 +44,7 @@ public class Escalonador{
 	}
 	
 	// realmente necessario?
-	public void bloquearProcesso(Processo p){
+	public void bloquearProcesso(Processo p, GerenciadorRecursos gr){
 		p.bloquear();
 		filaProntos.remove(p);		
 	}
@@ -54,5 +54,5 @@ public class Escalonador{
 		filaProntos.remove(p);
 		suspensos.add(p);
 	}
-	
+
 }

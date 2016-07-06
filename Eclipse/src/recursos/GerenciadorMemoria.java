@@ -11,7 +11,7 @@ public class GerenciadorMemoria extends GerenciadorRecursos {
 		super(confs.getTamanhoTotalMP());
 	}
 
-	public TabelaDePaginas alocarMemoria(int tamanho) throws TamanhoInsuficiente {
+	public List<Pagina> alocarMemoria(int tamanho) throws TamanhoInsuficiente {
 		
 		int qtdPaginas;
 		List<Pagina> pgs;
@@ -28,11 +28,9 @@ public class GerenciadorMemoria extends GerenciadorRecursos {
 			pgs.add(livres.remove(0));
 		}
 		
-		 tp = new TabelaDePaginas(qtdPaginas, pgs);
+		this.tamanhoDisponivel -= tamanho; 
 		
-		this.tamanhoDisponivel -= tp.getTamanho(); 
-		
-		return tp;
+		return pgs;
 	}
 
 	public void liberarMemoria(Processo p) {
