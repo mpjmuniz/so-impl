@@ -8,14 +8,18 @@ public class Pagina {
 	private boolean modificado;
 	private boolean utilizado;
 	private boolean presente;
-	private int dado;
+	private long endFisico;
 
-	public Pagina(){
+	public Pagina(int endFisico){
 		this.modificado = false;
 		this.presente = false;
 		this.utilizado = false;
 		this.ultimaUtilizacao = new Date();
-		this.dado = 0;
+		this.endFisico =  endFisico;
+	}
+	
+	public long getEndFisico(){
+		return this.endFisico;
 	}
 	
 	public Date getUltimaUtilizacao() {
@@ -44,10 +48,9 @@ public class Pagina {
 		this.ultimaUtilizacao = new Date();		
 	}
 	
-	public int ler(){
+	public void ler(){
 		this.ultimaUtilizacao = new Date();
 		this.utilizado = true;
-		return this.dado;
 	}
 	
 	/*	Para o algoritmo do Relógio*/
@@ -69,6 +72,6 @@ public class Pagina {
 				+ "Pres? " + ((this.presente) ? "v" : "x") + "\n"
 				+ "Util? " + ((this.utilizado) ? "v" : "x") + "\n"
 				+ "Últ. Util.: " + this.ultimaUtilizacao.toString().substring(10, 19) + "\n"
-				+ "Dado: " + Integer.toString(dado) + "\n";
+				+ "End. Fisico: " + Long.toString(endFisico) + "\n";
 	}
 }

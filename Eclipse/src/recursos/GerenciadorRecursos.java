@@ -31,7 +31,7 @@ public abstract class GerenciadorRecursos {
 		Pagina atual;
 		
 		for(int i = 0; i < tamanho; i++){
-			atual = new Pagina();
+			atual = new Pagina(i);
 			
 			this.quadros.add(atual);
 			this.livres.add(atual);
@@ -53,11 +53,11 @@ public abstract class GerenciadorRecursos {
 	 *  
 	 *  Note que a verificação de limites da tabela de página do processo não fica aqui
 	 * */
-	public int ler(Processo p, int enderecoFisico) {
+	public void ler(Processo p, int enderecoFisico) {
 		aguardando.add(p);
 		//administrar tempo de espera
 		aguardando.remove(p);
-		return quadros.get(enderecoFisico).ler();
+		quadros.get(enderecoFisico).ler();
 	}
 	
 	public void escrever(Processo p, int enderecoFisico, int dado) {

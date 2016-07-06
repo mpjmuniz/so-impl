@@ -25,7 +25,7 @@ public class TabelaDePaginas {
 		return paginas;
 	}
 	
-	public int getEndPagina(int nPagina) throws FaltaDePagina {
-		return 0;
+	public long getEndPagina(int nPagina) throws FaltaDePagina {
+		return paginas.get(nPagina).getEndFisico();
 	}
 }
