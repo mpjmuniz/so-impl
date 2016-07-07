@@ -38,6 +38,28 @@ public class Kernel {
 			//Jogar pro usuÃ¡rio
 		}
 	}
+	
+	private int tratarSwappIn(Pagina pag, Processo pros){
+		return 0;
+	}
+	
+	private int tratarPaginaMS(int nPagina, Processo p){
+		Configuracao confs = Configuracao.obterInstancia();
+		boolean status = true;
+		while(status){
+			status = false;
+			try {
+				int i=0;
+				for(Pagina pag: gm.alocarMemoria(confs.getTamanhoPagina())){
+					p.getTabela().insertPagina(pag, nPagina+i);
+				}
+			} catch (TamanhoInsuficiente e) {
+				tratarInterrupcao(e);
+				status = true;
+			}		
+		}
+		return 0;
+	}
 
 	public Processo obterProcesso(int id) {
 		return ListaProcessos.get(id);
@@ -45,11 +67,16 @@ public class Kernel {
 	
 	public void criarProcesso(int id, int tamanho){
 		Processo p = null;
-		try{
-		List<Pagina> list = gm.alocarMemoria(tamanho);
-		p = new Processo(id, tamanho, new TabelaDePaginas(list.size(),list));
-		} catch(TamanhoInsuficiente e){
-			tratarInterrupcao(e);
+		boolean status = true;
+		while(status){
+			status = false;
+			try{
+				List<Pagina> list = gm.alocarMemoria(tamanho);
+				p = new Processo(id, tamanho, new TabelaDePaginas(list.size(),list));
+			} catch(TamanhoInsuficiente e){
+				tratarInterrupcao(e);
+				status = true;
+			}
 		}
 		// Colocar na lista do escalonador
 		ListaProcessos.put(id, p);
@@ -58,18 +85,28 @@ public class Kernel {
 	public void processoLe(int id, int pos){
 		Configuracao confs = Configuracao.obterInstancia();
 		// Resolve endereco: n da pagina + offset
-		int npagina = pos/confs.getTamanhoPagina();
+		int nPagina = pos/confs.getTamanhoPagina();
 		int offset = pos%confs.getTamanhoPagina();
 		// Pega o endereco da pagina
 		Processo p = this.ListaProcessos.get(id);
 		TabelaDePaginas tp = p.getTabela();
+		int endFisico = -1;
 		try {
-			int endFisico = tp.getEndPagina(npagina);
-			// Executa
-			gm.ler(p, endFisico);
+			endFisico = tp.getEndPagina(nPagina);
 		} catch (FaltaDePagina e) {
-			tratarInterrupcao(e);
+			// Se ocorreu falta de página, logo ou a página está em swapp
+			// ou em ms
+			Pagina pagina = tp.getPagina(nPagina);
+			// Não está presente, pois ocorreu falta de páginas
+			if(pagina != null)
+				//TODO implementação
+				endFisico = tratarSwappIn(pagina, p);
+			else
+				endFisico = tratarPaginaMS(nPagina, p);
+			
 		}
+		// Executa
+		gm.ler(p, endFisico);
 		// Retorna		
 	}
 	

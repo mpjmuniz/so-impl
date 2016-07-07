@@ -21,10 +21,11 @@ public class GerenciadorMemoria extends GerenciadorRecursos {
 		if(tamanho > tamanhoDisponivel) throw new TamanhoInsuficiente();
 		
 		qtdPaginas = tamanho / confs.getTamanhoPagina();
+		if(tamanho % confs.getTamanhoPagina() > 0) qtdPaginas++;
 		
 		pgs = new ArrayList<>(qtdPaginas);
 		
-		for(int i = 0; i < tamanho ; i++){
+		for(int i = 0; i < qtdPaginas ; i++){
 			pgs.add(livres.remove(0));
 		}
 		
@@ -38,6 +39,7 @@ public class GerenciadorMemoria extends GerenciadorRecursos {
 		
 		this.tamanhoDisponivel += tp.getTamanho();
 		livres.addAll(tp.getPaginas());
+		// TODO sort lista de livres
 		p.setTabela(null);
 	}
 

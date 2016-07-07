@@ -8,7 +8,7 @@ public class Pagina {
 	private boolean modificado;
 	private boolean utilizado;
 	private boolean presente;
-	private long endFisico;
+	private int endFisico;
 
 	public Pagina(int endFisico){
 		this.modificado = false;
@@ -18,7 +18,7 @@ public class Pagina {
 		this.endFisico =  endFisico;
 	}
 	
-	public long getEndFisico(){
+	public int getEndFisico(){
 		return this.endFisico;
 	}
 	
