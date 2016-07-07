@@ -48,6 +48,8 @@ public class AbaProcessos extends Tab {
 	public TitledPane criarPainelProcesso(Processo p) {
 		GridPane grid = new GridPane();
 		TableView<Pagina> tabela;
+		
+		
 		grid.addRow(0, new Label("Estado:"), new Label(p.getEstado().toString()));
 		grid.addRow(1, new Label("Tabela de Paginas:"));
 		

@@ -94,6 +94,8 @@ public class Controlador {
 
 			while (leitor.hasNextLine()) {
 				linha = leitor.nextLine();
+				tfComando.setText(linha);
+				
 				partes = linha.split(" ");
 
 				// Obter processo
@@ -110,6 +112,8 @@ public class Controlador {
 				case 'W':
 					break;
 				case 'I':
+						//Código depois será passado para o kernel
+						
 					break;
 				default:
 					break;

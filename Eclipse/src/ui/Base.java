@@ -26,7 +26,6 @@ public class Base extends Application {
 			estrutura = FXMLLoader.<VBox>load(fxmlUrl);
 			
 			cena = new Scene(estrutura, 1024, 700);
-			cena.getStylesheets().add("resources/css/estilo.css");
 			
 			fundo.setScene(cena);
 			fundo.setTitle("Gerenciador de Memória Virtual");

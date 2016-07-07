@@ -1,21 +1,15 @@
 package ui;
 
-import javafx.scene.control.Label;
-import javafx.scene.control.ListCell;
-import javafx.scene.control.ListView;
+import java.io.IOException;
+
+import javafx.fxml.FXMLLoader;
 import javafx.scene.control.Tab;
-import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.HBox;
-import javafx.scene.layout.VBox;
-import javafx.util.Callback;
 import recursos.GerenciadorRecursos;
-import recursos.Pagina;
-import recursos.Processo;
 
 public class AbaRecursos extends Tab {
-	private HBox base = new HBox();
-	private VBox lista = new VBox();
-	private FlowPane quadros = new FlowPane();
+	
+	private HBox base;
 	private GerenciadorRecursos gerRec;
 
 	public AbaRecursos(String text, GerenciadorRecursos ger) {
@@ -25,89 +19,24 @@ public class AbaRecursos extends Tab {
 		init();
 	}
 
-	public void init() {
-		Label rotulo;
+	public void init(){
+		ControladorAbas controlador;
 		
-		base.setPrefWidth(1024);
-		lista.setPrefWidth(300);
-
-		ListView<Processo> processos = new ListView<>();
-		processos.getItems().addAll(gerRec.getFila());
-		processos.setCellFactory(new Callback<ListView<Processo>, ListCell<Processo>>() {
-			@Override
-			public ListCell<Processo> call(ListView<Processo> listView) {
-				return new ListCell<Processo>() {
-					@Override
-					public void updateItem(Processo item, boolean empty) {
-						// Must call super
-						super.updateItem(item, empty);
-
-						int index = this.getIndex();
-						String name = null;
-
-						// Format name
-						if (item == null || empty) {
-							// No action to perform
-						} else {
-							name = (index + 1) + ". Processo " + item.getId();
-						}
-
-						this.setText(name);
-						setGraphic(null);
-					}
-				};
-			}
-		});
+		FXMLLoader loader = new FXMLLoader(this.getClass()
+                .getClassLoader()
+                .getResource("resources/fxml/abaRecursos.fxml"));
 		
-		lista.getChildren().add(new Label("Tamanho Total: "));
-		lista.getChildren().add(new Label(Integer.toString(this.gerRec.getTamanhoTotal())));
-		lista.getChildren().add(new Label("Tamanho Disponível: "));
-		lista.getChildren().add(new Label(Integer.toString(this.gerRec.getTamanhoDisponivel())));
-		lista.getChildren().add(new Label("Processos na Fila: "));
-		lista.getChildren().add(processos);
-		
-		
-
-		for(Pagina p : gerRec.getQuadros()){			
-			quadros.getChildren().add(new Label(p.toString()));
+		try{
+			base = loader.<HBox>load();
 			
+			controlador = loader.<ControladorAbas>getController(); 
+			controlador.initData(gerRec);		
+			
+			this.setContent(base);
+			//cena.getStylesheets().add("resources/css/estilo.css");
+		} catch(IOException e){
+			System.out.println("Erro no carregamento da aba " + e.getMessage());
 		}
-		
-		
-		
-		/*ListView<Pagina> quads = new ListView<>();
-		quads.getItems().addAll(gerRec.getQuadros());
-		
-		quads.setCellFactory(new Callback<ListView<Pagina>, ListCell<Pagina>>() {
-			@Override
-			public ListCell<Pagina> call(ListView<Pagina> listView) {
-				return new ListCell<Pagina>() {
-					@Override
-					public void updateItem(Pagina item, boolean empty) {
-						// Must call super
-						super.updateItem(item, empty);
-
-						String name = null;
-
-						// Format name
-						if (item == null || empty) {
-							// No action to perform
-						} else {
-							name =  item.toString();
-						}
-
-						this.setText(name);
-						setGraphic(null);
-					}
-				};
-			}
-		});*/
-		
-		quadros.setPrefWidth(724);
-
-		base.getChildren().addAll(lista, quadros);
-
-		this.setContent(base);
 	}
 
 }
