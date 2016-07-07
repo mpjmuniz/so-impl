@@ -14,11 +14,6 @@ import so.Swapper;
 
 public class Entrada{
 	public static void main(String[] args){
-		/*
-		 *	TODO: 
-		 *		- Ler arquivo
-		 *
-		 * */
 		try{
 			Scanner leitor = new Scanner(new File("src/resources/entrada.txt"));
 			String linha;
@@ -35,9 +30,6 @@ public class Entrada{
 			
 			Kernel k = new Kernel(memoria, disco, esc, swp);
 		
-			Processo atual;
-			System.out.println("here");
-
 			while(leitor.hasNextLine()){
 				linha = leitor.nextLine();
 				partes = linha.split(" ");
@@ -68,8 +60,8 @@ public class Entrada{
 				
 				//Obter parâmetro (definir aqui tamanhos de página, quadro, etc)
 				System.out.println(linha);
-				leitor.close();
 			}
+			leitor.close();
 		} catch (FileNotFoundException e) {
 			
 		}
