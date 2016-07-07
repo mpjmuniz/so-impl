@@ -6,16 +6,15 @@
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.control.TabPane?>
 
-
-<VBox fx:controller="ui.ControladorAbas" spacing="10" xmlns:fx="http://javafx.com/fxml">
-	<TabPane fx:id="baseAbas" >
+<VBox fx:id="estrutura" fx:controller="ui.Controlador" xmlns:fx="http://javafx.com/fxml">
+	<TabPane  fx:id="baseAbas" >
 	</TabPane>
-	<HBox spacing="10" >
-		<Button text="Carregar Arquivo" />
-		<TextField fx:id="comando" prefWidth="512" />
-		<Button text="Continuar" />
-		<Button text="Pausar" />
-		<Button text="Andar" />
-		<Button text="Zerar" />
+	<HBox fx:id="rodape" >
+		<Button fx:id="bCarregar" text="Carregar Arquivo" onAction="#carregarArquivo" />
+		<TextField fx:id="tfComando" prefWidth="512" />
+		<Button fx:id="bContinuar" text="Continuar" onAction="#continuar"/>
+		<Button fx:id="bPausar" text="Pausar" onAction="#pausar"/>
+		<Button fx:id="bAndar" text="Andar" onAction="#andar"/>
+		<Button fx:id="bZerar" text="Zerar" onAction="#zerar"/>
 	</HBox>
 </VBox>

@@ -13,6 +13,7 @@ public abstract class GerenciadorRecursos {
 	
 	protected int tamanhoTotal;
 	protected int tamanhoDisponivel;
+	protected int tempoLeitura;
 	protected List<Pagina> quadros;
 	protected List<Pagina> livres;
 

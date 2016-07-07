@@ -20,15 +20,19 @@ public class Base extends Application {
 				
 		VBox estrutura;
 		
+		Scene cena;
+		
 		try{
 			estrutura = FXMLLoader.<VBox>load(fxmlUrl);
 			
-			Scene scene = new Scene(estrutura, 1024, 700);
-			fundo.setScene(scene);
+			cena = new Scene(estrutura, 1024, 700);
+			cena.getStylesheets().add("resources/css/estilo.css");
+			
+			fundo.setScene(cena);
 			fundo.setTitle("Gerenciador de Memória Virtual");
 			fundo.show();
 		} catch(IOException e){
-			throw new IOException("Arquivo Corrompido");
+			throw new IOException("Arquivo Corrompido: " + e.getMessage());
 		}
 	}
 
