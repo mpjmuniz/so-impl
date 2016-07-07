@@ -39,26 +39,36 @@ public class Kernel {
 		}
 	}
 	
-	private int tratarSwappIn(Pagina pag, Processo pros){
-		return 0;
+	private Pagina tratarSwappIn(int nPagina, Processo pros){
+		Pagina pagMP = null;
+		try {
+			Pagina pSwapp = pros.getTabela().getPagina(nPagina);
+			pagMP = swp.swapIn(pSwapp);
+			// Sobreescreve a pagina na MS com uma pagina na MP
+			pros.getTabela().insertPagina(pagMP, nPagina);
+		} catch (TamanhoInsuficiente e) {
+			// TODO Swapp out
+		}
+		return pagMP;
 	}
 	
-	private int tratarPaginaMS(int nPagina, Processo p){
+	// Pagina não está em MP nem em Swapp
+	private Pagina tratarPaginaMS(int nPagina, Processo p){
 		Configuracao confs = Configuracao.obterInstancia();
 		boolean status = true;
+		Pagina pagMP = null;
 		while(status){
 			status = false;
 			try {
-				int i=0;
-				for(Pagina pag: gm.alocarMemoria(confs.getTamanhoPagina())){
-					p.getTabela().insertPagina(pag, nPagina+i);
-				}
+				pagMP = gm.alocarMemoria(confs.getTamanhoPagina()).get(0);
+				pagMP.trazer();
+				p.getTabela().insertPagina(pagMP, nPagina);
 			} catch (TamanhoInsuficiente e) {
 				tratarInterrupcao(e);
 				status = true;
 			}		
 		}
-		return 0;
+		return pagMP;
 	}
 
 	public Processo obterProcesso(int id) {
@@ -99,7 +109,19 @@ public class Kernel {
 	}
 	
 	public void processa(int id, int pos){
+		Configuracao confs = Configuracao.obterInstancia();
+		// Resolve endereco: n da pagina + offset
+		int nPagina = pos/confs.getTamanhoPagina();
+
+		Processo p = this.ListaProcessos.get(id);
+		Pagina pagina = p.getTabela().getPagina(nPagina);
 		
+		if(pagina == null)
+			tratarPaginaMS(nPagina, p).utilizado();
+		else if(pagina.isPresente())
+			pagina.utilizado();
+		else 
+			tratarSwappIn(nPagina, p).utilizado();	
 	}
 	
 	public void usaDispositivo(int id, int dispositivo){
@@ -123,9 +145,9 @@ public class Kernel {
 			// Não está presente, pois ocorreu falta de páginas
 			if(pagina != null)
 				//TODO implementação
-				endFisico = tratarSwappIn(pagina, p);
+				endFisico = tratarSwappIn(nPagina, p).getEndFisico();
 			else
-				endFisico = tratarPaginaMS(nPagina, p);
+				endFisico = tratarPaginaMS(nPagina, p).getEndFisico();
 			
 		}
 		return endFisico;

@@ -57,6 +57,10 @@ public class Pagina {
 	public void inutilizado(){
 		this.utilizado = false;
 	}
+	
+	public void utilizado(){
+		this.utilizado = true;
+	}
 
 	public boolean isUtilizado() {
 		return utilizado;
@@ -64,6 +68,12 @@ public class Pagina {
 
 	public boolean isPresente() {
 		return presente;
+	}
+	
+	public void limpar(){
+		this.modificado = false;
+		this.presente = false;
+		this.utilizado = false;
 	}
 	
 	@Override

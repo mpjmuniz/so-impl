@@ -26,7 +26,7 @@ public class Entrada{
 			GerenciadorMemoria memoria = new GerenciadorMemoria();
 			GerenciadorDisco disco = new GerenciadorDisco();
 			Escalonador esc = new Escalonador();
-			Swapper swp = new Swapper();
+			Swapper swp = new Swapper(memoria, disco);
 			
 			Kernel k = new Kernel(memoria, disco, esc, swp);
 		

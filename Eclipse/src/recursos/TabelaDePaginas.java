@@ -29,6 +29,10 @@ public class TabelaDePaginas {
 	public void insertPagina(Pagina p, int nPagina){
 		paginas.put(nPagina, p);
 	}
+	
+	public void removePagina(Pagina p){
+		this.paginas.remove(p.getEndFisico());
+	}
 
 	public List<Pagina> getPaginas() {
 		return Collections.list(paginas.elements());
