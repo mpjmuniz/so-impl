@@ -43,7 +43,7 @@ public class Pagina {
 	}
 	
 	/*	Modificar Página*/
-	public void modificar(int dado){
+	public void modificar(){
 		this.modificado = true;
 		this.ultimaUtilizacao = new Date();		
 	}

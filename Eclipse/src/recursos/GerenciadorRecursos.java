@@ -60,11 +60,11 @@ public abstract class GerenciadorRecursos {
 		quadros.get(enderecoFisico).ler();
 	}
 	
-	public void escrever(Processo p, int enderecoFisico, int dado) {
+	public void escrever(Processo p, int enderecoFisico) {
 		aguardando.add(p);
 		//administrar tempo de espera
 		aguardando.remove(p);
-		quadros.get(enderecoFisico).modificar(dado);
+		quadros.get(enderecoFisico).modificar();
 	}
 	
 	public Queue<Processo> getFila(){
