@@ -82,13 +82,36 @@ public class Kernel {
 		ListaProcessos.put(id, p);
 	}
 	
-	public void processoLe(int id, int pos){
+	public void le(int id, int pos){
+		Processo p = this.ListaProcessos.get(id);
+		int endFisico = this.descobreEnderecoFisico(p, pos);
+		// Executa
+		gm.ler(p, endFisico);
+		// Retorna		
+	}
+	
+	public void escreve(int id, int pos){
+		Processo p = this.ListaProcessos.get(id);
+		int endFisico = this.descobreEnderecoFisico(p, pos);
+		// Executa
+		gm.escrever(p, endFisico);
+		// Retorna		
+	}
+	
+	public void processa(int id, int pos){
+		
+	}
+	
+	public void usaDispositivo(int id, int dispositivo){
+		
+	}
+	
+	public int descobreEnderecoFisico(Processo p, int pos){
 		Configuracao confs = Configuracao.obterInstancia();
 		// Resolve endereco: n da pagina + offset
 		int nPagina = pos/confs.getTamanhoPagina();
 		int offset = pos%confs.getTamanhoPagina();
 		// Pega o endereco da pagina
-		Processo p = this.ListaProcessos.get(id);
 		TabelaDePaginas tp = p.getTabela();
 		int endFisico = -1;
 		try {
@@ -105,9 +128,7 @@ public class Kernel {
 				endFisico = tratarPaginaMS(nPagina, p);
 			
 		}
-		// Executa
-		gm.ler(p, endFisico);
-		// Retorna		
+		return endFisico;
 	}
 	
 	public List<Processo> todosProcessos(){
