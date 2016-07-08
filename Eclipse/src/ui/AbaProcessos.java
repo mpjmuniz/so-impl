@@ -17,6 +17,7 @@ import javafx.scene.layout.GridPane;
 import recursos.Pagina;
 import recursos.Processo;
 import so.Escalonador;
+import so.Kernel;
 
 /*TODO: Implementar acordiões*/
 
@@ -24,8 +25,9 @@ public class AbaProcessos extends Tab {
 	private Accordion lista = new Accordion();
 	
 	private Escalonador esc;
+	private Kernel k;
 
-	public AbaProcessos(String text, Escalonador esc) {
+	public AbaProcessos(String text, Kernel k) {
 		this.setText(text);
 		this.esc = esc;
 
@@ -36,7 +38,7 @@ public class AbaProcessos extends Tab {
 		lista.setPrefWidth(1024);
 		List<TitledPane> processos = new ArrayList<>();		
 		
-		for(Processo p : esc.obterProcessos()){
+		for(Processo p : k.todosProcessos()){
 			processos.add(criarPainelProcesso(p));
 		}
 		

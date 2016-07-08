@@ -8,14 +8,18 @@ public class Pagina {
 	private boolean modificado;
 	private boolean utilizado;
 	private boolean presente;
-	private int dado;
+	private int endFisico;
 
-	public Pagina(){
+	public Pagina(int endFisico){
 		this.modificado = false;
 		this.presente = false;
 		this.utilizado = false;
 		this.ultimaUtilizacao = new Date();
-		this.dado = 0;
+		this.endFisico =  endFisico;
+	}
+	
+	public int getEndFisico(){
+		return this.endFisico;
 	}
 	
 	public Date getUltimaUtilizacao() {
@@ -39,20 +43,23 @@ public class Pagina {
 	}
 	
 	/*	Modificar Página*/
-	public void modificar(int dado){
+	public void modificar(){
 		this.modificado = true;
 		this.ultimaUtilizacao = new Date();		
 	}
 	
-	public int ler(){
+	public void ler(){
 		this.ultimaUtilizacao = new Date();
 		this.utilizado = true;
-		return this.dado;
 	}
 	
 	/*	Para o algoritmo do Relógio*/
 	public void inutilizado(){
 		this.utilizado = false;
+	}
+	
+	public void utilizado(){
+		this.utilizado = true;
 	}
 
 	public boolean isUtilizado() {
@@ -63,12 +70,18 @@ public class Pagina {
 		return presente;
 	}
 	
+	public void limpar(){
+		this.modificado = false;
+		this.presente = false;
+		this.utilizado = false;
+	}
+	
 	@Override
 	public String toString(){
 		return "Mod? " + ((this.modificado) ? "v" : "x") + "\n"
 				+ "Pres? " + ((this.presente) ? "v" : "x") + "\n"
 				+ "Util? " + ((this.utilizado) ? "v" : "x") + "\n"
 				+ "Últ. Util.: " + this.ultimaUtilizacao.toString().substring(10, 19) + "\n"
-				+ "Dado: " + Integer.toString(dado) + "\n";
+				+ "End. Fisico: " + Long.toString(endFisico) + "\n";
 	}
 }

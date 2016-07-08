@@ -1,5 +1,6 @@
 package so;
 
+import recursos.Estado;
 import recursos.GerenciadorRecursos;
 import recursos.Processo;
 
@@ -12,42 +13,46 @@ import java.util.Queue;
 public class Escalonador{
 
 	
-	private Queue<Processo> filaProntos = new LinkedList<Processo>();
-	private List<Processo> suspensos = new ArrayList<Processo>();
-	private List<Processo> executando = new ArrayList<Processo>();
-	private HashMap<String, GerenciadorRecursos> bloqueados = new HashMap<>();
+	protected Queue<Processo> filaProntos = new LinkedList<Processo>();
+	protected List<Processo> suspensos = new ArrayList<Processo>();
+	protected HashMap<String, GerenciadorRecursos> bloqueados = new HashMap<>();
 	
 	public Escalonador(){
 		
 	}
-	
-	public void criarProcesso(int tam){
-		
+
+	public Processo selecionaProximoProcesso(){
+		return filaProntos.remove();
 	}
 	
-	public void terminarProcesso(int pid){
-		
-	}
-	
-	public void bloquearProcesso(int pid){
-		
-	}
-	
-	public void suspenderProcesso(int pid){
-		
-	}
-	
-	public List<Processo> obterProcessos(){
-		List<Processo> uniao = new ArrayList<Processo>();
-		
-		uniao.addAll(filaProntos);
-		uniao.addAll(suspensos);
-		uniao.addAll(executando);
-		
-		for(String s : bloqueados.keySet()){
-			uniao.addAll(bloqueados.get(s).getFila());
+	public void terminarProcesso(Processo p){
+		Estado e = p.getEstado();
+		if(e == Estado.PRONTO){
+			filaProntos.remove(p);
+		} else if(e == Estado.SUSPENSO){
+			suspensos.remove(p);
+		} else if(e == Estado.BLOQUEADO){
+			
 		}
 		
-		return uniao;
 	}
+	
+	public void aprontarProcesso(Processo p){
+		filaProntos.add(p);
+		// Nome estranho, trocar?
+		p.alocar();
+	}
+	
+	// realmente necessario?
+	public void bloquearProcesso(Processo p, GerenciadorRecursos gr){
+		p.bloquear();
+		filaProntos.remove(p);		
+	}
+	
+	public void suspenderProcesso(Processo p){
+		p.suspender();
+		filaProntos.remove(p);
+		suspensos.add(p);
+	}
+
 }

@@ -3,7 +3,11 @@ package so;
 import java.util.ArrayList;
 import java.util.List;
 
+import controle.Configuracao;
 import controle.Singleton;
+import excecoes.TamanhoInsuficiente;
+import recursos.GerenciadorDisco;
+import recursos.GerenciadorMemoria;
 import recursos.Pagina;
 import recursos.Processo;
 
@@ -21,10 +25,12 @@ public class Swapper {
 	 *	4. Continue the user process from where the page fault occurred.
 	 */
 	
-	private List<Pagina> livres = new ArrayList<>(1024);
+	GerenciadorMemoria gm;
+	GerenciadorDisco gd;
 	
-	public Swapper(){
-		
+	public Swapper(GerenciadorMemoria gm, GerenciadorDisco gd){
+		this.gm = gm;
+		this.gd = gd;
 	}
 	
 	/*
@@ -44,8 +50,15 @@ public class Swapper {
 	/*
 	 *	Swap-in: Traz p√°gina da mem√≥ria secund√°ria para a mem√≥ria principal
 	 * */
-	public void swapIn(Pagina p){
-		
+	public Pagina swapIn(Pagina p) throws TamanhoInsuficiente{
+		Configuracao confs = Configuracao.obterInstancia();
+		//Tenta alocar memÛria
+		Pagina pagMP = gm.alocarMemoria(confs.getTamanhoPagina()).get(0);
+		// Se estava em swapp est· modificada
+		pagMP.modificar();
+		//Tira p·gina da MS e coloca na MP
+		gd.liberaPagina(p);
+		return pagMP;
 	}
 	
 	/*

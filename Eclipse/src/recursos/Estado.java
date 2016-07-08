@@ -1,5 +1,5 @@
 package recursos;
 
-public enum Estado {
+public enum Estado{
 	NOVO, PRONTO, EXECUTANDO, BLOQUEADO, SUSPENSO, TERMINADO
 }
