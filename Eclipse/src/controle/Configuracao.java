@@ -6,8 +6,8 @@ public class Configuracao {
 	private int quantidadeInicialPaginas = 32;
 	private int tamanhoPagina = 1024;
 	private int enderecoLogico;
-	private int tamanhoTotalMP = 1024 * 1024;
-	private int tamanhoTotalMS = 1024 * 1024 * 1024;
+	private int tamanhoTotalMP = 20 * 1024;
+	private int tamanhoTotalMS = 100 * 1024;
 	private int tamanhoMaximoProcesso;
 
 	private Configuracao() {

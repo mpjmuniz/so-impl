@@ -26,6 +26,8 @@ public class AbaRecursos extends Tab {
 	}
 
 	public void init() {
+		Label rotulo;
+		
 		base.setPrefWidth(1024);
 		lista.setPrefWidth(300);
 
@@ -63,8 +65,17 @@ public class AbaRecursos extends Tab {
 		lista.getChildren().add(new Label(Integer.toString(this.gerRec.getTamanhoDisponivel())));
 		lista.getChildren().add(new Label("Processos na Fila: "));
 		lista.getChildren().add(processos);
+		
+		
 
-		ListView<Pagina> quads = new ListView<>();
+		for(Pagina p : gerRec.getQuadros()){			
+			quadros.getChildren().add(new Label(p.toString()));
+			
+		}
+		
+		
+		
+		/*ListView<Pagina> quads = new ListView<>();
 		quads.getItems().addAll(gerRec.getQuadros());
 		
 		quads.setCellFactory(new Callback<ListView<Pagina>, ListCell<Pagina>>() {
@@ -90,10 +101,9 @@ public class AbaRecursos extends Tab {
 					}
 				};
 			}
-		});
+		});*/
 		
 		quadros.setPrefWidth(724);
-		quadros.getChildren().add(quads);
 
 		base.getChildren().addAll(lista, quadros);
 
