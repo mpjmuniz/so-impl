@@ -71,4 +71,10 @@ public class Configuracao {
 	public int getTamanhoMaximoProcesso() {
 		return this.tamanhoMaximoProcesso;
 	}
+	
+	public int getQuantidadePaginas(int tam){
+		int qtdPaginas = tam / this.getTamanhoPagina();
+		if(tam % this.getTamanhoPagina() > 0) qtdPaginas++;
+		return qtdPaginas;
+	}
 }

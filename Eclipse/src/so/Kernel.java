@@ -32,16 +32,14 @@ public class Kernel {
 		this.gp = new GerenciadorDispositivo();
 		this.listaProcessos = new Hashtable<>();
 	}
-
-	public void tratarInterrupcao(Exception excecao) {
-		if(excecao instanceof FaltaDePagina){
-			//Chamar Swapper
-		} else if(excecao instanceof TamanhoInsuficiente){
-			//Jogar pro usuÃ¡rio
-		}
+	
+	private void tratarTamanhoInsuficiente(int tamanho) {
+		// swapp out
+		swp.swapOut(tamanho);
 	}
 	
 	private Pagina tratarSwappIn(int nPagina, Processo pros){
+		// TODO repetir processo caso ocorra exceção
 		Pagina pagMP = null;
 		try {
 			Pagina pSwapp = pros.getTabela().getPagina(nPagina);
@@ -49,7 +47,8 @@ public class Kernel {
 			// Sobreescreve a pagina na MS com uma pagina na MP
 			pros.getTabela().insertPagina(pagMP, nPagina);
 		} catch (TamanhoInsuficiente e) {
-			// TODO Swapp out
+			Configuracao confs = Configuracao.obterInstancia();
+			tratarTamanhoInsuficiente(confs.getTamanhoPagina());
 		}
 		return pagMP;
 	}
@@ -66,7 +65,7 @@ public class Kernel {
 				pagMP.trazer();
 				p.getTabela().insertPagina(pagMP, nPagina);
 			} catch (TamanhoInsuficiente e) {
-				tratarInterrupcao(e);
+				tratarTamanhoInsuficiente(confs.getTamanhoPagina());
 				status = true;
 			}		
 		}
@@ -90,14 +89,14 @@ public class Kernel {
 				List<Pagina> list = gm.alocarMemoria(tamanho);
 				p = new Processo(id, tamanho, new TabelaDePaginas(list.size(),list));
 			} catch(TamanhoInsuficiente e){
-				tratarInterrupcao(e);
+				tratarTamanhoInsuficiente(tamanho);
 				status = true;
 			}
 		}
 		// Colocar na lista do escalonador
 		listaProcessos.put(id, p);
 	}
-	
+
 	public void le(int id, int pos){
 		Processo p = this.listaProcessos.get(id);
 		int endFisico = this.descobreEnderecoFisico(p, pos);
@@ -130,6 +129,7 @@ public class Kernel {
 			tratarSwappIn(nPagina, p).utilizado();	
 	}
 	
+	// TODO usa dispositivo
 	public void usaDispositivo(int id, int dispositivo){
 		
 	}

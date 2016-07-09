@@ -1,27 +1,18 @@
 package ui;
 
-import java.io.File;
-import java.io.FileNotFoundException;
+import java.io.*;
 import java.net.URL;
-import java.util.ResourceBundle;
-import java.util.Scanner;
+import java.util.*;
 
-import excecoes.ComandoInvalido;
-import excecoes.ProcessoInexistente;
+import excecoes.*;
 import javafx.fxml.FXML;
 import javafx.geometry.Insets;
-import javafx.scene.Scene;
-import javafx.scene.control.Button;
-import javafx.scene.control.Label;
-import javafx.scene.control.TabPane;
-import javafx.scene.control.TextField;
-import javafx.scene.layout.VBox;
-import javafx.stage.FileChooser;
-import javafx.stage.Modality;
-import javafx.stage.Stage;
-import javafx.stage.Window;
-import recursos.Processo;
-import so.Kernel;
+import javafx.scene.*;
+import javafx.scene.control.*;
+import javafx.scene.layout.*;
+import javafx.stage.*;
+import recursos.*;
+import so.*;
 
 public class Controlador {
 	
@@ -74,6 +65,9 @@ public class Controlador {
 		
 		abaMemoria = new AbaRecursos("Memória Principal", kernel.obterGerenciadorMP());
 		abaDisco = new AbaRecursos("Memória Secundária", kernel.obterGerenciadorMS());
+		
+		//Swapper swp = new SwapperRelogio(gm, gd);
+
 		abaProcessos = new AbaProcessos("Processos", kernel);
 
 		baseAbas.getTabs().addAll(abaDisco, abaMemoria, abaProcessos);
