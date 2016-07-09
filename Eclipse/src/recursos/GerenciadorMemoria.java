@@ -20,8 +20,7 @@ public class GerenciadorMemoria extends GerenciadorRecursos {
 		//Supondo inexistência de memória virtual
 		if(tamanho > tamanhoDisponivel) throw new TamanhoInsuficiente();
 		
-		qtdPaginas = tamanho / confs.getTamanhoPagina();
-		if(tamanho % confs.getTamanhoPagina() > 0) qtdPaginas++;
+		qtdPaginas = confs.getQuantidadePaginas(tamanho);
 		
 		pgs = new ArrayList<>(qtdPaginas);
 		
