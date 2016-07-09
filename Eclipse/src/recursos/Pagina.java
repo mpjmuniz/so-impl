@@ -38,7 +38,6 @@ public class Pagina {
 	
 	/*	Guardar na memória Secundária*/
 	public void guardar(){
-		this.modificado = false;
 		this.presente = false;
 	}
 	

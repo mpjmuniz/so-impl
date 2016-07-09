@@ -11,7 +11,7 @@ import recursos.GerenciadorMemoria;
 import recursos.Pagina;
 import recursos.Processo;
 
-public class Swapper {
+public abstract class Swapper {
 	/*
 	 *	1. Find the location of the desired page on the disk.
 	 *	2. Find a free frame:
@@ -25,8 +25,8 @@ public class Swapper {
 	 *	4. Continue the user process from where the page fault occurred.
 	 */
 	
-	GerenciadorMemoria gm;
-	GerenciadorDisco gd;
+	protected GerenciadorMemoria gm;
+	protected GerenciadorDisco gd;
 	
 	public Swapper(GerenciadorMemoria gm, GerenciadorDisco gd){
 		this.gm = gm;
@@ -64,8 +64,19 @@ public class Swapper {
 	/*
 	 * 	Swap-out: Guarda pÃ¡gina na memÃ³ria
 	 * */
-	public void swapOut(Pagina p){
+	public abstract void swapOut(int tamanho);
+	
+	protected void _swapOut(Pagina p){
+		// Se está modificado salva no disco
 		
+		// Caso precise gravar a página na MS deve-se alocar memória na MS
+		// e colocar a pagina p de volta na lista de livres da MP
+		// para tanto o processo que tinha a página p alocada deve ter esta entrada
+		// removida de sua tabela de páginas
+		// Possíveis resoluções
+		// observador para modficação nas paginas?
+		// percorrer lista de processos no kernel e resolver para cada tp de cada processo?
+			
 	}
 
 }

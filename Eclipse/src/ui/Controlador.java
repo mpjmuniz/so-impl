@@ -12,12 +12,8 @@ import javafx.scene.control.TabPane;
 import javafx.scene.control.TextField;
 import javafx.stage.FileChooser;
 import javafx.stage.Window;
-import recursos.GerenciadorDisco;
-import recursos.GerenciadorMemoria;
-import recursos.Processo;
-import so.Escalonador;
-import so.Kernel;
-import so.Swapper;
+import recursos.*;
+import so.*;
 
 public class Controlador {
 	private Window fundo = null;
@@ -52,7 +48,7 @@ public class Controlador {
 		GerenciadorDisco gd = new GerenciadorDisco();
 		GerenciadorMemoria gm = new GerenciadorMemoria();
 		Escalonador esc = new Escalonador();
-		Swapper swp = new Swapper(gm, gd);
+		Swapper swp = new SwapperRelogio(gm, gd);
 		this.kernel = new Kernel(gm, gd, esc, swp);
 		abaMemoria = new AbaRecursos("Memória Principal", gm);
 		abaDisco = new AbaRecursos("Memória Secundária", gd);
