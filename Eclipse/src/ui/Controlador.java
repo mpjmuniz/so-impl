@@ -21,6 +21,7 @@ import so.Swapper;
 
 public class Controlador {
 	private Window fundo = null;
+	private Kernel kernel;
 
 	private FileChooser navegadorArquivos = new FileChooser();
 
@@ -48,10 +49,14 @@ public class Controlador {
 
 		AbaRecursos abaMemoria, abaDisco;
 		AbaProcessos abaProcessos;
-
-		abaMemoria = new AbaRecursos("Memória Principal", new GerenciadorMemoria());
-		abaDisco = new AbaRecursos("Memória Secundária", new GerenciadorDisco());
-		abaProcessos = new AbaProcessos("Processos", new Escalonador());
+		GerenciadorDisco gd = new GerenciadorDisco();
+		GerenciadorMemoria gm = new GerenciadorMemoria();
+		Escalonador esc = new Escalonador();
+		Swapper swp = new Swapper(gm, gd);
+		this.kernel = new Kernel(gm, gd, esc, swp);
+		abaMemoria = new AbaRecursos("Memória Principal", gm);
+		abaDisco = new AbaRecursos("Memória Secundária", gd);
+		abaProcessos = new AbaProcessos("Processos", kernel);
 
 		baseAbas.getTabs().addAll(abaDisco, abaMemoria, abaProcessos);
 	}
@@ -82,13 +87,6 @@ public class Controlador {
 			String linha;
 			String[] partes;
 
-			Kernel k = new Kernel();
-
-			// Jogar pro kernel (estava no Entrada.java) 
-			GerenciadorMemoria memoria = new GerenciadorMemoria();
-			GerenciadorDisco disco = new GerenciadorDisco();
-			Escalonador esc = new Escalonador();
-			Swapper swp = new Swapper();
 
 			Processo atual;
 
@@ -99,7 +97,7 @@ public class Controlador {
 				partes = linha.split(" ");
 
 				// Obter processo
-				atual = k.obterProcesso(partes[0].charAt(1));
+				atual = kernel.obterProcesso(partes[0].charAt(1));
 
 				// Obter ação
 				switch (partes[1].charAt(0)) {
