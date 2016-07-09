@@ -1,25 +1,34 @@
 package ui;
 
 import java.io.File;
-import java.io.IOException;
+import java.io.FileNotFoundException;
 import java.net.URL;
 import java.util.ResourceBundle;
 import java.util.Scanner;
 
+import excecoes.ComandoInvalido;
+import excecoes.ProcessoInexistente;
 import javafx.fxml.FXML;
+import javafx.geometry.Insets;
+import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.control.Label;
 import javafx.scene.control.TabPane;
 import javafx.scene.control.TextField;
+import javafx.scene.layout.VBox;
 import javafx.stage.FileChooser;
+import javafx.stage.Modality;
+import javafx.stage.Stage;
 import javafx.stage.Window;
-import recursos.GerenciadorDisco;
-import recursos.GerenciadorMemoria;
 import recursos.Processo;
-import so.Escalonador;
 import so.Kernel;
-import so.Swapper;
 
 public class Controlador {
+	
+	//TODO: Ajustar tratamento de exceções para mostrar mensagens amigáveis
+	
+	//Interface
+	
 	private Window fundo = null;
 
 	private FileChooser navegadorArquivos = new FileChooser();
@@ -39,111 +48,185 @@ public class Controlador {
 	@FXML
 	private ResourceBundle resources;
 
+	private AbaRecursos abaMemoria, 
+							abaDisco;
+	
+	private AbaProcessos abaProcessos;
+	
+	// SO
+	
+	private Kernel kernel;
+	
+	// Interno
+	
+	private String instrucao;
+	private Scanner leitor = null;
+	private File arquivo = null;
+	
+	private boolean emExecucao;
+		
 	public Controlador() {
 	}
 
 	@FXML
 	private void initialize() {
+		kernel = new Kernel();
 		
-
-		AbaRecursos abaMemoria, abaDisco;
-		AbaProcessos abaProcessos;
-
-		abaMemoria = new AbaRecursos("Memória Principal", new GerenciadorMemoria());
-		abaDisco = new AbaRecursos("Memória Secundária", new GerenciadorDisco());
-		abaProcessos = new AbaProcessos("Processos", new Escalonador());
+		abaMemoria = new AbaRecursos("Memória Principal", kernel.obterGerenciadorMP());
+		abaDisco = new AbaRecursos("Memória Secundária", kernel.obterGerenciadorMS());
+		abaProcessos = new AbaProcessos("Processos", kernel);
 
 		baseAbas.getTabs().addAll(abaDisco, abaMemoria, abaProcessos);
-	}
-
-	@FXML
-	private void selecionarAba() {
-
+		
+		emExecucao = false;
 	}
 
 	@FXML
 	private void carregarArquivo() {
+		
 		fundo = bCarregar.getScene().getWindow();
-		File arquivo;
+		
+		this.navegadorArquivos.setTitle("Selecione um arquivo de " 
+				+ " comportamento dos processos:");
 
-		this.navegadorArquivos.setTitle("Selecione um arquivo de " + " comportamento dos processos:");
-
-		arquivo = navegadorArquivos.showOpenDialog(fundo);
-
-		if (arquivo == null) {
-			return;
-		}
+		arquivo = navegadorArquivos.showOpenDialog(fundo);		
+		
+		if(arquivo == null) return;
 		
 		try {
-
-			// TODO: Fazer o que tiver que ser feito com o Kernel
-
-			Scanner leitor = new Scanner(arquivo);
-			String linha;
-			String[] partes;
-
-			Kernel k = new Kernel();
-
-			// Jogar pro kernel (estava no Entrada.java) 
-			GerenciadorMemoria memoria = new GerenciadorMemoria();
-			GerenciadorDisco disco = new GerenciadorDisco();
-			Escalonador esc = new Escalonador();
-			Swapper swp = new Swapper();
-
-			Processo atual;
-
-			while (leitor.hasNextLine()) {
-				linha = leitor.nextLine();
-				tfComando.setText(linha);
-				
-				partes = linha.split(" ");
-
-				// Obter processo
-				atual = k.obterProcesso(partes[0].charAt(1));
-
-				// Obter ação
-				switch (partes[1].charAt(0)) {
-				case 'C':
-					break;
-				case 'R':
-					break;
-				case 'P':
-					break;
-				case 'W':
-					break;
-				case 'I':
-						//Código depois será passado para o kernel
-						
-					break;
-				default:
-					break;
-				}
-				
-				System.out.println(linha);
-			}
-		} catch (IOException e) {
-			e.printStackTrace();
+			leitor = new Scanner(arquivo);
+			
+			instrucao = leitor.nextLine();
+			
+			tfComando.setText(instrucao);
+		} catch (FileNotFoundException e) {
+			alertar(e.getMessage(), "Arquivo não encontrado.");
 		}
-
 	}
 
 	@FXML
 	private void continuar() {
-		// TODO: Pós implementação do temporizador
+		if(emExecucao) return;
+		
+		if(instrucao == null || instrucao == "" || leitor == null){
+			
+			alertar("Não há uma instrução a ser executada.", "Sem instruções");
+			return;
+		}
+		
+		emExecucao = true;
+		
+		try{
+			processarInstrucoes();
+		} catch (ComandoInvalido e){
+			alertar(e.getMessage(), "Erro na execução do comando: ");
+		}
+		
+		
+		emExecucao = false;
 	}
 
 	@FXML
 	private void pausar() {
-		// TODO: Pós implementação do temporizador
+		if(emExecucao) emExecucao = false;
 	}
 
 	@FXML
-	private void andar() {
-		// TODO: Pós implementação do temporizador
+	private void andar(){
+		if(emExecucao) return;
+		
+		instrucao = (leitor == null) ? tfComando.getText() : leitor.nextLine();
+		
+		emExecucao = true;
+		try {
+			processarInstrucao(instrucao);
+		} catch (ComandoInvalido e) {
+			alertar(e.getMessage(), "Erro na execução do comando: ");
+		}
+		emExecucao = false;
 	}
 
 	@FXML
 	private void zerar() {
-		// TODO: Pós implementação do temporizador
+		if(arquivo == null) return;
+		
+		try {
+			leitor = new Scanner(arquivo);
+		} catch (FileNotFoundException e) {
+			e.printStackTrace();
+		}
+		
+		emExecucao = false;
+	}
+	
+	private void processarInstrucao(String instrucao) throws ComandoInvalido{
+		//Possivelmente passará para o Kernel
+		String[] partes;
+		Processo atual = null;
+		
+		if(instrucao == null || "".equals(instrucao)){
+			alertar("Comando inválido", "Comando Inválido");
+			return;
+		}
+			
+		
+		partes = instrucao.split(" ");
+		
+		try{
+			atual = kernel.obterProcesso(partes[0].charAt(1));
+		} catch(ProcessoInexistente e){
+			alertar(e.getMessage(), "Processo não existe");
+			
+			return;
+			
+		}
+
+		// Obter ação
+		switch (partes[1].charAt(0)) {
+		case 'C':
+			break;
+		case 'R':
+			break;
+		case 'P':
+			break;
+		case 'W':
+			break;
+		case 'I':
+			kernel.obterGerenciadorDP().ler(atual, Integer.parseInt(partes[2]));
+			break;
+		default:
+			throw new ComandoInvalido("Comando \"" + partes[0] + "\" não implementado. ");
+		}
+	}
+	
+	private void processarInstrucoes() throws ComandoInvalido{
+			
+		while (leitor.hasNextLine() && emExecucao) {
+			
+			instrucao = leitor.nextLine();
+			tfComando.setText(instrucao);
+			processarInstrucao(instrucao);
+			
+		}
+		
+		leitor.close();
+		leitor = null;
+	}
+	
+	private void alertar(String mensagem, String topo){
+		Stage aviso = new Stage();
+		aviso.initOwner(fundo);
+		aviso.initModality(Modality.APPLICATION_MODAL);
+		
+		Label lAviso = new Label(mensagem);
+					
+		VBox root = new VBox();
+		root.setPadding(new Insets(20));
+		root.getChildren().add(lAviso);
+		
+		Scene scene = new Scene(root, 300, 100);
+		aviso.setScene(scene); 
+		aviso.setTitle(topo);
+		aviso.show();
 	}
 }

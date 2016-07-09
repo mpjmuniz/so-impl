@@ -1,15 +1,15 @@
 package so;
 
 import java.util.Collections;
-import java.util.Enumeration;
 import java.util.Hashtable;
 import java.util.List;
 
 import controle.Configuracao;
-import controle.Singleton;
 import excecoes.FaltaDePagina;
+import excecoes.ProcessoInexistente;
 import excecoes.TamanhoInsuficiente;
 import recursos.GerenciadorDisco;
+import recursos.GerenciadorDispositivo;
 import recursos.GerenciadorMemoria;
 import recursos.Pagina;
 import recursos.Processo;
@@ -17,18 +17,20 @@ import recursos.TabelaDePaginas;
 
 public class Kernel {
 	
-	private Hashtable<Integer, Processo> ListaProcessos; 
+	private Hashtable<Integer, Processo> listaProcessos; 
 	private GerenciadorMemoria gm;
 	private GerenciadorDisco gd;
+	private GerenciadorDispositivo gp;
 	private Escalonador esc;
 	private Swapper swp;
 	
-	public Kernel(GerenciadorMemoria gm, GerenciadorDisco gd, Escalonador esc, Swapper swp){
-		this.gm = gm;
-		this.gd = gd;
-		this.esc = esc;
-		this.swp = swp;
-		ListaProcessos = new Hashtable<>();
+	public Kernel(){
+		this.gm = new GerenciadorMemoria();
+		this.gd = new GerenciadorDisco();
+		this.esc = new Escalonador();
+		this.swp = new Swapper(gm, gd);
+		this.gp = new GerenciadorDispositivo();
+		this.listaProcessos = new Hashtable<>();
 	}
 
 	public void tratarInterrupcao(Exception excecao) {
@@ -52,7 +54,7 @@ public class Kernel {
 		return pagMP;
 	}
 	
-	// Pagina não está em MP nem em Swapp
+	// Pagina nï¿½o estï¿½ em MP nem em Swapp
 	private Pagina tratarPaginaMS(int nPagina, Processo p){
 		Configuracao confs = Configuracao.obterInstancia();
 		boolean status = true;
@@ -71,8 +73,12 @@ public class Kernel {
 		return pagMP;
 	}
 
-	public Processo obterProcesso(int id) {
-		return ListaProcessos.get(id);
+	public Processo obterProcesso(int id) throws ProcessoInexistente {
+		Processo p = listaProcessos.get(id);
+		
+		if(p == null) throw new ProcessoInexistente("Processo nÃ£o existe.");
+		
+		return p;
 	}
 	
 	public void criarProcesso(int id, int tamanho){
@@ -89,11 +95,11 @@ public class Kernel {
 			}
 		}
 		// Colocar na lista do escalonador
-		ListaProcessos.put(id, p);
+		listaProcessos.put(id, p);
 	}
 	
 	public void le(int id, int pos){
-		Processo p = this.ListaProcessos.get(id);
+		Processo p = this.listaProcessos.get(id);
 		int endFisico = this.descobreEnderecoFisico(p, pos);
 		// Executa
 		gm.ler(p, endFisico);
@@ -101,7 +107,7 @@ public class Kernel {
 	}
 	
 	public void escreve(int id, int pos){
-		Processo p = this.ListaProcessos.get(id);
+		Processo p = this.listaProcessos.get(id);
 		int endFisico = this.descobreEnderecoFisico(p, pos);
 		// Executa
 		gm.escrever(p, endFisico);
@@ -113,7 +119,7 @@ public class Kernel {
 		// Resolve endereco: n da pagina + offset
 		int nPagina = pos/confs.getTamanhoPagina();
 
-		Processo p = this.ListaProcessos.get(id);
+		Processo p = this.listaProcessos.get(id);
 		Pagina pagina = p.getTabela().getPagina(nPagina);
 		
 		if(pagina == null)
@@ -139,12 +145,12 @@ public class Kernel {
 		try {
 			endFisico = tp.getEndPagina(nPagina);
 		} catch (FaltaDePagina e) {
-			// Se ocorreu falta de página, logo ou a página está em swapp
+			// Se ocorreu falta de pï¿½gina, logo ou a pï¿½gina estï¿½ em swapp
 			// ou em ms
 			Pagina pagina = tp.getPagina(nPagina);
-			// Não está presente, pois ocorreu falta de páginas
+			// Nï¿½o estï¿½ presente, pois ocorreu falta de pï¿½ginas
 			if(pagina != null)
-				//TODO implementação
+				//TODO implementaï¿½ï¿½o
 				endFisico = tratarSwappIn(nPagina, p).getEndFisico();
 			else
 				endFisico = tratarPaginaMS(nPagina, p).getEndFisico();
@@ -153,8 +159,20 @@ public class Kernel {
 		return endFisico;
 	}
 	
+	public GerenciadorMemoria obterGerenciadorMP(){
+		return this.gm;
+	}
+	
+	public GerenciadorDispositivo obterGerenciadorDP(){
+		return this.gp;
+	}
+	
+	public GerenciadorDisco obterGerenciadorMS(){
+		return this.gd;
+	}
+	
 	public List<Processo> todosProcessos(){
-		return Collections.list(this.ListaProcessos.elements());
+		return Collections.list(this.listaProcessos.elements());
 	}
 
 }

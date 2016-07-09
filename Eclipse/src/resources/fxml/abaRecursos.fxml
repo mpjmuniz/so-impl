@@ -22,7 +22,7 @@
 		</ListView>
 	</VBox>
 	
-	<ScrollPane pannable="true" >
+	<ScrollPane fx:id="rolagem" pannable="true" >
 		<FlowPane fx:id="quadros">
 			
 		</FlowPane>
