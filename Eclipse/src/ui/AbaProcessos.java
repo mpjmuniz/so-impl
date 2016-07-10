@@ -16,7 +16,6 @@ import javafx.scene.control.cell.CheckBoxTableCell;
 import javafx.scene.layout.GridPane;
 import recursos.Pagina;
 import recursos.Processo;
-import so.Escalonador;
 import so.Kernel;
 
 /*TODO: Implementar acordiões*/
@@ -24,12 +23,11 @@ import so.Kernel;
 public class AbaProcessos extends Tab {
 	private Accordion lista = new Accordion();
 	
-	private Escalonador esc;
-	private Kernel k;
+	private Kernel ker;
 
 	public AbaProcessos(String text, Kernel k) {
 		this.setText(text);
-		this.esc = esc;
+		this.ker = k;
 
 		init();
 	}
@@ -38,7 +36,7 @@ public class AbaProcessos extends Tab {
 		lista.setPrefWidth(1024);
 		List<TitledPane> processos = new ArrayList<>();		
 		
-		for(Processo p : k.todosProcessos()){
+		for(Processo p : ker.todosProcessos()){
 			processos.add(criarPainelProcesso(p));
 		}
 		

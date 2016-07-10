@@ -1,10 +1,8 @@
 package so;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.Date;
 
 import controle.Configuracao;
-import controle.Singleton;
 import excecoes.TamanhoInsuficiente;
 import recursos.GerenciadorDisco;
 import recursos.GerenciadorMemoria;
@@ -52,11 +50,11 @@ public abstract class Swapper {
 	 * */
 	public Pagina swapIn(Pagina p) throws TamanhoInsuficiente{
 		Configuracao confs = Configuracao.obterInstancia();
-		//Tenta alocar mem�ria
+		//Tenta alocar mem�ria
 		Pagina pagMP = gm.alocarMemoria(confs.getTamanhoPagina()).get(0);
-		// Se estava em swapp est� modificada
+		// Se estava em swapp est� modificada
 		pagMP.modificar();
-		//Tira p�gina da MS e coloca na MP
+		//Tira p�gina da MS e coloca na MP
 		gd.liberaPagina(p);
 		return pagMP;
 	}
@@ -78,5 +76,32 @@ public abstract class Swapper {
 		// percorrer lista de processos no kernel e resolver para cada tp de cada processo?
 			
 	}
+	
+	/*
+	 * 	Retorna endereço da página eleita para substituição
+	 * */
+	private int leastRecentlyUsed(){
+		
+		/*
+		 * Primeira implementação.
+		 * Possibilidades, caso haja tempo:
+		 * 	- Usar heaps, atualizar árvore a cada utilização das páginas
+		 * */
+		
+		int endEleito = 0;
+		
+		long agora = new Date().getTime(),
+				tempoEleito = Integer.MAX_VALUE;
+		
+		for(Pagina pg : gm.getQuadros()){
+			if(agora - pg.getUltimaUtilizacao().getTime() < tempoEleito){
+				tempoEleito = agora - pg.getUltimaUtilizacao().getTime();
+				endEleito = pg.getEndFisico();
+			}
+		}
+		
+		return endEleito;
+	}
+	
 
 }
