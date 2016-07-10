@@ -25,20 +25,20 @@ public class Kernel {
 	private Swapper swp;
 	
 	public Kernel(){
+		this.listaProcessos = new Hashtable<>();
 		this.gm = new GerenciadorMemoria();
 		this.gd = new GerenciadorDisco();
 		this.esc = new Escalonador();
-		this.swp = new Swapper(gm, gd);
-		this.gp = new GerenciadorDispositivo();
-		this.listaProcessos = new Hashtable<>();
+		this.swp = new SwapperRelogio(gm, gd, this);
+		this.gp = new GerenciadorDispositivo();		
 	}
 	
-	private void tratarTamanhoInsuficiente(int tamanho) {
+	private void tratarTamanhoInsuficiente(int tamanho) throws TamanhoInsuficiente {
 		// swapp out
 		swp.swapOut(tamanho);
 	}
 	
-	private Pagina tratarSwappIn(int nPagina, Processo pros){
+	private Pagina tratarSwappIn(int nPagina, Processo pros) throws TamanhoInsuficiente{
 		// TODO repetir processo caso ocorra exceção
 		Pagina pagMP = null;
 		try {
@@ -54,7 +54,7 @@ public class Kernel {
 	}
 	
 	// Pagina nï¿½o estï¿½ em MP nem em Swapp
-	private Pagina tratarPaginaMS(int nPagina, Processo p){
+	private Pagina tratarPaginaMS(int nPagina, Processo p) throws TamanhoInsuficiente{
 		Configuracao confs = Configuracao.obterInstancia();
 		boolean status = true;
 		Pagina pagMP = null;
@@ -80,7 +80,7 @@ public class Kernel {
 		return p;
 	}
 	
-	public void criarProcesso(int id, int tamanho){
+	public void criarProcesso(int id, int tamanho) throws TamanhoInsuficiente{
 		Processo p = null;
 		boolean status = true;
 		while(status){
@@ -97,7 +97,7 @@ public class Kernel {
 		listaProcessos.put(id, p);
 	}
 
-	public void le(int id, int pos){
+	public void le(int id, int pos) throws TamanhoInsuficiente{
 		Processo p = this.listaProcessos.get(id);
 		int endFisico = this.descobreEnderecoFisico(p, pos);
 		// Executa
@@ -105,7 +105,7 @@ public class Kernel {
 		// Retorna		
 	}
 	
-	public void escreve(int id, int pos){
+	public void escreve(int id, int pos) throws TamanhoInsuficiente{
 		Processo p = this.listaProcessos.get(id);
 		int endFisico = this.descobreEnderecoFisico(p, pos);
 		// Executa
@@ -113,7 +113,7 @@ public class Kernel {
 		// Retorna		
 	}
 	
-	public void processa(int id, int pos){
+	public void processa(int id, int pos) throws TamanhoInsuficiente{
 		Configuracao confs = Configuracao.obterInstancia();
 		// Resolve endereco: n da pagina + offset
 		int nPagina = pos/confs.getTamanhoPagina();
@@ -134,7 +134,7 @@ public class Kernel {
 		
 	}
 	
-	public int descobreEnderecoFisico(Processo p, int pos){
+	public int descobreEnderecoFisico(Processo p, int pos) throws TamanhoInsuficiente{
 		Configuracao confs = Configuracao.obterInstancia();
 		// Resolve endereco: n da pagina + offset
 		int nPagina = pos/confs.getTamanhoPagina();

@@ -4,18 +4,19 @@ import java.util.ArrayList;
 import java.util.List;
 
 import controle.Configuracao;
+import excecoes.TamanhoInsuficiente;
 import recursos.*;
 
 public class SwapperRelogio extends Swapper {
 	
 	private int ultimaPagFila = 0;
 
-	public SwapperRelogio(GerenciadorMemoria gm, GerenciadorDisco gd) {
-		super(gm, gd);
+	public SwapperRelogio(GerenciadorMemoria gm, GerenciadorDisco gd, Kernel k) {
+		super(gm, gd, k);
 	}
 
 	@Override
-	public void swapOut(int tamanho) {
+	public void swapOut(int tamanho) throws TamanhoInsuficiente {
 		Configuracao confs = Configuracao.obterInstancia();
 		int qtdPag = confs.getQuantidadePaginas(tamanho);
 		while(qtdPag > 0){

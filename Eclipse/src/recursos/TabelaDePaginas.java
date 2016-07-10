@@ -3,6 +3,7 @@ package recursos;
 import java.util.Collections;
 import java.util.Hashtable;
 import java.util.List;
+import java.util.Map.Entry;
 
 import controle.Configuracao;
 import excecoes.FaltaDePagina;
@@ -30,8 +31,8 @@ public class TabelaDePaginas {
 		paginas.put(nPagina, p);
 	}
 	
-	public void removePagina(Pagina p){
-		this.paginas.remove(p.getEndFisico());
+	public void removePagina(int nPagina){
+		this.paginas.remove(nPagina);
 	}
 
 	public List<Pagina> getPaginas() {
@@ -50,5 +51,16 @@ public class TabelaDePaginas {
 			return paginas.get(nPagina);
 		else
 			return null;
+	}
+	
+	public void substituiPagina(int nPagina,Pagina p){
+		this.paginas.replace(nPagina, p);
+	}
+	
+	public int getKey(Pagina p){
+		for(Entry<Integer, Pagina> e: this.paginas.entrySet()){
+			if(e.getValue().equals(p)) return e.getKey().intValue();
+		}
+		return -1;
 	}
 }

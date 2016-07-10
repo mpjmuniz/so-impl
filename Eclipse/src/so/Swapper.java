@@ -25,10 +25,12 @@ public abstract class Swapper {
 	
 	protected GerenciadorMemoria gm;
 	protected GerenciadorDisco gd;
+	protected Kernel k;
 	
-	public Swapper(GerenciadorMemoria gm, GerenciadorDisco gd){
+	public Swapper(GerenciadorMemoria gm, GerenciadorDisco gd, Kernel k){
 		this.gm = gm;
 		this.gd = gd;
+		this.k = k;
 	}
 	
 	/*
@@ -62,19 +64,26 @@ public abstract class Swapper {
 	/*
 	 * 	Swap-out: Guarda pÃ¡gina na memÃ³ria
 	 * */
-	public abstract void swapOut(int tamanho);
+	public abstract void swapOut(int tamanho) throws TamanhoInsuficiente;
 	
-	protected void _swapOut(Pagina p){
+	protected void _swapOut(Pagina p) throws TamanhoInsuficiente{
+		// Procurar processo que possui a página
+		Processo alvo = null;
+		for(Processo pros: k.todosProcessos()){
+			if(pros.getTabela().getPaginas().contains(p)) alvo = pros;
+		}
+		int nPagina = alvo.getTabela().getKey(p);
 		// Se está modificado salva no disco
-		
-		// Caso precise gravar a página na MS deve-se alocar memória na MS
-		// e colocar a pagina p de volta na lista de livres da MP
-		// para tanto o processo que tinha a página p alocada deve ter esta entrada
-		// removida de sua tabela de páginas
-		// Possíveis resoluções
-		// observador para modficação nas paginas?
-		// percorrer lista de processos no kernel e resolver para cada tp de cada processo?
-			
+		if(p.isModificado()){
+			// TODO pagina está presente? Não deveria.
+			Pagina pagDisco = gd.alocarMemoria(1).get(0);
+			alvo.getTabela().substituiPagina(nPagina, pagDisco);;
+			gm.liberarMemoria(p);
+		} else {
+			// Dissocia página de processo
+			alvo.getTabela().removePagina(nPagina);
+			gm.liberarMemoria(p);
+		}			
 	}
 	
 	/*
