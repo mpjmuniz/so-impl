@@ -2,7 +2,6 @@ package so;
 
 import java.util.Collections;
 import java.util.HashMap;
-import java.util.Hashtable;
 import java.util.List;
 
 import controle.Configuracao;
@@ -22,25 +21,22 @@ public class Kernel {
 	private GerenciadorMemoria gm;
 	private GerenciadorDisco gd;
 	private GerenciadorDispositivo gp;
-	private Escalonador esc;
 	private Swapper swp;
 	
 	public Kernel(){
 		this.gm = new GerenciadorMemoria();
 		this.gd = new GerenciadorDisco();
-		this.esc = new Escalonador();
 		this.swp = new SwapperRelogio(gm, gd, this);
 		this.gp = new GerenciadorDispositivo();
 		this.listaProcessos = new HashMap<>();
 	}
 	
-	private void tratarTamanhoInsuficiente(int tamanho) {
+	private void tratarTamanhoInsuficiente(int tamanho) throws TamanhoInsuficiente {
 		// swapp out
 		swp.swapOut(tamanho);
 	}
 	
-	private Pagina tratarSwappIn(int nPagina, Processo pros){
-		// TODO repetir processo caso ocorra exce��o
+	private Pagina tratarSwappIn(int nPagina, Processo pros) throws TamanhoInsuficiente{
 		Pagina pagMP = null;
 		try {
 			Pagina pSwapp = pros.getTabela().getPagina(nPagina);
@@ -55,21 +51,17 @@ public class Kernel {
 	}
 	
 	// Pagina n�o est� em MP nem em Swapp
-	private Pagina tratarPaginaMS(int nPagina, Processo p){
+	private Pagina tratarPaginaMS(int nPagina, Processo p) throws TamanhoInsuficiente{
 		Configuracao confs = Configuracao.obterInstancia();
-		boolean status = true;
 		Pagina pagMP = null;
-		while(status){
-			status = false;
-			try {
-				pagMP = gm.alocarMemoria(confs.getTamanhoPagina()).get(0);
-				pagMP.trazer();
-				p.getTabela().insertPagina(pagMP, nPagina);
-			} catch (TamanhoInsuficiente e) {
-				tratarTamanhoInsuficiente(confs.getTamanhoPagina());
-				status = true;
-			}		
-		}
+		try {
+			pagMP = gm.alocarMemoria(confs.getTamanhoPagina()).get(0);
+			p.getTabela().insertPagina(pagMP, nPagina);
+		} catch (TamanhoInsuficiente e) {
+			tratarTamanhoInsuficiente(confs.getTamanhoPagina());
+			pagMP = gm.alocarMemoria(confs.getTamanhoPagina()).get(0);
+			p.getTabela().insertPagina(pagMP, nPagina);
+		}		
 		return pagMP;
 	}
 
@@ -81,7 +73,7 @@ public class Kernel {
 		return p;
 	}
 	
-	public void criarProcesso(int id, int tamanho){
+	public void criarProcesso(int id, int tamanho) throws TamanhoInsuficiente{
 		Processo p = null;
 		Configuracao confs = Configuracao.obterInstancia();
 		try{
@@ -98,7 +90,7 @@ public class Kernel {
 		listaProcessos.put(id, p);
 	}
 
-	public void le(int id, int pos){
+	public void le(int id, int pos) throws TamanhoInsuficiente{
 		Processo p = this.listaProcessos.get(id);
 		int endFisico = this.descobreEnderecoFisico(p, pos);
 		// Executa
@@ -106,7 +98,7 @@ public class Kernel {
 		// Retorna		
 	}
 	
-	public void escreve(int id, int pos){
+	public void escreve(int id, int pos) throws TamanhoInsuficiente{
 		Processo p = this.listaProcessos.get(id);
 		int endFisico = this.descobreEnderecoFisico(p, pos);
 		// Executa
@@ -114,7 +106,7 @@ public class Kernel {
 		// Retorna		
 	}
 	
-	public void processa(int id, int pos){
+	public void processa(int id, int pos) throws TamanhoInsuficiente{
 		Configuracao confs = Configuracao.obterInstancia();
 		// Resolve endereco: n da pagina + offset
 		int nPagina = pos/confs.getTamanhoPagina();
@@ -135,7 +127,7 @@ public class Kernel {
 		
 	}
 	
-	public int descobreEnderecoFisico(Processo p, int pos){
+	public int descobreEnderecoFisico(Processo p, int pos) throws TamanhoInsuficiente{
 		Configuracao confs = Configuracao.obterInstancia();
 		// Resolve endereco: n da pagina + offset
 		int nPagina = pos/confs.getTamanhoPagina();

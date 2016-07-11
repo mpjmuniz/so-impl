@@ -1,20 +1,28 @@
 package ui;
 
-import java.io.*;
+import java.io.File;
+import java.io.FileNotFoundException;
 import java.net.URL;
-import java.util.*;
+import java.util.ResourceBundle;
+import java.util.Scanner;
 
-import excecoes.*;
-import javafx.collections.FXCollections;
-import javafx.collections.ObservableMap;
+import excecoes.ComandoInvalido;
+import excecoes.ProcessoInexistente;
+import excecoes.TamanhoInsuficiente;
 import javafx.fxml.FXML;
 import javafx.geometry.Insets;
-import javafx.scene.*;
-import javafx.scene.control.*;
-import javafx.scene.layout.*;
-import javafx.stage.*;
-import recursos.*;
-import so.*;
+import javafx.scene.Scene;
+import javafx.scene.control.Button;
+import javafx.scene.control.Label;
+import javafx.scene.control.TabPane;
+import javafx.scene.control.TextField;
+import javafx.scene.layout.VBox;
+import javafx.stage.FileChooser;
+import javafx.stage.Modality;
+import javafx.stage.Stage;
+import javafx.stage.Window;
+import recursos.Processo;
+import so.Kernel;
 
 public class Controlador {
 	
@@ -194,21 +202,39 @@ public class Controlador {
 			} catch (NumberFormatException e){
 				e.printStackTrace();
 			} catch(TamanhoInsuficiente e) {
-				alertar("Tamanho Insuficiente de memória", "Erro na criação do processo");
+				alertar("Tamanho Insuficiente de memoria", "Erro na criacao do processo");
 			}
 			
 			break;
 		case 'R':
+			try {
+				int ini = partes[2].indexOf('(');
+				int fim = partes[2].indexOf(')');
+				kernel.le(partes[0].charAt(1), Integer.parseInt(partes[2].substring(ini+1, fim)));
+			} catch (NumberFormatException e){
+				e.printStackTrace();
+			} catch(TamanhoInsuficiente e) {
+				alertar("Tamanho Insuficiente de memoria", "Erro na criacao do processo");
+			}
 			break;
 		case 'P':
 			break;
 		case 'W':
+			try {
+				int ini = partes[2].indexOf('(');
+				int fim = partes[2].indexOf(')');
+				kernel.escreve(partes[0].charAt(1), Integer.parseInt(partes[2].substring(ini+1, fim)));
+			} catch (NumberFormatException e){
+				e.printStackTrace();
+			} catch(TamanhoInsuficiente e) {
+				alertar("Tamanho Insuficiente de memoria", "Erro na criacao do processo");
+			}
 			break;
 		case 'I':
 			kernel.obterGerenciadorDP().ler(atual, Integer.parseInt(partes[2]));
 			break;
 		default:
-			throw new ComandoInvalido("Comando \"" + partes[0] + "\" não implementado. ");
+			throw new ComandoInvalido("Comando \"" + partes[0] + "\" nao implementado. ");
 		}
 	}
 	

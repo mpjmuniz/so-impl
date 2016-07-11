@@ -15,9 +15,7 @@ public class GerenciadorMemoria extends GerenciadorRecursos {
 		
 		int qtdPaginas;
 		List<Pagina> pgs;
-		TabelaDePaginas tp;
 		
-		//Supondo inexistência de memória virtual
 		if(tamanho > tamanhoDisponivel) throw new TamanhoInsuficiente();
 		
 		qtdPaginas = confs.getQuantidadePaginas(tamanho);
@@ -38,13 +36,13 @@ public class GerenciadorMemoria extends GerenciadorRecursos {
 		
 		this.tamanhoDisponivel += tp.getTamanho();
 		livres.addAll(tp.getPaginas());
-		// TODO sort lista de livres
+		livres.sort(null);
 		p.setTabela(null);
 	}
 	
 	public void liberarMemoria(Pagina p) {
 		livres.add(p);
-		// TODO sort lista de livres
+		livres.sort(null);
 	}
 
 

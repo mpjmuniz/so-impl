@@ -16,14 +16,17 @@ public class TabelaDePaginas {
 
 	public TabelaDePaginas(int linhas, List<Pagina> pgs) {
 		paginas = new HashMap<>();
-		this.tamanho = linhas * confs.getTamanhoPagina();
 		for(int i=0; i<linhas; i++){
 			paginas.put(i, pgs.get(i));
 		}
 	}
 
 	public int getTamanho() {
-		return this.tamanho;
+		return confs.getTamanhoPagina()*paginas.size();
+	}
+	
+	public int getQuantidadeEntradas(){
+		return paginas.size();
 	}
 	
 	public void insertPagina(Pagina p, int nPagina){
