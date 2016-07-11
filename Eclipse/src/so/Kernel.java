@@ -11,6 +11,7 @@ import excecoes.TamanhoInsuficiente;
 import recursos.GerenciadorDisco;
 import recursos.GerenciadorDispositivo;
 import recursos.GerenciadorMemoria;
+import recursos.GerenciadorMemoriaVirtual;
 import recursos.Pagina;
 import recursos.Processo;
 import recursos.TabelaDePaginas;
@@ -21,6 +22,7 @@ public class Kernel {
 	private GerenciadorMemoria gm;
 	private GerenciadorDisco gd;
 	private GerenciadorDispositivo gp;
+	private GerenciadorMemoriaVirtual gmv;
 	private Swapper swp;
 	
 	public Kernel(){
@@ -28,6 +30,7 @@ public class Kernel {
 		this.gd = new GerenciadorDisco();
 		this.swp = new SwapperRelogio(gm, gd, this);
 		this.gp = new GerenciadorDispositivo();
+		this.gmv = new GerenciadorMemoriaVirtual(gm, gd, swp);
 		this.listaProcessos = new HashMap<>();
 	}
 	
