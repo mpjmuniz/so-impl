@@ -35,7 +35,7 @@ public class TabelaDePaginas {
 	}
 
 	public List<Pagina> getPaginas() {
-		return Collections.list(Collections.enumeration(paginas.elements()));
+		return Collections.list(Collections.enumeration(paginas.values()));
 	}
 	
 	public int getEndPagina(int nPagina) throws FaltaDePagina {
