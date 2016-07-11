@@ -41,5 +41,11 @@ public class GerenciadorMemoria extends GerenciadorRecursos {
 		// TODO sort lista de livres
 		p.setTabela(null);
 	}
+	
+	public void liberarMemoria(Pagina p) {
+		livres.add(p);
+		// TODO sort lista de livres
+	}
+
 
 }

@@ -25,10 +25,12 @@ public abstract class Swapper {
 	
 	protected GerenciadorMemoria gm;
 	protected GerenciadorDisco gd;
+	protected Kernel k;
 	
-	public Swapper(GerenciadorMemoria gm, GerenciadorDisco gd){
+	public Swapper(GerenciadorMemoria gm, GerenciadorDisco gd, Kernel k){
 		this.gm = gm;
 		this.gd = gd;
+		this.k = k;
 	}
 	
 	/*
@@ -60,48 +62,31 @@ public abstract class Swapper {
 	}
 	
 	/*
-	 * 	Swap-out: Guarda p√°gina na mem√≥ria
+	 * 	Swap-out: Guarda pagina na memoria secundaria
 	 * */
-	public abstract void swapOut(int tamanho);
+	public abstract void swapOut(int tamanho) throws TamanhoInsuficiente;
 	
-	protected void _swapOut(Pagina p){
-		// Se est· modificado salva no disco
-		
-		// Caso precise gravar a p·gina na MS deve-se alocar memÛria na MS
-		// e colocar a pagina p de volta na lista de livres da MP
-		// para tanto o processo que tinha a p·gina p alocada deve ter esta entrada
-		// removida de sua tabela de p·ginas
-		// PossÌveis resoluÁıes
-		// observador para modficaÁ„o nas paginas?
-		// percorrer lista de processos no kernel e resolver para cada tp de cada processo?
-			
-	}
-	
-	/*
-	 * 	Retorna endere√ßo da p√°gina eleita para substitui√ß√£o
-	 * */
-	private int leastRecentlyUsed(){
-		
-		/*
-		 * Primeira implementa√ß√£o.
-		 * Possibilidades, caso haja tempo:
-		 * 	- Usar heaps, atualizar √°rvore a cada utiliza√ß√£o das p√°ginas
-		 * */
-		
-		int endEleito = 0;
-		
-		long agora = new Date().getTime(),
-				tempoEleito = Integer.MAX_VALUE;
-		
-		for(Pagina pg : gm.getQuadros()){
-			if(agora - pg.getUltimaUtilizacao().getTime() < tempoEleito){
-				tempoEleito = agora - pg.getUltimaUtilizacao().getTime();
-				endEleito = pg.getEndFisico();
-			}
+	// Retira efetivamente uma pagina p da MP
+	protected void _swapOut(Pagina p) throws TamanhoInsuficiente{
+		// Procurar processo que possui a p·gina
+		Processo alvo = null;
+		for(Processo pros: k.todosProcessos()){
+			if(pros.getTabela().getPaginas().contains(p)) alvo = pros;
 		}
-		
-		return endEleito;
+		int nPagina = alvo.getTabela().getKey(p);
+		// Se est· modificado salva no disco
+		if(p.isModificado()){
+			// TODO pagina est· presente? N„o deveria.
+			Pagina pagDisco = gd.alocarMemoria(1).get(0);
+			alvo.getTabela().substituiPagina(nPagina, pagDisco);;
+			gm.liberarMemoria(p);
+		} else {
+			// Dissocia p·gina de processo
+			alvo.getTabela().removePagina(nPagina);
+			gm.liberarMemoria(p);
+		}			
 	}
+	
 	
 
 }

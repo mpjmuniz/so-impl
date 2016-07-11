@@ -29,19 +29,8 @@ public class Pagina {
 	public boolean isModificado() {
 		return this.modificado;
 	}
-
-	/*	Trazer da memória Secundária*/
-	public void trazer(){
-		this.presente = true;
-		this.modificado = false;
-	}
 	
-	/*	Guardar na memória Secundária*/
-	public void guardar(){
-		this.presente = false;
-	}
-	
-	/*	Modificar Página*/
+	/*	Modificar Pagina*/
 	public void modificar(){
 		this.modificado = true;
 		this.ultimaUtilizacao = new Date();		
@@ -52,7 +41,7 @@ public class Pagina {
 		this.utilizado = true;
 	}
 	
-	/*	Para o algoritmo do Relógio*/
+	/*	Para o algoritmo do Relogio*/
 	public void inutilizado(){
 		this.utilizado = false;
 	}
