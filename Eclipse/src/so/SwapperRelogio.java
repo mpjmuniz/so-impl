@@ -1,11 +1,12 @@
 package so;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import controle.Configuracao;
 import excecoes.TamanhoInsuficiente;
-import recursos.*;
+import recursos.GerenciadorDisco;
+import recursos.GerenciadorMemoria;
+import recursos.Pagina;
 
 public class SwapperRelogio extends Swapper {
 	
@@ -31,7 +32,7 @@ public class SwapperRelogio extends Swapper {
 					a.get(i).inutilizado();
 			}
 			ultimaPagFila = i;
-			_swapOut(vitima);
+			super._swapOut(vitima);
 			qtdPag--;
 		}
 	}

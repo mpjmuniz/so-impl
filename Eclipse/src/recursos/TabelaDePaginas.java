@@ -1,30 +1,32 @@
 package recursos;
 
 import java.util.Collections;
-import java.util.Hashtable;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map.Entry;
 
 import controle.Configuracao;
 import excecoes.FaltaDePagina;
-import excecoes.TamanhoInsuficiente;
 
 public class TabelaDePaginas {
 
 	private static Configuracao confs = Configuracao.obterInstancia();
 	private int tamanho;
-	private Hashtable<Integer, Pagina> paginas;
+	private HashMap<Integer, Pagina> paginas;
 
 	public TabelaDePaginas(int linhas, List<Pagina> pgs) {
-		paginas = new Hashtable<>();
-		this.tamanho = linhas * confs.getTamanhoPagina();
+		paginas = new HashMap<>();
 		for(int i=0; i<linhas; i++){
 			paginas.put(i, pgs.get(i));
 		}
 	}
 
 	public int getTamanho() {
-		return this.tamanho;
+		return confs.getTamanhoPagina()*paginas.size();
+	}
+	
+	public int getQuantidadeEntradas(){
+		return paginas.size();
 	}
 	
 	public void insertPagina(Pagina p, int nPagina){
@@ -36,7 +38,7 @@ public class TabelaDePaginas {
 	}
 
 	public List<Pagina> getPaginas() {
-		return Collections.list(paginas.elements());
+		return Collections.list(Collections.enumeration(paginas.values()));
 	}
 	
 	public int getEndPagina(int nPagina) throws FaltaDePagina {

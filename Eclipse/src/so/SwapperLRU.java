@@ -1,7 +1,6 @@
 package so;
 
 import java.util.Date;
-import java.util.List;
 
 import controle.Configuracao;
 import excecoes.TamanhoInsuficiente;

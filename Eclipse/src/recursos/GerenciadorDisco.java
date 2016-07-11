@@ -8,12 +8,20 @@ import excecoes.TamanhoInsuficiente;
 public class GerenciadorDisco extends GerenciadorRecursos {
 	public GerenciadorDisco() {
 		super(confs.getTamanhoTotalMS());
+		
+		Pagina atual;
+		
+		for(int i = 0; i < confs.getQuantidadePaginas(this.tamanhoTotal); i++){
+			atual = new PaginaMP(i);
+			
+			this.quadros.add(atual);
+			this.livres.add(atual);
+		}
 	}
 	
 	public List<Pagina> alocarMemoria(int qtdPaginas) throws TamanhoInsuficiente {
 		
 		List<Pagina> pgs;
-		TabelaDePaginas tp;
 		
 		//Supondo inexistência de memória virtual
 		if(qtdPaginas*confs.getTamanhoPagina() > tamanhoDisponivel) throw new TamanhoInsuficiente();
@@ -33,7 +41,7 @@ public class GerenciadorDisco extends GerenciadorRecursos {
 	public void liberaPagina(Pagina p){
 		p.limpar();
 		livres.add(p);
-		//TODO sort
+		livres.sort(null);
 		this.tamanhoDisponivel += confs.getTamanhoPagina();
 	}
 
@@ -42,7 +50,7 @@ public class GerenciadorDisco extends GerenciadorRecursos {
 		
 		this.tamanhoDisponivel += tp.getTamanho();
 		livres.addAll(tp.getPaginas());
-		// TODO sort lista de livres
+		livres.sort(null);
 		p.setTabela(null);
 	}
 }

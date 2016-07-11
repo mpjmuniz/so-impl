@@ -29,15 +29,6 @@ public abstract class GerenciadorRecursos {
 		//TODO otimizar
 		this.livres = new ArrayList<>(tamanho);
 		
-		Pagina atual;
-		
-		for(int i = 0; i < tamanho; i++){
-			atual = new Pagina(i);
-			
-			this.quadros.add(atual);
-			this.livres.add(atual);
-		}
-		
 		this.aguardando = new LinkedBlockingDeque<Processo>();
 	}
 	

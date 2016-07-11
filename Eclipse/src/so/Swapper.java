@@ -1,7 +1,5 @@
 package so;
 
-import java.util.Date;
-
 import controle.Configuracao;
 import excecoes.TamanhoInsuficiente;
 import recursos.GerenciadorDisco;
