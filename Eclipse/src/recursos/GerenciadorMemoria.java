@@ -9,6 +9,15 @@ public class GerenciadorMemoria extends GerenciadorRecursos {
 	
 	public GerenciadorMemoria() {
 		super(confs.getTamanhoTotalMP());
+		
+		Pagina atual;
+		
+		for(int i = 0; i < confs.getQuantidadePaginas(this.tamanhoTotal); i++){
+			atual = new PaginaMP(i);
+			
+			this.quadros.add(atual);
+			this.livres.add(atual);
+		}
 	}
 
 	public List<Pagina> alocarMemoria(int tamanho) throws TamanhoInsuficiente {

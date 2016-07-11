@@ -218,6 +218,15 @@ public class Controlador {
 			}
 			break;
 		case 'P':
+			try {
+				int ini = partes[2].indexOf('(');
+				int fim = partes[2].indexOf(')');
+				kernel.processa(partes[0].charAt(1), Integer.parseInt(partes[2].substring(ini+1, fim)));
+			} catch (NumberFormatException e){
+				e.printStackTrace();
+			} catch(TamanhoInsuficiente e) {
+				alertar("Tamanho Insuficiente de memoria", "Erro na criacao do processo");
+			}
 			break;
 		case 'W':
 			try {

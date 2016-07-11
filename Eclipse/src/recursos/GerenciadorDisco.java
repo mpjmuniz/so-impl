@@ -8,6 +8,15 @@ import excecoes.TamanhoInsuficiente;
 public class GerenciadorDisco extends GerenciadorRecursos {
 	public GerenciadorDisco() {
 		super(confs.getTamanhoTotalMS());
+		
+		Pagina atual;
+		
+		for(int i = 0; i < confs.getQuantidadePaginas(this.tamanhoTotal); i++){
+			atual = new PaginaMP(i);
+			
+			this.quadros.add(atual);
+			this.livres.add(atual);
+		}
 	}
 	
 	public List<Pagina> alocarMemoria(int qtdPaginas) throws TamanhoInsuficiente {
