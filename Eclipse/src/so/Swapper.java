@@ -62,10 +62,11 @@ public abstract class Swapper {
 	}
 	
 	/*
-	 * 	Swap-out: Guarda página na memória
+	 * 	Swap-out: Guarda pagina na memoria secundaria
 	 * */
 	public abstract void swapOut(int tamanho) throws TamanhoInsuficiente;
 	
+	// Retira efetivamente uma pagina p da MP
 	protected void _swapOut(Pagina p) throws TamanhoInsuficiente{
 		// Procurar processo que possui a p�gina
 		Processo alvo = null;
@@ -86,31 +87,6 @@ public abstract class Swapper {
 		}			
 	}
 	
-	/*
-	 * 	Retorna endereço da página eleita para substituição
-	 * */
-	private int leastRecentlyUsed(){
-		
-		/*
-		 * Primeira implementação.
-		 * Possibilidades, caso haja tempo:
-		 * 	- Usar heaps, atualizar árvore a cada utilização das páginas
-		 * */
-		
-		int endEleito = 0;
-		
-		long agora = new Date().getTime(),
-				tempoEleito = Integer.MAX_VALUE;
-		
-		for(Pagina pg : gm.getQuadros()){
-			if(agora - pg.getUltimaUtilizacao().getTime() < tempoEleito){
-				tempoEleito = agora - pg.getUltimaUtilizacao().getTime();
-				endEleito = pg.getEndFisico();
-			}
-		}
-		
-		return endEleito;
-	}
 	
 
 }

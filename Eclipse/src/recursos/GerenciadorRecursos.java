@@ -56,15 +56,11 @@ public abstract class GerenciadorRecursos {
 	 * */
 	public void ler(Processo p, int enderecoFisico) {
 		aguardando.add(p);
-		//administrar tempo de espera
-		aguardando.remove(p);
 		quadros.get(enderecoFisico).ler();
 	}
 	
 	public void escrever(Processo p, int enderecoFisico) {
 		aguardando.add(p);
-		//administrar tempo de espera
-		aguardando.remove(p);
 		quadros.get(enderecoFisico).modificar();
 	}
 	
