@@ -78,16 +78,16 @@ public class Kernel {
 	
 	public void criarProcesso(int id, int tamanho) throws TamanhoInsuficiente{
 		Processo p = null;
-		boolean status = true;
-		while(status){
-			status = false;
-			try{
-				List<Pagina> list = gm.alocarMemoria(tamanho);
-				p = new Processo(id, tamanho, new TabelaDePaginas(list.size(),list));
-			} catch(TamanhoInsuficiente e){
-				tratarTamanhoInsuficiente(tamanho);
-				status = true;
-			}
+		Configuracao confs = Configuracao.obterInstancia();
+		try{
+			if(tamanho < confs.getQuantidadeInicialPaginas()*confs.getTamanhoPagina())
+				tamanho = confs.getQuantidadeInicialPaginas()*confs.getTamanhoPagina();
+			List<Pagina> list = gm.alocarMemoria(tamanho);
+			p = new Processo(id, tamanho, new TabelaDePaginas(list.size(),list));
+		} catch(TamanhoInsuficiente e){
+			tratarTamanhoInsuficiente(tamanho);
+			List<Pagina> list = gm.alocarMemoria(tamanho);
+			p = new Processo(id, tamanho, new TabelaDePaginas(list.size(),list));
 		}
 		// Colocar na lista do escalonador
 		listaProcessos.put(id, p);
