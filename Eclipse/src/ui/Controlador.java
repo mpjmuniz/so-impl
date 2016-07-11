@@ -5,6 +5,8 @@ import java.net.URL;
 import java.util.*;
 
 import excecoes.*;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableMap;
 import javafx.fxml.FXML;
 import javafx.geometry.Insets;
 import javafx.scene.*;
@@ -19,6 +21,8 @@ public class Controlador {
 	//TODO: Ajustar tratamento de exceções para mostrar mensagens amigáveis
 	
 	//Interface
+	
+	private int contadorProcessos = 0;
 	
 	private Window fundo = null;
 
@@ -47,6 +51,7 @@ public class Controlador {
 	// SO
 	
 	private Kernel kernel;
+	//private ObservableMap<Processo, Integer> map2 = FXCollections.observableMap(backingMap);
 	
 	// Interno
 	
@@ -129,7 +134,6 @@ public class Controlador {
 	private void andar(){
 		if(emExecucao) return;
 		
-		instrucao = (leitor == null) ? tfComando.getText() : leitor.nextLine();
 		
 		emExecucao = true;
 		try {
@@ -138,6 +142,9 @@ public class Controlador {
 			alertar(e.getMessage(), "Erro na execução do comando: ");
 		}
 		emExecucao = false;
+		
+		instrucao = (leitor == null) ? tfComando.getText() : leitor.nextLine();
+		tfComando.setText(instrucao);
 	}
 
 	@FXML
@@ -166,18 +173,30 @@ public class Controlador {
 		
 		partes = instrucao.split(" ");
 		
-		try{
-			atual = kernel.obterProcesso(partes[0].charAt(1));
-		} catch(ProcessoInexistente e){
-			alertar(e.getMessage(), "Processo não existe");
-			
-			return;
-			
+		if(partes[1].charAt(0) == 'C'){
+		} else {
+			alertar(partes[1], "debug");
+			try{
+				atual = kernel.obterProcesso(partes[0].charAt(1));
+			} catch(ProcessoInexistente e){
+				alertar(e.getMessage(), "Processo não existe");
+				
+				return;
+			}
 		}
+		
 
 		// Obter ação
 		switch (partes[1].charAt(0)) {
 		case 'C':
+			try {
+				kernel.criarProcesso(partes[0].charAt(1), Integer.parseInt(partes[2]));
+			} catch (NumberFormatException e){
+				e.printStackTrace();
+			} catch(TamanhoInsuficiente e) {
+				alertar("Tamanho Insuficiente de memória", "Erro na criação do processo");
+			}
+			
 			break;
 		case 'R':
 			break;
