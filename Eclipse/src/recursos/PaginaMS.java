@@ -7,5 +7,11 @@ public class PaginaMS extends Pagina {
 		super.presente = false;
 		super.modificado = true;
 	}
+	
+	@Override
+	public String toString(){
+		return  "Processo: \t" + ((this.dono != null) ? this.dono.getId() : "x") + "\n"
+				+ "End. Fisico: " + Long.toString(endFisico) + "\n";
+	}
 
 }

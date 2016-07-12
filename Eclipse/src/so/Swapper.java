@@ -48,14 +48,14 @@ public abstract class Swapper {
 	/*
 	 *	Swap-in: Traz pÃ¡gina da memÃ³ria secundÃ¡ria para a memÃ³ria principal
 	 * */
-	public Pagina swapIn(Pagina p) throws TamanhoInsuficiente{
+	public Pagina swapIn(Processo p, Pagina pag) throws TamanhoInsuficiente{
 		Configuracao confs = Configuracao.obterInstancia();
-		//Tenta alocar memï¿½ria
-		Pagina pagMP = gm.alocarMemoria(confs.getTamanhoPagina()).get(0);
-		// Se estava em swapp estï¿½ modificada
+		//Tenta alocar memoria
+		Pagina pagMP = gm.alocarMemoria(p, confs.getTamanhoPagina()).get(0);
+		// Se estava em swapp esta modificada
 		pagMP.modificar();
-		//Tira pï¿½gina da MS e coloca na MP
-		gd.liberaPagina(p);
+		//Tira pagina da MS e coloca na MP
+		gd.liberaPagina(pag);
 		return pagMP;
 	}
 	
@@ -66,20 +66,16 @@ public abstract class Swapper {
 	
 	// Retira efetivamente uma pagina p da MP
 	protected void _swapOut(Pagina p) throws TamanhoInsuficiente{
-		// Procurar processo que possui a página
-		Processo alvo = null;
-		for(Processo pros: k.todosProcessos()){
-			if(pros.getTabela().getPaginas().contains(p)) alvo = pros;
-		}
+		// Procurar processo que possui a pagina
+		Processo alvo = p.getProcesso();
 		int nPagina = alvo.getTabela().getKey(p);
-		// Se está modificado salva no disco
+		// Se esta modificado salva no disco
 		if(p.isModificado()){
-			// TODO pagina está presente? Não deveria.
-			Pagina pagDisco = gd.alocarMemoria(1).get(0);
+			Pagina pagDisco = gd.alocarMemoria(alvo, 1).get(0);
 			alvo.getTabela().substituiPagina(nPagina, pagDisco);;
 			gm.liberarMemoria(p);
 		} else {
-			// Dissocia página de processo
+			// Dissocia pagina de processo
 			alvo.getTabela().removePagina(nPagina);
 			gm.liberarMemoria(p);
 		}			

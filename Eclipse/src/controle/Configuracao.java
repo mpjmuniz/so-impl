@@ -4,10 +4,10 @@ public class Configuracao {
 
 	private static volatile Configuracao instancia;
 	private int quantidadeInicialPaginas = 4;
-	private int tamanhoPagina = 1024;
+	private int tamanhoPagina = 32;
 	private int enderecoLogico;
-	private int tamanhoTotalMP = 20 * 1024;
-	private int tamanhoTotalMS = 100 * 1024;
+	private int tamanhoTotalMP = 1024;
+	private int tamanhoTotalMS = 2048;
 	private int tamanhoMaximoProcesso;
 
 	private Configuracao() {
@@ -38,6 +38,10 @@ public class Configuracao {
 
 	public int getTamanhoPagina() {
 		return this.tamanhoPagina;
+	}
+	
+	public int getTamanhoPagina(int qtd) {
+		return this.tamanhoPagina*qtd;
 	}
 
 	public void setEnderecoLogico(int enderecoLogico) {

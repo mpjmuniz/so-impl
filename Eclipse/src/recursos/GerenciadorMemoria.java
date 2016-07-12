@@ -20,7 +20,7 @@ public class GerenciadorMemoria extends GerenciadorRecursos {
 		}
 	}
 
-	public List<Pagina> alocarMemoria(int tamanho) throws TamanhoInsuficiente {
+	public List<Pagina> alocarMemoria(Processo p, int tamanho) throws TamanhoInsuficiente {
 		
 		int qtdPaginas;
 		List<Pagina> pgs;
@@ -32,7 +32,7 @@ public class GerenciadorMemoria extends GerenciadorRecursos {
 		pgs = new ArrayList<>(qtdPaginas);
 		
 		for(int i = 0; i < qtdPaginas ; i++){
-			pgs.add(livres.remove(0));
+			pgs.add(super.getQuadroLivre(p));
 		}
 		
 		this.tamanhoDisponivel -= tamanho; 
@@ -50,8 +50,7 @@ public class GerenciadorMemoria extends GerenciadorRecursos {
 	}
 	
 	public void liberarMemoria(Pagina p) {
-		livres.add(p);
-		livres.sort(null);
+		super.liberaQuadro(p);
 	}
 
 
