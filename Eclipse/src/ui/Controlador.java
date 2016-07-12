@@ -21,7 +21,8 @@ import javafx.stage.FileChooser;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.stage.Window;
-import recursos.Pagina;
+import recursos.PaginaMP;
+import recursos.PaginaMS;
 import recursos.Processo;
 import so.Kernel;
 
@@ -91,7 +92,8 @@ public class Controlador {
 
 		fundo = bCarregar.getScene().getWindow();
 
-		this.navegadorArquivos.setTitle("Selecione um arquivo de " + " comportamento dos processos:");
+		this.navegadorArquivos.setTitle("Selecione um arquivo de " 
+				+ " comportamento dos processos:");
 
 		arquivo = navegadorArquivos.showOpenDialog(fundo);
 
@@ -175,10 +177,8 @@ public class Controlador {
 		// Possivelmente passará para o Kernel
 		String[] partes;
 		Processo atual = null;
-		Pagina paginaAtual;
 		int inicio, 
-			 fim,
-			 endFisico;
+			 fim;
 
 		if (instrucao == null || "".equals(instrucao)) {
 			alertar("Comando inválido", "Comando Inválido");
@@ -189,7 +189,7 @@ public class Controlador {
 
 		if (partes[1].charAt(0) != 'C') {
 			try {
-				atual = kernel.obterProcesso(partes[0].charAt(1)-'0');
+				atual = kernel.obterProcesso(partes[0].charAt(1) - '0');
 			} catch (ProcessoInexistente e) {
 				alertar(e.getMessage(), "Processo nao existe");
 
@@ -203,11 +203,12 @@ public class Controlador {
 		switch (partes[1].charAt(0)) {
 		case 'C':
 			try {
-				atual = kernel.criarProcesso(partes[0].charAt(1)-'0', 
-						Integer.parseInt(partes[2]));
+				atual = kernel.criarProcesso(partes[0].charAt(1) - '0', 
+											 Integer.parseInt(partes[2]));
 				
 				abaProcessos.atualizar();
-				abaMemoria.atualizar(atual.getTabela());
+				abaMemoria.atualizar(atual.getTabela(), PaginaMP.class);
+				abaDisco.atualizar(atual.getTabela(), PaginaMS.class);
 				
 			} catch (NumberFormatException e){
 				e.printStackTrace();
@@ -222,10 +223,11 @@ public class Controlador {
 				inicio = partes[2].indexOf('(');
 				fim = partes[2].indexOf(')');
 				
-				paginaAtual = kernel.le(partes[0].charAt(1)-'0', 
+				kernel.le(partes[0].charAt(1)-'0', 
 						Integer.parseInt(partes[2].substring(inicio + 1, fim)));
 				
-				abaMemoria.atualizar(paginaAtual);
+				abaMemoria.atualizar(atual.getTabela(), PaginaMP.class);
+				abaDisco.atualizar(atual.getTabela(), PaginaMS.class);
 				
 			} catch (NumberFormatException e) {
 				e.printStackTrace();

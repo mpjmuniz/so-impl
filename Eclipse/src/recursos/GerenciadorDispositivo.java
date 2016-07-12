@@ -8,10 +8,9 @@ public class GerenciadorDispositivo extends GerenciadorRecursos {
 		super(Configuracao.obterInstancia().getTamanhoPagina());
 	}
 	
-	public Pagina ler(Processo p, int quantidade /*stub*/){
+	public void ler(Processo p, int quantidade /*stub*/){
 		p.bloquear();
 		aguardando.add(p);
-		return null;
 	}
 
 }

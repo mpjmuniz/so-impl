@@ -77,32 +77,43 @@ public class Kernel {
 		return p;
 	}
 	
-	public Processo criarProcesso(int id, int tamanho) throws TamanhoInsuficiente{
+	public Processo criarProcesso(int id, int tamanho) 
+			throws TamanhoInsuficiente{
+		
 		Processo p = null;
 		Configuracao confs = Configuracao.obterInstancia();
-		if(tamanho < confs.getQuantidadeInicialPaginas()*confs.getTamanhoPagina())
-			tamanho = confs.getQuantidadeInicialPaginas()*confs.getTamanhoPagina();
-		p = new Processo(id, tamanho, new TabelaDePaginas(0,null));
-		List<Pagina> list = gmv.alocarMemoria(p, tamanho);
-		for(int i=0; i<list.size(); i++){
+		List<Pagina> list;
+		int tamanhoInicial = confs.getQuantidadeInicialPaginas() * confs.getTamanhoPagina();
+		
+		if(tamanho < tamanhoInicial)
+			tamanho = tamanhoInicial;
+		
+		p = new Processo(id, tamanho, new TabelaDePaginas(0, null));
+		
+		/*	TODO: Modificar para ajuste de locais das páginas*/
+		list = gmv.alocarMemoria(p, tamanho);
+		
+		for(int i = 0; i < list.size(); i++){
 			p.getTabela().insertPagina(list.get(i), i);
 		}
+		
 		// Colocar na lista do escalonador
 		listaProcessos.put(id, p);
 		
 		return p;
 	}
+	
+	/*	TODO: criar função alocarProcesso, que leva Páginas da MS para a MP*/
 
-	public Pagina le(int id, int pos) throws TamanhoInsuficiente{
+	public void le(int id, int pos) throws TamanhoInsuficiente{
 		
 		Processo p = this.listaProcessos.get(id);
 		Pagina pag;
 		int endFisico = this.descobreEnderecoFisico(p, pos);
 		
 		// Executa
-		pag = gm.ler(p, endFisico);
+		gm.ler(p, endFisico);
 		
-		return pag;
 	}
 	
 	public void escreve(int id, int pos) throws TamanhoInsuficiente{

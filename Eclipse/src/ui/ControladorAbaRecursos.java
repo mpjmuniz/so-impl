@@ -90,7 +90,7 @@ public class ControladorAbaRecursos {
 
 		Label rotulo = new Label(p.toString());
 		rotulo.getStyleClass().add("qds");
-
+		
 		quadros.getChildren().set(p.getEndFisico(), rotulo);
 	}
 }
