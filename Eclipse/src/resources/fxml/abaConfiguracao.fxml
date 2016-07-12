@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.control.Label?>
+
+<VBox fx:id="base" fx:controller="ui.ControladorAbaConfiguracao" stylesheets="resources/css/estiloAbaConfiguracao.css" xmlns:fx="http://javafx.com/fxml/1">
+	<HBox>
+		<Label text="Quantidade Inicial de Páginas: "/>
+		<TextField fx:id="tfQtdInicialPaginas"></TextField>
+	</HBox>
+	<HBox>
+		<Label text="Tamanho da Página: "/>
+		<TextField fx:id="tfTamanhoPagina"></TextField>
+	</HBox>
+	<HBox>
+		<Label text="Tamanho do Endereço Lógico: "/>
+		<TextField fx:id="tfEndLogico"></TextField>
+	</HBox>
+	<HBox>
+		<Label text="Tamanho Total da Memória Principal: "/>
+		<TextField fx:id="tfTamanhoMP"></TextField>
+	</HBox>
+	<HBox>
+		<Label text="Tamanho Total da Memória Secundária: "/>
+		<TextField fx:id="tfTamanhoMS"></TextField>
+	</HBox>
+	<HBox>
+		<Label text="Tamanho Máximo do Processo: "/>
+		<TextField fx:id="tfTamanhoMaximoProcesso"></TextField>
+	</HBox>
+</VBox>
+

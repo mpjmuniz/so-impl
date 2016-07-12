@@ -58,5 +58,4 @@ public class Processo {
 	public void setId(int id) {
 		this.id = id;
 	}
-
 }

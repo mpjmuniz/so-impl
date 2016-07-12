@@ -10,7 +10,7 @@
 <?import javafx.scene.control.ListView?>
 <?import javafx.scene.layout.FlowPane?>
 
-<HBox fx:id="base" fx:controller="ui.ControladorAbas" xmlns:fx="http://javafx.com/fxml" stylesheets="resources/css/estiloAbaRecursos.css">
+<HBox fx:id="base" fx:controller="ui.ControladorAbaRecursos" xmlns:fx="http://javafx.com/fxml" stylesheets="resources/css/estiloAbaRecursos.css">
 	<VBox fx:id="lista" >
 		<Label fx:id="tamanhoRecurso" text="Tamanho Total: " />
 		

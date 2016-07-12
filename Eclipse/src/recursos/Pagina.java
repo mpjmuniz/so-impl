@@ -2,7 +2,7 @@ package recursos;
 
 import java.util.Date;
 
-public abstract class Pagina implements Comparable {
+public abstract class Pagina{
 
 	protected Date ultimaUtilizacao;
 	protected boolean modificado;
@@ -13,7 +13,7 @@ public abstract class Pagina implements Comparable {
 
 	public Pagina(int endFisico){
 		this.ultimaUtilizacao = new Date();
-		this.endFisico =  endFisico;
+		this.endFisico = endFisico;
 	}
 	
 	public Processo getProcesso(){
@@ -21,7 +21,7 @@ public abstract class Pagina implements Comparable {
 	}
 	
 	public int getEndFisico(){
-		return this.endFisico;
+		return endFisico;
 	}
 	
 	public Date getUltimaUtilizacao() {
@@ -31,7 +31,7 @@ public abstract class Pagina implements Comparable {
 	public boolean isModificado() {
 		return this.modificado;
 	}
-	
+
 	/*	Modificar Pagina*/
 	public void modificar(){
 		this.modificado = true;
@@ -39,7 +39,7 @@ public abstract class Pagina implements Comparable {
 	}
 	
 	public void ler(){
-		this.ultimaUtilizacao = new Date();
+		this.ultimaUtilizacao = new Date();	
 		this.utilizado = true;
 	}
 	
@@ -62,7 +62,7 @@ public abstract class Pagina implements Comparable {
 	public void utilizado(){
 		this.utilizado = true;
 	}
-
+	
 	public boolean isUtilizado() {
 		return utilizado;
 	}
@@ -83,11 +83,5 @@ public abstract class Pagina implements Comparable {
 				+ "Util? " + ((this.utilizado) ? "v" : "x") + "\n"
 				+ "Últ. Util.: " + this.ultimaUtilizacao.toString().substring(10, 19) + "\n"
 				+ "End. Fisico: " + Long.toString(endFisico) + "\n";
-	}
-
-	@Override
-	public int compareTo(Object o) {
-		Pagina p = (Pagina) o;
-		return this.endFisico - p.endFisico;
 	}
 }
