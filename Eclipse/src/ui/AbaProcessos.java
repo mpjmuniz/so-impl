@@ -46,7 +46,7 @@ public class AbaProcessos extends Tab {
 		}
 	}
 	
-	void atualizar(){
+	public void atualizar(){
 		List<TitledPane> processos = new ArrayList<>();		
 		
 		for(Processo p : ker.todosProcessos()){
