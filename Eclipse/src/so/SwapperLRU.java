@@ -10,12 +10,13 @@ import recursos.Pagina;
 
 public class SwapperLRU extends Swapper {
 
-	public SwapperLRU(GerenciadorMemoria gm, GerenciadorDisco gd, Kernel k) {
-		super(gm, gd, k);
+	public SwapperLRU(GerenciadorMemoria gm, GerenciadorDisco gd) {
+		super(gm, gd);
 	}
 
 	@Override
 	public void swapOut(int tamanho) throws TamanhoInsuficiente {
+		super.swapOut(tamanho);
 		Configuracao confs = Configuracao.obterInstancia();
 		int qtdPag = confs.getQuantidadePaginas(tamanho);
 		while(qtdPag > 0){

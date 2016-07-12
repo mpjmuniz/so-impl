@@ -4,11 +4,13 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Map.Entry;
 import java.util.ResourceBundle;
 
 import javafx.beans.property.ReadOnlyBooleanWrapper;
 import javafx.beans.property.ReadOnlyStringWrapper;
 import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.scene.control.Accordion;
 import javafx.scene.control.Label;
@@ -52,6 +54,10 @@ public class ControladorAbaProcessos {
 	public TitledPane criarPainelProcesso(Processo p) {
 			
 		GridPane grid = new GridPane();
+
+
+		ObservableList<Entry<Integer, Pagina>> items = FXCollections.observableArrayList(p.getTabela().getHash().entrySet());
+		TableView<Entry<Integer,Pagina>> tabela = new TableView<>(items);
 		
 		Label rotuloEstado = new Label(p.getEstado().toString());
 		rotuloEstado.textProperty().bind(p.getEstadoStr());
@@ -59,54 +65,61 @@ public class ControladorAbaProcessos {
 		grid.addRow(0, new Label("Estado:"), rotuloEstado);
 		grid.addRow(1, new Label("Tabela de Paginas:"));
 
-		TableView<Pagina> tabela = new TableView<>(UtilUI.getObservableList(p.getTabela().getPaginas()));
 		tabela.setPrefWidth(800);
+		
+		TableColumn<Entry<Integer, Pagina>, String> endLogCol = new TableColumn<>("Endereco Logico");
+		endLogCol.setCellValueFactory(cellData -> {
+			Integer ef = cellData.getValue().getKey();
+			
+			return new ReadOnlyStringWrapper(ef.toString());
+		});
 
-		TableColumn<Pagina, String> endFisCol = new TableColumn<>("Endereço Físico");
+		TableColumn<Entry<Integer, Pagina>, String> endFisCol = new TableColumn<>("Endereco Fisico");
 		endFisCol.setCellValueFactory(cellData -> {
-			Integer ef = cellData.getValue().getEndFisico();
+			Integer ef = cellData.getValue().getValue().getEndFisico();
 			
 			return new ReadOnlyStringWrapper(ef.toString());
 		});
 		
-		TableColumn<Pagina, String> ultModCol = new TableColumn<>("Última Modificação");
+		TableColumn<Entry<Integer, Pagina>, String> ultModCol = new TableColumn<>("Ultima Modificacao");
 		ultModCol.setCellValueFactory(cellData -> {
-			Date dum = cellData.getValue().getUltimaUtilizacao();
+			Date dum = cellData.getValue().getValue().getUltimaUtilizacao();
 			
 			return new ReadOnlyStringWrapper(dum.toString());
 		});
 		
-		TableColumn<Pagina, Boolean> presenteCol = new TableColumn<>("Presente?");
+		TableColumn<Entry<Integer, Pagina>, Boolean> presenteCol = new TableColumn<>("Presente?");
 		presenteCol.setEditable(false);
 		
 		// Set a cell value factory
 		presenteCol.setCellValueFactory(cellData -> {
-	        Pagina pag = cellData.getValue();
+	        Pagina pag = cellData.getValue().getValue();
 			Boolean v =  pag.isPresente();
 			return new ReadOnlyBooleanWrapper(v);
 		});
 		
-		TableColumn<Pagina, Boolean> modificadoCol = new TableColumn<>("Modificado?");
+		TableColumn<Entry<Integer, Pagina>, Boolean> modificadoCol = new TableColumn<>("Modificado?");
 		modificadoCol.setEditable(false);
 		
 		// Set a cell value factory
 		modificadoCol.setCellValueFactory(cellData -> {
-	        Pagina pag = cellData.getValue();
+	        Pagina pag = cellData.getValue().getValue();
 			Boolean v =  pag.isModificado();
 			return new ReadOnlyBooleanWrapper(v);
 		});
 		
-		TableColumn<Pagina, Boolean> utilizadoCol = new TableColumn<>("Utilizado?");
+		TableColumn<Entry<Integer, Pagina>, Boolean> utilizadoCol = new TableColumn<>("Utilizado?");
 		utilizadoCol.setEditable(false);
 		
 		// Set a cell value factory
 		utilizadoCol.setCellValueFactory(cellData -> {
-	        Pagina pag = cellData.getValue();
+	        Pagina pag = cellData.getValue().getValue();
 			Boolean v =  pag.isModificado();
 			return new ReadOnlyBooleanWrapper(v);
 		});
 		
-		tabela.getColumns().addAll(endFisCol, 
+		tabela.getColumns().addAll(endLogCol,
+								   endFisCol, 
 								   ultModCol,
 								   presenteCol,
 								   modificadoCol,

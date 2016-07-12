@@ -26,10 +26,10 @@ public class Kernel {
 	private GerenciadorMemoriaVirtual gmv;
 	private Swapper swp;
 	
-	public Kernel(){
-		this.gm = new GerenciadorMemoria();
-		this.gd = new GerenciadorDisco();
-		this.swp = new SwapperRelogio(gm, gd, this);
+	public Kernel(GerenciadorMemoria gm, GerenciadorDisco gd, Swapper swp){
+		this.gm = gm;
+		this.gd = gd;
+		this.swp = swp;
 		this.gp = new GerenciadorDispositivo();
 		this.gmv = new GerenciadorMemoriaVirtual(gm, gd, swp);
 		this.listaProcessos = new HashMap<>();
