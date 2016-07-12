@@ -6,6 +6,7 @@ import java.util.Queue;
 import java.util.concurrent.LinkedBlockingDeque;
 
 import controle.Configuracao;
+import excecoes.TamanhoInsuficiente;
 
 public abstract class GerenciadorRecursos {
 
@@ -30,6 +31,12 @@ public abstract class GerenciadorRecursos {
 		this.livres = new ArrayList<>(tamanho);
 		
 		this.aguardando = new LinkedBlockingDeque<Processo>();
+	}
+	
+	public Pagina getQuadroLivre() throws TamanhoInsuficiente{
+		if(livres.isEmpty()) throw new TamanhoInsuficiente();
+		tamanhoDisponivel -= confs.getTamanhoPagina();
+		return livres.remove(0);
 	}
 	
 	public int getTamanhoTotal() {

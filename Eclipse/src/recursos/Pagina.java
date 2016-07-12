@@ -9,10 +9,15 @@ public abstract class Pagina implements Comparable {
 	protected boolean utilizado;
 	protected boolean presente;
 	protected int endFisico;
+	protected Processo dono;
 
 	public Pagina(int endFisico){
 		this.ultimaUtilizacao = new Date();
 		this.endFisico =  endFisico;
+	}
+	
+	public Processo getProcesso(){
+		return dono;
 	}
 	
 	public int getEndFisico(){
@@ -34,6 +39,12 @@ public abstract class Pagina implements Comparable {
 	}
 	
 	public void ler(){
+		this.ultimaUtilizacao = new Date();
+		this.utilizado = true;
+	}
+	
+	public void alocar(Processo p){
+		this.dono = p;
 		this.ultimaUtilizacao = new Date();
 		this.utilizado = true;
 	}

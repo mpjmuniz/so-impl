@@ -39,6 +39,10 @@ public class Configuracao {
 	public int getTamanhoPagina() {
 		return this.tamanhoPagina;
 	}
+	
+	public int getTamanhoPagina(int qtd) {
+		return this.tamanhoPagina*qtd;
+	}
 
 	public void setEnderecoLogico(int enderecoLogico) {
 		this.enderecoLogico = enderecoLogico;

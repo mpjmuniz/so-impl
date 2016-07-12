@@ -45,26 +45,22 @@ public class Kernel {
 			Pagina pSwapp = pros.getTabela().getPagina(nPagina);
 			pagMP = swp.swapIn(pSwapp);
 			// Sobreescreve a pagina na MS com uma pagina na MP
-			pros.getTabela().insertPagina(pagMP, nPagina);
+			pros.getTabela().substituiPagina(nPagina, pagMP);
 		} catch (TamanhoInsuficiente e) {
 			Configuracao confs = Configuracao.obterInstancia();
 			tratarTamanhoInsuficiente(confs.getTamanhoPagina());
+			Pagina pSwapp = pros.getTabela().getPagina(nPagina);
+			pagMP = swp.swapIn(pSwapp);
+			pros.getTabela().substituiPagina(nPagina, pagMP);
 		}
 		return pagMP;
 	}
 	
-	// Pagina n�o est� em MP nem em Swapp
+	// Pagina nao esta em MP nem em Swapp
 	private Pagina tratarPaginaMS(int nPagina, Processo p) throws TamanhoInsuficiente{
 		Configuracao confs = Configuracao.obterInstancia();
-		Pagina pagMP = null;
-		try {
-			pagMP = gm.alocarMemoria(confs.getTamanhoPagina()).get(0);
-			p.getTabela().insertPagina(pagMP, nPagina);
-		} catch (TamanhoInsuficiente e) {
-			tratarTamanhoInsuficiente(confs.getTamanhoPagina());
-			pagMP = gm.alocarMemoria(confs.getTamanhoPagina()).get(0);
-			p.getTabela().insertPagina(pagMP, nPagina);
-		}		
+		Pagina pagMP = gmv.alocarMemoria(confs.getTamanhoPagina()).get(0);
+		p.getTabela().insertPagina(pagMP, nPagina);
 		return pagMP;
 	}
 
@@ -79,16 +75,10 @@ public class Kernel {
 	public void criarProcesso(int id, int tamanho) throws TamanhoInsuficiente{
 		Processo p = null;
 		Configuracao confs = Configuracao.obterInstancia();
-		try{
-			if(tamanho < confs.getQuantidadeInicialPaginas()*confs.getTamanhoPagina())
-				tamanho = confs.getQuantidadeInicialPaginas()*confs.getTamanhoPagina();
-			List<Pagina> list = gm.alocarMemoria(tamanho);
-			p = new Processo(id, tamanho, new TabelaDePaginas(list.size(),list));
-		} catch(TamanhoInsuficiente e){
-			tratarTamanhoInsuficiente(tamanho);
-			List<Pagina> list = gm.alocarMemoria(tamanho);
-			p = new Processo(id, tamanho, new TabelaDePaginas(list.size(),list));
-		}
+		if(tamanho < confs.getQuantidadeInicialPaginas()*confs.getTamanhoPagina())
+			tamanho = confs.getQuantidadeInicialPaginas()*confs.getTamanhoPagina();
+		List<Pagina> list = gmv.alocarMemoria(p, tamanho);
+		p = new Processo(id, tamanho, new TabelaDePaginas(list.size(),list));
 		// Colocar na lista do escalonador
 		listaProcessos.put(id, p);
 	}
@@ -141,12 +131,11 @@ public class Kernel {
 		try {
 			endFisico = tp.getEndPagina(nPagina);
 		} catch (FaltaDePagina e) {
-			// Se ocorreu falta de p�gina, logo ou a p�gina est� em swapp
+			// Se ocorreu falta de pagina, logo ou a pagina nao esta em swap
 			// ou em ms
 			Pagina pagina = tp.getPagina(nPagina);
-			// N�o est� presente, pois ocorreu falta de p�ginas
+			// Nao esta presente, pois ocorreu falta de paginas
 			if(pagina != null)
-				//TODO implementa��o
 				endFisico = tratarSwappIn(nPagina, p).getEndFisico();
 			else
 				endFisico = tratarPaginaMS(nPagina, p).getEndFisico();
