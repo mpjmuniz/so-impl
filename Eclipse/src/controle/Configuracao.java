@@ -4,7 +4,7 @@ public class Configuracao {
 
 	private static volatile Configuracao instancia;
 	private int quantidadeInicialPaginas = 4;
-	private int tamanhoPagina = 1024;
+	private int tamanhoPagina = 128;
 	private int enderecoLogico;
 	private int tamanhoTotalMP = 20 * 1024;
 	private int tamanhoTotalMS = 100 * 1024;

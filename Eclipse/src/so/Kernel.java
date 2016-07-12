@@ -77,8 +77,11 @@ public class Kernel {
 		Configuracao confs = Configuracao.obterInstancia();
 		if(tamanho < confs.getQuantidadeInicialPaginas()*confs.getTamanhoPagina())
 			tamanho = confs.getQuantidadeInicialPaginas()*confs.getTamanhoPagina();
+		p = new Processo(id, tamanho, new TabelaDePaginas(0,null));
 		List<Pagina> list = gmv.alocarMemoria(p, tamanho);
-		p = new Processo(id, tamanho, new TabelaDePaginas(list.size(),list));
+		for(int i=0; i<list.size(); i++){
+			p.getTabela().insertPagina(list.get(i), i);
+		}
 		// Colocar na lista do escalonador
 		listaProcessos.put(id, p);
 	}
@@ -88,7 +91,8 @@ public class Kernel {
 		int endFisico = this.descobreEnderecoFisico(p, pos);
 		// Executa
 		gm.ler(p, endFisico);
-		// Retorna		
+		// Retorna
+		int t =0;
 	}
 	
 	public void escreve(int id, int pos) throws TamanhoInsuficiente{
@@ -96,7 +100,8 @@ public class Kernel {
 		int endFisico = this.descobreEnderecoFisico(p, pos);
 		// Executa
 		gm.escrever(p, endFisico);
-		// Retorna		
+		// Retorna
+		int t = 0;
 	}
 	
 	public void processa(int id, int pos) throws TamanhoInsuficiente{
