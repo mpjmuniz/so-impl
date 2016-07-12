@@ -198,7 +198,7 @@ public class Controlador {
 		switch (partes[1].charAt(0)) {
 		case 'C':
 			try {
-				kernel.criarProcesso(partes[0].charAt(1), Integer.parseInt(partes[2]));
+				kernel.criarProcesso(partes[0].charAt(1)-'0', Integer.parseInt(partes[2]));
 			} catch (NumberFormatException e){
 				e.printStackTrace();
 			} catch(TamanhoInsuficiente e) {
