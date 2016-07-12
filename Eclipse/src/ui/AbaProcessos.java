@@ -19,10 +19,13 @@ public class AbaProcessos extends Tab {
 	
 	private ControladorAbaProcessos controlador;
 	
+	private List<Processo> existentes;
+	
 	public AbaProcessos(String text, Kernel k) {
 		this.setText(text);
 		this.ker = k;
-
+		this.existentes = k.todosProcessos();
+		
 		init();
 	}
 
@@ -50,7 +53,10 @@ public class AbaProcessos extends Tab {
 		List<TitledPane> processos = new ArrayList<>();		
 		
 		for(Processo p : ker.todosProcessos()){
-			processos.add(controlador.criarPainelProcesso(p));
+			if(!existentes.contains(p)){
+				existentes.add(p);
+				processos.add(controlador.criarPainelProcesso(p));
+			}
 		}
 		
 		controlador.getBase().getPanes().addAll(processos);

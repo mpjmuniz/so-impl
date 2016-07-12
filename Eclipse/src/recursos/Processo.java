@@ -8,7 +8,7 @@ public class Processo {
 
 	public Processo(int id, int tamanho, TabelaDePaginas tp){
 		this.setId(id);		
-		this. estado = Estado.NOVO;
+		this.estado = Estado.NOVO;
 		this.tabela = tp;
 	}
 	

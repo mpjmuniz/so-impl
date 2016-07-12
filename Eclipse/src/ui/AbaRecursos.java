@@ -7,6 +7,7 @@ import javafx.scene.control.Tab;
 import javafx.scene.layout.HBox;
 import recursos.GerenciadorRecursos;
 import recursos.Pagina;
+import recursos.PaginaMP;
 import recursos.TabelaDePaginas;
 
 public class AbaRecursos extends Tab {
@@ -45,9 +46,11 @@ public class AbaRecursos extends Tab {
 		controlador.atualizar(p);
 	}
 	
-	public void atualizar(TabelaDePaginas tp){
+	public void atualizar(TabelaDePaginas tp, Class<? extends Pagina> tipo){
 		for(Pagina p : tp.getPaginas()){
-			controlador.atualizar(p);
+			if(tipo.isInstance(p)){
+				controlador.atualizar(p);
+			}
 		}
 	}
 	
