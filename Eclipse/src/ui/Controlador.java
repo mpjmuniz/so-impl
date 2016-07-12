@@ -298,6 +298,8 @@ public class Controlador {
 		default:
 			throw new ComandoInvalido("Comando \"" + partes[0] + "\" nao implementado. ");
 		}
+		
+		abaProcessos.atualizarTabela(atual);
 	}
 
 	private void processarInstrucoes() throws ComandoInvalido {

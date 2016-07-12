@@ -7,8 +7,6 @@ import java.util.List;
 import java.util.Map.Entry;
 import java.util.ResourceBundle;
 
-import com.sun.javafx.collections.MappingChange.Map;
-
 import javafx.beans.property.ReadOnlyBooleanWrapper;
 import javafx.beans.property.ReadOnlyStringWrapper;
 import javafx.collections.FXCollections;
@@ -34,7 +32,7 @@ public class ControladorAbaProcessos {
 
 	@FXML
 	private ResourceBundle resources;
-
+	
 	public ControladorAbaProcessos() {
 	}
 
@@ -54,14 +52,19 @@ public class ControladorAbaProcessos {
 
 	@SuppressWarnings("unchecked")
 	public TitledPane criarPainelProcesso(Processo p) {
-
+			
 		GridPane grid = new GridPane();
 
-		grid.addRow(0, new Label("Estado:"), new Label(p.getEstado().toString()));
-		grid.addRow(1, new Label("Tabela de Paginas:"));
 
 		ObservableList<Entry<Integer, Pagina>> items = FXCollections.observableArrayList(p.getTabela().getHash().entrySet());
 		TableView<Entry<Integer,Pagina>> tabela = new TableView<>(items);
+		
+		Label rotuloEstado = new Label(p.getEstado().toString());
+		rotuloEstado.textProperty().bind(p.getEstadoStr());
+		
+		grid.addRow(0, new Label("Estado:"), rotuloEstado);
+		grid.addRow(1, new Label("Tabela de Paginas:"));
+
 		tabela.setPrefWidth(800);
 		
 		TableColumn<Entry<Integer, Pagina>, String> endLogCol = new TableColumn<>("Endereco Logico");
@@ -123,13 +126,30 @@ public class ControladorAbaProcessos {
 								   utilizadoCol);
 
 		grid.addRow(2, tabela);
-
-		return new TitledPane("Processo " + p.getId(), grid);
+		
+		TitledPane painel = new TitledPane("Processo " + p.getId(), grid);
+		
+		painel.setUserData(p.getId());
+		
+		return painel;
 
 	}
 
 	Accordion getBase() {
 		return this.acProcessos;
+	}
+	
+	public void atualizar(Processo p){
+		int idProcesso = p.getId();
+		TitledPane atual;
+		
+		for(int i = 0; i < acProcessos.getPanes().size(); i++){
+			atual = acProcessos.getPanes().get(i);
+			
+			if((int)(atual.getUserData()) == idProcesso){
+				acProcessos.getPanes().set(i, criarPainelProcesso(p));
+			}
+		}
 	}
 
 }
