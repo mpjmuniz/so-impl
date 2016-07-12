@@ -5,10 +5,10 @@ import java.io.IOException;
 import controle.Configuracao;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.control.Tab;
-import javafx.scene.layout.VBox;
+import javafx.scene.layout.GridPane;
 
 public class AbaConfiguracao extends Tab {
-	private VBox base;
+	private GridPane base;
 	static private Configuracao conf = Configuracao.obterInstancia();
 
 	public AbaConfiguracao(String text) {
@@ -25,7 +25,7 @@ public class AbaConfiguracao extends Tab {
                 .getResource("resources/fxml/abaConfiguracao.fxml"));
 		
 		try{
-			base = loader.<VBox>load();
+			base = loader.<GridPane>load();
 			
 			controlador = loader.<ControladorAbaConfiguracao>getController(); 
 			controlador.initData(conf);		
