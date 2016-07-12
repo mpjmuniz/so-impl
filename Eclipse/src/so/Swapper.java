@@ -34,29 +34,36 @@ public abstract class Swapper {
 	/*
 	 * 	swap-in-processo: Trazer da memória processo inteiro
 	 * */
-	public void swapIn(Processo p){
-		
+	public void swapIn(Processo p) throws TamanhoInsuficiente{
+		for(Pagina pag: p.getTabela().getPaginas()){
+			this.swapIn(pag);
+		}
+		p.pronto();
 	}
 	
 	/*
 	 * 	swap-out-processo: Guardar na memória processo inteiro
 	 * */
-	public void swapOut(Processo p){
-		
+	public void swapOut(Processo p) throws TamanhoInsuficiente{
+		for(Pagina pag: p.getTabela().getPaginas()){
+			this.removePagMP(pag);
+		}
+		p.suspender();
 	}
 	
 	/*
 	 *	Swap-in: Traz página da memória secundária para a memória principal
 	 * */
-	public Pagina swapIn(Processo p, Pagina pag) throws TamanhoInsuficiente{
+	public void swapIn(Pagina pag) throws TamanhoInsuficiente{
 		Configuracao confs = Configuracao.obterInstancia();
 		//Tenta alocar memoria
-		Pagina pagMP = gm.alocarMemoria(p, confs.getTamanhoPagina()).get(0);
+		Pagina pagMP = gm.alocarMemoria(pag.getProcesso(), confs.getTamanhoPagina()).get(0);
 		// Se estava em swapp esta modificada
 		pagMP.modificar();
 		//Tira pagina da MS e coloca na MP
+		int nPagina = pag.getProcesso().getTabela().getKey(pag);
+		pag.getProcesso().getTabela().substituiPagina(nPagina, pagMP);
 		gd.liberaPagina(pag);
-		return pagMP;
 	}
 	
 	/*
@@ -66,6 +73,15 @@ public abstract class Swapper {
 	
 	// Retira efetivamente uma pagina p da MP
 	protected void _swapOut(Pagina p) throws TamanhoInsuficiente{
+		this.removePagMP(p);
+		Configuracao confs = Configuracao.obterInstancia();
+		Processo alvo = p.getProcesso();
+		if(alvo.getTabela().getTamanho() < confs.getQuantidadeInicialPaginas()) {
+			swapOut(alvo);
+		}
+	}
+	
+	private void removePagMP(Pagina p) throws TamanhoInsuficiente{
 		// Procurar processo que possui a pagina
 		Processo alvo = p.getProcesso();
 		int nPagina = alvo.getTabela().getKey(p);
@@ -78,7 +94,7 @@ public abstract class Swapper {
 			// Dissocia pagina de processo
 			alvo.getTabela().removePagina(nPagina);
 			gm.liberarMemoria(p);
-		}			
+		}
 	}
 	
 	

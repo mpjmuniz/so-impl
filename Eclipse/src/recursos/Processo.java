@@ -19,6 +19,10 @@ public class Processo {
 	public void alocar(){
 		this.estado = Estado.PRONTO;
 	}
+	
+	public void pronto(){
+		this.estado = Estado.PRONTO;
+	}
 
 	public void suspender(){
 		this.estado = Estado.SUSPENSO;
