@@ -46,12 +46,14 @@ public class ControladorAbaConfiguracao {
 		tfTamanhoMS.setText(Integer.toString(conf.getTamanhoTotalMS()));
 		tfTamanhoPagina.setText(Integer.toString(conf.getTamanhoPagina()));		
 		
+		/*
 		tfQtdInicialPaginas.textProperty().addListener(this::qtdInicialMudou);
 		tfTamanhoMaximoProcesso.textProperty().addListener(this::tamanhoMaxMudou);
 		tfEndLogico.textProperty().addListener(this::endLogMudou);
 		tfTamanhoMP.textProperty().addListener(this::tamMPMudou);
 		tfTamanhoMS.textProperty().addListener(this::tamMSMudou);
-		tfTamanhoPagina.textProperty().addListener(this::tamPagMudou);	
+		tfTamanhoPagina.textProperty().addListener(this::tamPagMudou);
+		*/	
 	}
 	
 	public void qtdInicialMudou(ObservableValue<? extends String> prop, 
@@ -88,5 +90,14 @@ public class ControladorAbaConfiguracao {
             String newValue) {
 		/* TODO: implementar aplicação das configurações de tamanho MP, MS*/
 		//conf.setTamanhoPagina(Integer.parseInt(newValue));
+	}
+	
+	public void atualizaValoresConfiguracao(){
+		conf.setQuantidadeInicialPaginas(Integer.parseInt(tfQtdInicialPaginas.getText()));
+		conf.setTamanhoMaximoProcesso(Integer.parseInt(tfTamanhoPagina.getText()));
+		conf.setEnderecoLogico(Integer.parseInt(tfTamanhoPagina.getText()));
+		conf.setTamanhoTotalMP(Integer.parseInt(tfTamanhoMP.getText()));
+		conf.setTamanhoTotalMS(Integer.parseInt(tfTamanhoMS.getText()));
+		conf.setTamanhoPagina(Integer.parseInt(tfTamanhoMaximoProcesso.getText()));
 	}
 }

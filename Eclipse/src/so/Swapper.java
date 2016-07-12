@@ -84,7 +84,8 @@ public abstract class Swapper {
 		Processo alvo = p.getProcesso();
 		this.removePagMP(p);
 		Configuracao confs = Configuracao.obterInstancia();
-		this.processosModificados.add(alvo);
+		if(!this.processosModificados.contains(alvo))
+			this.processosModificados.add(alvo);
 		if(alvo.getTabela().getTamanho() < confs.getQuantidadeInicialPaginas()) {
 			swapOut(alvo);
 		}

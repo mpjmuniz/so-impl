@@ -6,6 +6,7 @@ import java.net.URL;
 import java.util.ResourceBundle;
 import java.util.Scanner;
 
+import controle.Configuracao;
 import excecoes.ComandoInvalido;
 import excecoes.ProcessoInexistente;
 import excecoes.TamanhoInsuficiente;
@@ -27,6 +28,7 @@ import recursos.PaginaMP;
 import recursos.PaginaMS;
 import recursos.Processo;
 import so.Kernel;
+import so.SwapperLRU;
 import so.SwapperRelogio;
 
 public class Controlador {
@@ -44,7 +46,7 @@ public class Controlador {
 	private TextField tfComando;
 
 	@FXML
-	private Button bContinuar, bCarregar, bPausar, bAndar, bzerar;
+	private Button bContinuar, bCarregar, bPausar, bAndar, bZerar;
 
 	@FXML
 	private URL location;
@@ -75,21 +77,24 @@ public class Controlador {
 
 	@FXML
 	private void initialize() {
+		Configuracao confs = Configuracao.obterInstancia();
 		GerenciadorMemoria gm = new GerenciadorMemoria();
 		GerenciadorDisco gd = new GerenciadorDisco();
-		kernel = new Kernel(gm, gd, new SwapperRelogio(gm, gd));
+		if(confs.getSwapper() == 0)
+			kernel = new Kernel(gm, gd, new SwapperRelogio(gm, gd));
+		else
+			kernel = new Kernel(gm, gd, new SwapperLRU(gm, gd));
 
-		abaMemoria = new AbaRecursos("Memória Principal", kernel.obterGerenciadorMP());
-		abaDisco = new AbaRecursos("Memória Secundária", kernel.obterGerenciadorMS());
+		abaMemoria = new AbaRecursos("Memoria Principal", kernel.obterGerenciadorMP());
+		abaDisco = new AbaRecursos("Memoria Secundária", kernel.obterGerenciadorMS());
 
 		// Swapper swp = new SwapperRelogio(gm, gd);
 
 		abaProcessos = new AbaProcessos("Processos", kernel);
 
-		abaConfiguracao = new AbaConfiguracao("Configurações");
+		abaConfiguracao = new AbaConfiguracao("Configuracoes");
 		
 		baseAbas.getTabs().addAll(abaDisco, abaMemoria, abaProcessos, abaConfiguracao);
-
 		emExecucao = false;
 	}
 
@@ -165,15 +170,36 @@ public class Controlador {
 
 	@FXML
 	private void zerar() {
-		/* TODO: implementar aplicação das configurações de tamanho MP, MS*/
+		Configuracao confs = Configuracao.obterInstancia();
+		
+		GerenciadorMemoria gm = new GerenciadorMemoria();
+		GerenciadorDisco gd = new GerenciadorDisco();
+		if(confs.getSwapper() == 0)
+			kernel = new Kernel(gm, gd, new SwapperRelogio(gm, gd));
+		else
+			kernel = new Kernel(gm, gd, new SwapperLRU(gm, gd));
+		
+		baseAbas.getTabs().removeAll(abaDisco, abaMemoria, abaProcessos, abaConfiguracao);
+		
+		abaMemoria = new AbaRecursos("Memória Principal", kernel.obterGerenciadorMP());
+		abaDisco = new AbaRecursos("Memória Secundária", kernel.obterGerenciadorMS());
+
+		// Swapper swp = new SwapperRelogio(gm, gd);
+
+		abaProcessos = new AbaProcessos("Processos", kernel);
+
+		abaConfiguracao = new AbaConfiguracao("Configurações");
+		baseAbas.getTabs().addAll(abaDisco, abaMemoria, abaProcessos, abaConfiguracao);
+		
 		if (arquivo == null)
 			return;
-		this.initialize();
+		
 		try {
 			leitor = new Scanner(arquivo);
 		} catch (FileNotFoundException e) {
 			e.printStackTrace();
 		}
+		
 		emExecucao = false;
 	}
 
