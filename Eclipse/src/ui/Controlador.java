@@ -143,7 +143,7 @@ public class Controlador {
 		if (emExecucao)
 			return;
 
-		if(instrucao == null) instrucao = tfComando.getText();
+		instrucao = tfComando.getText();
 		
 		emExecucao = true;
 		try {
@@ -187,9 +187,9 @@ public class Controlador {
 		} else {
 			alertar(partes[1], "debug");
 			try {
-				atual = kernel.obterProcesso(partes[0].charAt(1));
+				atual = kernel.obterProcesso(partes[0].charAt(1)-'0');
 			} catch (ProcessoInexistente e) {
-				alertar(e.getMessage(), "Processo não existe");
+				alertar(e.getMessage(), "Processo nao existe");
 
 				return;
 			}
@@ -212,33 +212,33 @@ public class Controlador {
 			try {
 				int ini = partes[2].indexOf('(');
 				int fim = partes[2].indexOf(')');
-				kernel.le(partes[0].charAt(1), Integer.parseInt(partes[2].substring(ini + 1, fim)));
+				kernel.le(partes[0].charAt(1)-'0', Integer.parseInt(partes[2].substring(ini + 1, fim)));
 			} catch (NumberFormatException e) {
 				e.printStackTrace();
 			} catch (TamanhoInsuficiente e) {
-				alertar("Tamanho Insuficiente de memoria", "Erro na criacao do processo");
+				alertar("Tamanho Insuficiente de memoria", "Nao foi possivel acessar a pagina");
 			}
 			break;
 		case 'P':
 			try {
 				int ini = partes[2].indexOf('(');
 				int fim = partes[2].indexOf(')');
-				kernel.processa(partes[0].charAt(1), Integer.parseInt(partes[2].substring(ini + 1, fim)));
+				kernel.processa(partes[0].charAt(1)-'0', Integer.parseInt(partes[2].substring(ini + 1, fim)));
 			} catch (NumberFormatException e) {
 				e.printStackTrace();
 			} catch (TamanhoInsuficiente e) {
-				alertar("Tamanho Insuficiente de memoria", "Erro na criacao do processo");
+				alertar("Tamanho Insuficiente de memoria", "Nao foi possivel acessar a pagina");
 			}
 			break;
 		case 'W':
 			try {
 				int ini = partes[2].indexOf('(');
 				int fim = partes[2].indexOf(')');
-				kernel.escreve(partes[0].charAt(1), Integer.parseInt(partes[2].substring(ini + 1, fim)));
+				kernel.escreve(partes[0].charAt(1)-'0', Integer.parseInt(partes[2].substring(ini + 1, fim)));
 			} catch (NumberFormatException e) {
 				e.printStackTrace();
 			} catch (TamanhoInsuficiente e) {
-				alertar("Tamanho Insuficiente de memoria", "Erro na criacao do processo");
+				alertar("Tamanho Insuficiente de memoria", "Nao foi possivel acessar a pagina");
 			}
 			break;
 		case 'I':

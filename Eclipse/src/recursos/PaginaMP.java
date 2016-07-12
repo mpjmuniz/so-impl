@@ -6,7 +6,7 @@ public class PaginaMP extends Pagina {
 		super(endFisico);
 		super.presente = true;
 		super.modificado = false;
-		super.utilizado = false;
+		super.utilizado = true;
 	}
 	
 	public void desalocar(){

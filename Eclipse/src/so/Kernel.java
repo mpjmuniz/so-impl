@@ -67,7 +67,7 @@ public class Kernel {
 	public Processo obterProcesso(int id) throws ProcessoInexistente {
 		Processo p = listaProcessos.get(id);
 		
-		if(p == null) throw new ProcessoInexistente("Processo não existe.");
+		if(p == null) throw new ProcessoInexistente("Processo nao existe.");
 		
 		return p;
 	}
