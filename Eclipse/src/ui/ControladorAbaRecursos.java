@@ -1,8 +1,13 @@
 package ui;
 
 import java.net.URL;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.ResourceBundle;
 
+import javafx.beans.property.ListProperty;
+import javafx.beans.property.SimpleListProperty;
+import javafx.collections.FXCollections;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListCell;
@@ -15,7 +20,7 @@ import recursos.GerenciadorRecursos;
 import recursos.Pagina;
 import recursos.Processo;
 
-public class ControladorAbas {
+public class ControladorAbaRecursos {
 	
 	@FXML
 	private ListView<Processo> lvProcessos;
@@ -39,10 +44,15 @@ public class ControladorAbas {
 	@FXML
 	private ResourceBundle resources;
 
-	public ControladorAbas() {}
+	private List<Processo> lProcessos = new ArrayList<>();
+	protected ListProperty<Processo> lPropProcessos = new SimpleListProperty<>();
+	
+	public ControladorAbaRecursos() {}
 	
 	@FXML
 	private void initialize() {}
+	
+	
 	
 	void initData(GerenciadorRecursos gerRec){
 		
@@ -54,7 +64,9 @@ public class ControladorAbas {
 		tamanhoRecurso.setText(tamanhoRecurso.getText() 
 				+ Integer.toString(gerRec.getTamanhoDisponivel()));	
 		
-		lvProcessos.getItems().addAll(gerRec.getFila());
+		lvProcessos.itemsProperty().bind(lPropProcessos);
+		
+		lPropProcessos.set(FXCollections.observableArrayList(gerRec.getFila()));
 		
 		lvProcessos.setCellFactory(new Callback<ListView<Processo>, 
 				ListCell<Processo>>() {

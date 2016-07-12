@@ -20,7 +20,7 @@ public class AbaRecursos extends Tab {
 	}
 
 	public void init(){
-		ControladorAbas controlador;
+		ControladorAbaRecursos controlador;
 		
 		FXMLLoader loader = new FXMLLoader(this.getClass()
                 .getClassLoader()
@@ -29,7 +29,7 @@ public class AbaRecursos extends Tab {
 		try{
 			base = loader.<HBox>load();
 			
-			controlador = loader.<ControladorAbas>getController(); 
+			controlador = loader.<ControladorAbaRecursos>getController(); 
 			controlador.initData(gerRec);		
 			
 			this.setContent(base);
