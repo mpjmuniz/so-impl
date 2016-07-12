@@ -1,5 +1,8 @@
 package so;
 
+import java.util.LinkedList;
+import java.util.List;
+
 import controle.Configuracao;
 import excecoes.TamanhoInsuficiente;
 import recursos.GerenciadorDisco;
@@ -24,11 +27,16 @@ public abstract class Swapper {
 	protected GerenciadorMemoria gm;
 	protected GerenciadorDisco gd;
 	protected Kernel k;
+	protected List<Processo> processosModificados;
 	
 	public Swapper(GerenciadorMemoria gm, GerenciadorDisco gd, Kernel k){
 		this.gm = gm;
 		this.gd = gd;
 		this.k = k;
+	}
+	
+	public List<Processo> getProcessosModificados(){
+		return processosModificados;
 	}
 	
 	/*
@@ -69,13 +77,16 @@ public abstract class Swapper {
 	/*
 	 * 	Swap-out: Guarda pagina na memoria secundaria
 	 * */
-	public abstract void swapOut(int tamanho) throws TamanhoInsuficiente;
+	public void swapOut(int tamanho) throws TamanhoInsuficiente {
+		this.processosModificados = new LinkedList<Processo>();
+	};
 	
 	// Retira efetivamente uma pagina p da MP
 	protected void _swapOut(Pagina p) throws TamanhoInsuficiente{
 		Processo alvo = p.getProcesso();
 		this.removePagMP(p);
 		Configuracao confs = Configuracao.obterInstancia();
+		this.processosModificados.add(alvo);
 		if(alvo.getTabela().getTamanho() < confs.getQuantidadeInicialPaginas()) {
 			swapOut(alvo);
 		}
