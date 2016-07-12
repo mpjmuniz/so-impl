@@ -33,10 +33,19 @@ public abstract class GerenciadorRecursos {
 		this.aguardando = new LinkedBlockingDeque<Processo>();
 	}
 	
-	public Pagina getQuadroLivre() throws TamanhoInsuficiente{
+	public Pagina getQuadroLivre(Processo p) throws TamanhoInsuficiente{
 		if(livres.isEmpty()) throw new TamanhoInsuficiente();
 		tamanhoDisponivel -= confs.getTamanhoPagina();
-		return livres.remove(0);
+		Pagina pag = livres.remove(0);
+		pag.alocar(p);
+		return pag;
+	}
+	
+	public void liberaQuadro(Pagina pag){
+		pag.desalocar();
+		this.tamanhoDisponivel += confs.getTamanhoPagina();
+		this.livres.add(pag);
+		this.livres.sort(null);		
 	}
 	
 	public int getTamanhoTotal() {

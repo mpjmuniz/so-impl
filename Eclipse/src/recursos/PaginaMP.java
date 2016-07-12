@@ -8,5 +8,9 @@ public class PaginaMP extends Pagina {
 		super.modificado = false;
 		super.utilizado = false;
 	}
-
+	
+	public void desalocar(){
+		super.desalocar();
+		super.modificado = false;
+	}
 }

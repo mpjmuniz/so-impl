@@ -49,6 +49,11 @@ public abstract class Pagina implements Comparable {
 		this.utilizado = true;
 	}
 	
+	public void desalocar(){
+		this.dono = null;
+		this.utilizado = false;
+	}
+	
 	/*	Para o algoritmo do Relogio*/
 	public void inutilizado(){
 		this.utilizado = false;

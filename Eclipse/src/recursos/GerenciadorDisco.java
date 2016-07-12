@@ -19,7 +19,7 @@ public class GerenciadorDisco extends GerenciadorRecursos {
 		}
 	}
 	
-	public List<Pagina> alocarMemoria(int qtdPaginas) throws TamanhoInsuficiente {
+	public List<Pagina> alocarMemoria(Processo p, int qtdPaginas) throws TamanhoInsuficiente {
 		
 		List<Pagina> pgs;
 		
@@ -30,7 +30,7 @@ public class GerenciadorDisco extends GerenciadorRecursos {
 		pgs = new ArrayList<>(qtdPaginas);
 		
 		for(int i = 0; i < qtdPaginas ; i++){
-			pgs.add(livres.remove(0));
+			pgs.add(super.getQuadroLivre(p));
 		}
 		
 		this.tamanhoDisponivel -= qtdPaginas*confs.getTamanhoPagina(); 
@@ -39,10 +39,7 @@ public class GerenciadorDisco extends GerenciadorRecursos {
 	}
 	
 	public void liberaPagina(Pagina p){
-		p.limpar();
-		livres.add(p);
-		livres.sort(null);
-		this.tamanhoDisponivel += confs.getTamanhoPagina();
+		super.liberaQuadro(p);
 	}
 
 	public void liberarMemoria(Processo p) {

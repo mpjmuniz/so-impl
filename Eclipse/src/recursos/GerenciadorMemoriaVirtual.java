@@ -10,12 +10,10 @@ import so.Swapper;
 public class GerenciadorMemoriaVirtual {
 	
 	private GerenciadorMemoria gm;
-	private GerenciadorDisco gd;
 	private Swapper swp;
 
 	public GerenciadorMemoriaVirtual(GerenciadorMemoria gm, GerenciadorDisco gd, Swapper swp) {
 		this.gm = gm;
-		this.gd = gd;
 		this.swp = swp;
 	}
 	
@@ -28,11 +26,11 @@ public class GerenciadorMemoriaVirtual {
 		int i=0;
 		try{
 			for(; i<qtdPaginas; i++)
-				pgs.add(gm.getQuadroLivre());
+				pgs.add(gm.getQuadroLivre(p));
 		} catch (TamanhoInsuficiente e) {
 			swp.swapOut(confs.getQuantidadePaginas(qtdPaginas-i));
 			for(; i<qtdPaginas; i++)
-				pgs.add(gd.getQuadroLivre());
+				pgs.add(gm.getQuadroLivre(p));
 		}
 		
 		return pgs;

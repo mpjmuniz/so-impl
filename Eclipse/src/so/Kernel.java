@@ -43,14 +43,14 @@ public class Kernel {
 		Pagina pagMP = null;
 		try {
 			Pagina pSwapp = pros.getTabela().getPagina(nPagina);
-			pagMP = swp.swapIn(pSwapp);
+			pagMP = swp.swapIn(pros, pSwapp);
 			// Sobreescreve a pagina na MS com uma pagina na MP
 			pros.getTabela().substituiPagina(nPagina, pagMP);
 		} catch (TamanhoInsuficiente e) {
 			Configuracao confs = Configuracao.obterInstancia();
 			tratarTamanhoInsuficiente(confs.getTamanhoPagina());
 			Pagina pSwapp = pros.getTabela().getPagina(nPagina);
-			pagMP = swp.swapIn(pSwapp);
+			pagMP = swp.swapIn(pros, pSwapp);
 			pros.getTabela().substituiPagina(nPagina, pagMP);
 		}
 		return pagMP;
@@ -59,7 +59,7 @@ public class Kernel {
 	// Pagina nao esta em MP nem em Swapp
 	private Pagina tratarPaginaMS(int nPagina, Processo p) throws TamanhoInsuficiente{
 		Configuracao confs = Configuracao.obterInstancia();
-		Pagina pagMP = gmv.alocarMemoria(confs.getTamanhoPagina()).get(0);
+		Pagina pagMP = gmv.alocarMemoria(p, confs.getTamanhoPagina()).get(0);
 		p.getTabela().insertPagina(pagMP, nPagina);
 		return pagMP;
 	}
