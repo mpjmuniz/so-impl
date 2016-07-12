@@ -73,9 +73,9 @@ public abstract class Swapper {
 	
 	// Retira efetivamente uma pagina p da MP
 	protected void _swapOut(Pagina p) throws TamanhoInsuficiente{
+		Processo alvo = p.getProcesso();
 		this.removePagMP(p);
 		Configuracao confs = Configuracao.obterInstancia();
-		Processo alvo = p.getProcesso();
 		if(alvo.getTabela().getTamanho() < confs.getQuantidadeInicialPaginas()) {
 			swapOut(alvo);
 		}
@@ -89,12 +89,11 @@ public abstract class Swapper {
 		if(p.isModificado()){
 			Pagina pagDisco = gd.alocarMemoria(alvo, 1).get(0);
 			alvo.getTabela().substituiPagina(nPagina, pagDisco);;
-			gm.liberarMemoria(p);
 		} else {
 			// Dissocia pagina de processo
 			alvo.getTabela().removePagina(nPagina);
-			gm.liberarMemoria(p);
 		}
+		gm.liberarMemoria(p);
 	}
 	
 	
