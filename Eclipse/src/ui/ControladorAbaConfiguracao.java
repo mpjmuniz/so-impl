@@ -58,7 +58,6 @@ public class ControladorAbaConfiguracao {
             String oldValue, 
             String newValue) {
 		conf.setQuantidadeInicialPaginas(Integer.parseInt(newValue));
-		System.out.println(conf.getQuantidadeInicialPaginas());
 	}
 	
 	public void tamanhoMaxMudou(ObservableValue<? extends String> prop, 
@@ -75,16 +74,19 @@ public class ControladorAbaConfiguracao {
 	public void tamMPMudou(ObservableValue<? extends String> prop, 
             String oldValue, 
             String newValue) {
-		conf.setTamanhoTotalMP(Integer.parseInt(newValue));
+		/* TODO: implementar aplicação das configurações de tamanho MP, MS*/
+		//conf.setTamanhoTotalMP(Integer.parseInt(newValue));
 	}
 	public void tamMSMudou(ObservableValue<? extends String> prop, 
             String oldValue, 
             String newValue) {
-		conf.setTamanhoTotalMS(Integer.parseInt(newValue));
+		/* TODO: implementar aplicação das configurações de tamanho MP, MS*/
+		//conf.setTamanhoTotalMS(Integer.parseInt(newValue));
 	}
 	public void tamPagMudou(ObservableValue<? extends String> prop, 
             String oldValue, 
             String newValue) {
-		conf.setTamanhoPagina(Integer.parseInt(newValue));
+		/* TODO: implementar aplicação das configurações de tamanho MP, MS*/
+		//conf.setTamanhoPagina(Integer.parseInt(newValue));
 	}
 }
