@@ -21,6 +21,7 @@ import javafx.stage.FileChooser;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.stage.Window;
+import recursos.Pagina;
 import recursos.Processo;
 import so.Kernel;
 
@@ -62,7 +63,6 @@ public class Controlador {
 	private String instrucao = null;
 	private Scanner leitor = null;
 	private File arquivo = null;
-
 	private boolean emExecucao;
 
 	public Controlador() {
@@ -82,7 +82,6 @@ public class Controlador {
 		abaConfiguracao = new AbaConfiguracao("Configurações");
 		
 		baseAbas.getTabs().addAll(abaDisco, abaMemoria, abaProcessos, abaConfiguracao);
-
 
 		emExecucao = false;
 	}
@@ -159,6 +158,7 @@ public class Controlador {
 
 	@FXML
 	private void zerar() {
+		/* TODO: implementar aplicação das configurações de tamanho MP, MS*/
 		if (arquivo == null)
 			return;
 
@@ -175,6 +175,10 @@ public class Controlador {
 		// Possivelmente passará para o Kernel
 		String[] partes;
 		Processo atual = null;
+		Pagina paginaAtual;
+		int inicio, 
+			 fim,
+			 endFisico;
 
 		if (instrucao == null || "".equals(instrucao)) {
 			alertar("Comando inválido", "Comando Inválido");
@@ -183,9 +187,7 @@ public class Controlador {
 
 		partes = instrucao.split(" ");
 
-		if (partes[1].charAt(0) == 'C') {
-		} else {
-			alertar(partes[1], "debug");
+		if (partes[1].charAt(0) != 'C') {
 			try {
 				atual = kernel.obterProcesso(partes[0].charAt(1)-'0');
 			} catch (ProcessoInexistente e) {
@@ -199,31 +201,44 @@ public class Controlador {
 		switch (partes[1].charAt(0)) {
 		case 'C':
 			try {
-				kernel.criarProcesso(partes[0].charAt(1)-'0', Integer.parseInt(partes[2]));
+				atual = kernel.criarProcesso(partes[0].charAt(1)-'0', 
+						Integer.parseInt(partes[2]));
+				
 				abaProcessos.atualizar();
+				abaMemoria.atualizar(atual.getTabela());
+				
 			} catch (NumberFormatException e){
 				e.printStackTrace();
 			} catch (TamanhoInsuficiente e) {
-				alertar("Tamanho Insuficiente de memoria", "Erro na criacao do processo");
+				alertar("Tamanho Insuficiente de memoria", 
+						"Erro na criacao do processo");
 			}
 
 			break;
 		case 'R':
 			try {
-				int ini = partes[2].indexOf('(');
-				int fim = partes[2].indexOf(')');
-				kernel.le(partes[0].charAt(1)-'0', Integer.parseInt(partes[2].substring(ini + 1, fim)));
+				inicio = partes[2].indexOf('(');
+				fim = partes[2].indexOf(')');
+				
+				paginaAtual = kernel.le(partes[0].charAt(1)-'0', 
+						Integer.parseInt(partes[2].substring(inicio + 1, fim)));
+				
+				abaMemoria.atualizar(paginaAtual);
+				
 			} catch (NumberFormatException e) {
 				e.printStackTrace();
 			} catch (TamanhoInsuficiente e) {
 				alertar("Tamanho Insuficiente de memoria", "Nao foi possivel acessar a pagina");
 			}
+			
 			break;
 		case 'P':
 			try {
-				int ini = partes[2].indexOf('(');
-				int fim = partes[2].indexOf(')');
-				kernel.processa(partes[0].charAt(1)-'0', Integer.parseInt(partes[2].substring(ini + 1, fim)));
+				inicio = partes[2].indexOf('(');
+				fim = partes[2].indexOf(')');
+				kernel.processa(partes[0].charAt(1)-'0', Integer.parseInt(partes[2].substring(inicio + 1, fim)));
+				
+				
 			} catch (NumberFormatException e) {
 				e.printStackTrace();
 			} catch (TamanhoInsuficiente e) {
@@ -232,9 +247,11 @@ public class Controlador {
 			break;
 		case 'W':
 			try {
-				int ini = partes[2].indexOf('(');
-				int fim = partes[2].indexOf(')');
-				kernel.escreve(partes[0].charAt(1)-'0', Integer.parseInt(partes[2].substring(ini + 1, fim)));
+				inicio = partes[2].indexOf('(');
+				fim = partes[2].indexOf(')');
+				
+				kernel.escreve(partes[0].charAt(1)-'0', 
+						Integer.parseInt(partes[2].substring(inicio + 1, fim)));
 			} catch (NumberFormatException e) {
 				e.printStackTrace();
 			} catch (TamanhoInsuficiente e) {

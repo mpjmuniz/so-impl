@@ -72,7 +72,7 @@ public class Kernel {
 		return p;
 	}
 	
-	public void criarProcesso(int id, int tamanho) throws TamanhoInsuficiente{
+	public Processo criarProcesso(int id, int tamanho) throws TamanhoInsuficiente{
 		Processo p = null;
 		Configuracao confs = Configuracao.obterInstancia();
 		if(tamanho < confs.getQuantidadeInicialPaginas()*confs.getTamanhoPagina())
@@ -84,15 +84,20 @@ public class Kernel {
 		}
 		// Colocar na lista do escalonador
 		listaProcessos.put(id, p);
+		
+		return p;
 	}
 
-	public void le(int id, int pos) throws TamanhoInsuficiente{
+	public Pagina le(int id, int pos) throws TamanhoInsuficiente{
+		
 		Processo p = this.listaProcessos.get(id);
+		Pagina pag;
 		int endFisico = this.descobreEnderecoFisico(p, pos);
+		
 		// Executa
-		gm.ler(p, endFisico);
-		// Retorna
-		int t =0;
+		pag = gm.ler(p, endFisico);
+		
+		return pag;
 	}
 	
 	public void escreve(int id, int pos) throws TamanhoInsuficiente{
@@ -127,12 +132,15 @@ public class Kernel {
 	
 	public int descobreEnderecoFisico(Processo p, int pos) throws TamanhoInsuficiente{
 		Configuracao confs = Configuracao.obterInstancia();
+		
 		// Resolve endereco: n da pagina + offset
-		int nPagina = pos/confs.getTamanhoPagina();
-		int offset = pos%confs.getTamanhoPagina();
+		int nPagina = pos / confs.getTamanhoPagina();
+		int offset = pos % confs.getTamanhoPagina();
+		
 		// Pega o endereco da pagina
 		TabelaDePaginas tp = p.getTabela();
 		int endFisico = -1;
+		
 		try {
 			endFisico = tp.getEndPagina(nPagina);
 		} catch (FaltaDePagina e) {
@@ -146,6 +154,7 @@ public class Kernel {
 				endFisico = tratarPaginaMS(nPagina, p).getEndFisico();
 			
 		}
+		
 		return endFisico;
 	}
 	

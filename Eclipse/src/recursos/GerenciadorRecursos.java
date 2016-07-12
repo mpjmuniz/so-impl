@@ -61,9 +61,16 @@ public abstract class GerenciadorRecursos {
 	 *  
 	 *  Note que a verificação de limites da tabela de página do processo não fica aqui
 	 * */
-	public void ler(Processo p, int enderecoFisico) {
+	public Pagina ler(Processo p, int enderecoFisico) {
+		Pagina pag;
+		
+		/*Marcado para deleção*/
 		aguardando.add(p);
-		quadros.get(enderecoFisico).ler();
+		
+		pag = quadros.get(enderecoFisico);
+		pag.ler();
+		
+		return pag;
 	}
 	
 	public void escrever(Processo p, int enderecoFisico) {

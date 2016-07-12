@@ -6,11 +6,15 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.control.Tab;
 import javafx.scene.layout.HBox;
 import recursos.GerenciadorRecursos;
+import recursos.Pagina;
+import recursos.TabelaDePaginas;
 
 public class AbaRecursos extends Tab {
 	
 	private HBox base;
 	private GerenciadorRecursos gerRec;
+	
+	private ControladorAbaRecursos controlador;
 
 	public AbaRecursos(String text, GerenciadorRecursos ger) {
 		this.setText(text);
@@ -20,7 +24,6 @@ public class AbaRecursos extends Tab {
 	}
 
 	public void init(){
-		ControladorAbaRecursos controlador;
 		
 		FXMLLoader loader = new FXMLLoader(this.getClass()
                 .getClassLoader()
@@ -33,10 +36,19 @@ public class AbaRecursos extends Tab {
 			controlador.initData(gerRec);		
 			
 			this.setContent(base);
-			//cena.getStylesheets().add("resources/css/estilo.css");
 		} catch(IOException e){
 			System.out.println("Erro no carregamento da aba " + e.getMessage());
 		}
 	}
-
+	
+	public void atualizar(Pagina p){
+		controlador.atualizar(p);
+	}
+	
+	public void atualizar(TabelaDePaginas tp){
+		for(Pagina p : tp.getPaginas()){
+			controlador.atualizar(p);
+		}
+	}
+	
 }
