@@ -77,11 +77,5 @@ public abstract class Pagina{
 	}
 	
 	@Override
-	public String toString(){
-		return "Mod? " + ((this.modificado) ? "v" : "x") + "\n"
-				+ "Pres? " + ((this.presente) ? "v" : "x") + "\n"
-				+ "Util? " + ((this.utilizado) ? "v" : "x") + "\n"
-				+ "Últ. Util.: " + this.ultimaUtilizacao.toString().substring(10, 19) + "\n"
-				+ "End. Fisico: " + Long.toString(endFisico) + "\n";
-	}
+	public abstract String toString();
 }

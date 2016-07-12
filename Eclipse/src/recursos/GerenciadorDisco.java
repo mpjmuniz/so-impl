@@ -12,7 +12,7 @@ public class GerenciadorDisco extends GerenciadorRecursos {
 		Pagina atual;
 		
 		for(int i = 0; i < confs.getQuantidadePaginas(this.tamanhoTotal); i++){
-			atual = new PaginaMP(i);
+			atual = new PaginaMS(i);
 			
 			this.quadros.add(atual);
 			this.livres.add(atual);
