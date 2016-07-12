@@ -9,6 +9,7 @@ import javafx.scene.control.Tab;
 import javafx.scene.control.TitledPane;
 import javafx.scene.layout.StackPane;
 import recursos.Processo;
+import recursos.TabelaDePaginas;
 import so.Kernel;
 
 public class AbaProcessos extends Tab {
@@ -60,5 +61,9 @@ public class AbaProcessos extends Tab {
 		}
 		
 		controlador.getBase().getPanes().addAll(processos);
+	}
+	
+	public void atualizarTabela(Processo p){
+		
 	}
 }
