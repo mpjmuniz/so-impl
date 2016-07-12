@@ -8,6 +8,7 @@ import controle.Configuracao;
 import excecoes.FaltaDePagina;
 import excecoes.ProcessoInexistente;
 import excecoes.TamanhoInsuficiente;
+import recursos.Estado;
 import recursos.GerenciadorDisco;
 import recursos.GerenciadorDispositivo;
 import recursos.GerenciadorMemoria;
@@ -34,6 +35,13 @@ public class Kernel {
 		this.listaProcessos = new HashMap<>();
 	}
 	
+	public void resetarEstados(){
+		for(Processo p: listaProcessos.values()){
+			if(p.getEstado() != Estado.SUSPENSO)
+				p.pronto();
+		}
+	}
+	
 	private void tratarTamanhoInsuficiente(int tamanho) throws TamanhoInsuficiente {
 		// swapp out
 		swp.swapOut(tamanho);
@@ -43,15 +51,12 @@ public class Kernel {
 		Pagina pagMP = null;
 		try {
 			Pagina pSwapp = pros.getTabela().getPagina(nPagina);
-			pagMP = swp.swapIn(pros, pSwapp);
-			// Sobreescreve a pagina na MS com uma pagina na MP
-			pros.getTabela().substituiPagina(nPagina, pagMP);
+			swp.swapIn(pSwapp);
 		} catch (TamanhoInsuficiente e) {
 			Configuracao confs = Configuracao.obterInstancia();
 			tratarTamanhoInsuficiente(confs.getTamanhoPagina());
 			Pagina pSwapp = pros.getTabela().getPagina(nPagina);
-			pagMP = swp.swapIn(pros, pSwapp);
-			pros.getTabela().substituiPagina(nPagina, pagMP);
+			swp.swapIn(pSwapp);
 		}
 		return pagMP;
 	}

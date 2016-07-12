@@ -196,6 +196,8 @@ public class Controlador {
 				return;
 			}
 		}
+		// Retorna processos ao estado de pronto
+		kernel.resetarEstados();
 
 		// Obter ação
 		switch (partes[1].charAt(0)) {

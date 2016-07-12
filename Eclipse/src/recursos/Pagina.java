@@ -12,7 +12,7 @@ public abstract class Pagina{
 	protected Processo dono;
 
 	public Pagina(int endFisico){
-		this.ultimaUtilizacao = new Date();
+		this.ultimaUtilizacao = null;
 		this.endFisico = endFisico;
 	}
 	
