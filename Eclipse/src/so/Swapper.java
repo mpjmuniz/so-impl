@@ -26,13 +26,11 @@ public abstract class Swapper {
 	
 	protected GerenciadorMemoria gm;
 	protected GerenciadorDisco gd;
-	protected Kernel k;
 	protected List<Processo> processosModificados;
 	
-	public Swapper(GerenciadorMemoria gm, GerenciadorDisco gd, Kernel k){
+	public Swapper(GerenciadorMemoria gm, GerenciadorDisco gd){
 		this.gm = gm;
 		this.gd = gd;
-		this.k = k;
 	}
 	
 	public List<Processo> getProcessosModificados(){

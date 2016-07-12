@@ -12,8 +12,8 @@ public class SwapperRelogio extends Swapper {
 	
 	private int ultimaPagFila = 0;
 
-	public SwapperRelogio(GerenciadorMemoria gm, GerenciadorDisco gd, Kernel k) {
-		super(gm, gd, k);
+	public SwapperRelogio(GerenciadorMemoria gm, GerenciadorDisco gd) {
+		super(gm, gd);
 	}
 
 	@Override

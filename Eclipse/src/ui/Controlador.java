@@ -21,10 +21,13 @@ import javafx.stage.FileChooser;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.stage.Window;
+import recursos.GerenciadorDisco;
+import recursos.GerenciadorMemoria;
 import recursos.PaginaMP;
 import recursos.PaginaMS;
 import recursos.Processo;
 import so.Kernel;
+import so.SwapperRelogio;
 
 public class Controlador {
 
@@ -69,9 +72,12 @@ public class Controlador {
 	public Controlador() {
 	}
 
+
 	@FXML
 	private void initialize() {
-		kernel = new Kernel();
+		GerenciadorMemoria gm = new GerenciadorMemoria();
+		GerenciadorDisco gd = new GerenciadorDisco();
+		kernel = new Kernel(gm, gd, new SwapperRelogio(gm, gd));
 
 		abaMemoria = new AbaRecursos("Memória Principal", kernel.obterGerenciadorMP());
 		abaDisco = new AbaRecursos("Memória Secundária", kernel.obterGerenciadorMS());
@@ -143,7 +149,6 @@ public class Controlador {
 	private void andar() {
 		if (emExecucao)
 			return;
-
 		instrucao = tfComando.getText();
 		
 		emExecucao = true;
@@ -163,13 +168,12 @@ public class Controlador {
 		/* TODO: implementar aplicação das configurações de tamanho MP, MS*/
 		if (arquivo == null)
 			return;
-
+		this.initialize();
 		try {
 			leitor = new Scanner(arquivo);
 		} catch (FileNotFoundException e) {
 			e.printStackTrace();
 		}
-
 		emExecucao = false;
 	}
 

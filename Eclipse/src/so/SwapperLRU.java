@@ -10,8 +10,8 @@ import recursos.Pagina;
 
 public class SwapperLRU extends Swapper {
 
-	public SwapperLRU(GerenciadorMemoria gm, GerenciadorDisco gd, Kernel k) {
-		super(gm, gd, k);
+	public SwapperLRU(GerenciadorMemoria gm, GerenciadorDisco gd) {
+		super(gm, gd);
 	}
 
 	@Override
