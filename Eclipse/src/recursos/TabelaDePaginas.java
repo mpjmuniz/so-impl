@@ -17,7 +17,7 @@ public class TabelaDePaginas {
 	public TabelaDePaginas(int linhas, List<Pagina> pgs) {
 		paginas = new HashMap<>();
 		for(int i=0; i<linhas; i++){
-			paginas.put(i, pgs.get(i));
+			this.insertPagina(pgs.get(i), i);
 		}
 	}
 
@@ -39,6 +39,10 @@ public class TabelaDePaginas {
 
 	public List<Pagina> getPaginas() {
 		return Collections.list(Collections.enumeration(paginas.values()));
+	}
+	
+	public HashMap<Integer, Pagina> getHash(){
+		return this.paginas;
 	}
 	
 	public int getEndPagina(int nPagina) throws FaltaDePagina {

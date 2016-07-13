@@ -33,7 +33,7 @@ public class GerenciadorMemoriaVirtual {
 				pgs.add(gm.getQuadroLivre(p));
 			/*	TODO: Modificar para conseguir quadro do disco*/
 		} catch (TamanhoInsuficiente e) {
-			swp.swapOut(confs.getQuantidadePaginas(qtdPaginas - i));
+			swp.swapOut(confs.getTamanhoPagina(qtdPaginas - i));
 			for(; i < qtdPaginas; i++)
 				pgs.add(gm.getQuadroLivre(p));
 		}

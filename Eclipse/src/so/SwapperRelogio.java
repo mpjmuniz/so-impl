@@ -12,12 +12,13 @@ public class SwapperRelogio extends Swapper {
 	
 	private int ultimaPagFila = 0;
 
-	public SwapperRelogio(GerenciadorMemoria gm, GerenciadorDisco gd, Kernel k) {
-		super(gm, gd, k);
+	public SwapperRelogio(GerenciadorMemoria gm, GerenciadorDisco gd) {
+		super(gm, gd);
 	}
 
 	@Override
 	public void swapOut(int tamanho) throws TamanhoInsuficiente {
+		super.swapOut(tamanho);
 		Configuracao confs = Configuracao.obterInstancia();
 		int qtdPag = confs.getQuantidadePaginas(tamanho);
 		while(qtdPag > 0){

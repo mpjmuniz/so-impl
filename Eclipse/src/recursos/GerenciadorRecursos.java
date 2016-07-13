@@ -45,7 +45,7 @@ public abstract class GerenciadorRecursos {
 		pag.desalocar();
 		this.tamanhoDisponivel += confs.getTamanhoPagina();
 		this.livres.add(pag);
-		this.livres.sort(null);		
+		this.livres.sort(null);
 	}
 	
 	public int getTamanhoTotal() {

@@ -2,7 +2,7 @@ package recursos;
 
 import java.util.Date;
 
-public abstract class Pagina{
+public abstract class Pagina implements Comparable<Pagina> {
 
 	protected Date ultimaUtilizacao;
 	protected boolean modificado;
@@ -74,6 +74,10 @@ public abstract class Pagina{
 	public void limpar(){
 		this.modificado = false;
 		this.utilizado = false;
+	}
+	
+	public int compareTo(Pagina p){
+		return this.getEndFisico() - p.endFisico;
 	}
 	
 	@Override

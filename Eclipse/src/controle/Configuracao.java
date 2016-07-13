@@ -9,6 +9,7 @@ public class Configuracao {
 	private int tamanhoTotalMP = 1024;
 	private int tamanhoTotalMS = 2048;
 	private int tamanhoMaximoProcesso;
+	private int swp = 0;
 
 	private Configuracao() {
 	}
@@ -80,5 +81,13 @@ public class Configuracao {
 		int qtdPaginas = tam / this.getTamanhoPagina();
 		if(tam % this.getTamanhoPagina() > 0) qtdPaginas++;
 		return qtdPaginas;
+	}
+	
+	public void setSwapper(int n){
+		this.swp = n;
+	}
+	
+	public int getSwapper(){
+		return this.swp;
 	}
 }
