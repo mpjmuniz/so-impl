@@ -6,7 +6,10 @@ import java.util.ResourceBundle;
 import controle.Configuracao;
 import javafx.beans.value.ObservableValue;
 import javafx.fxml.FXML;
+import javafx.scene.control.Labeled;
 import javafx.scene.control.TextField;
+import javafx.scene.control.Toggle;
+import javafx.scene.control.ToggleGroup;
 import javafx.scene.layout.GridPane;
 
 public class ControladorAbaConfiguracao {
@@ -23,6 +26,9 @@ public class ControladorAbaConfiguracao {
 			  tfTamanhoMP,
 			  tfTamanhoMS,
 			  tfTamanhoMaximoProcesso;
+	
+	@FXML
+	ToggleGroup metodo;
 	
 	@FXML
 	private URL location;
@@ -54,6 +60,7 @@ public class ControladorAbaConfiguracao {
 		tfTamanhoMS.textProperty().addListener(this::tamMSMudou);
 		tfTamanhoPagina.textProperty().addListener(this::tamPagMudou);
 			
+		metodo.selectedToggleProperty().addListener(this::mudouMetodo);
 	}
 	
 	public void qtdInicialMudou(ObservableValue<? extends String> prop, 
@@ -89,6 +96,15 @@ public class ControladorAbaConfiguracao {
             String newValue) {
 		
 		conf.setTamanhoPagina(Integer.parseInt(newValue));
+	}
+	public void mudouMetodo(ObservableValue<? extends Toggle> prop, 
+            Toggle oldValue, 
+            Toggle newValue) {
+		if("Least Recently Used".equals(((Labeled)newValue).getText())){
+			conf.setSwapper(1);
+		} else {
+			conf.setSwapper(0);
+		}
 	}
 	
 	public void atualizaValoresConfiguracao(){

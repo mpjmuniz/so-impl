@@ -8,6 +8,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ToggleButton?>
 
 <GridPane fx:id="base" fx:controller="ui.ControladorAbaConfiguracao"
 	stylesheets="resources/css/estiloAbaConfiguracao.css" xmlns:fx="http://javafx.com/fxml/1">
@@ -47,6 +48,20 @@
 	
 	<TextField fx:id="tfTamanhoMaximoProcesso"  GridPane.columnIndex="1"
 		GridPane.rowIndex="5" ></TextField>
+		
+	<Label text="Método de Substituição de Páginas: "  GridPane.columnIndex="0" 
+		GridPane.rowIndex="6" />
+	
+	<HBox xmlns:fx="http://javafx.com/fxml" GridPane.columnIndex="1"
+		GridPane.rowIndex="6">
+	    <fx:define>
+	        <ToggleGroup fx:id="metodo"/>
+	    </fx:define>
+	    <children>
+	        <RadioButton text="Least Recently Used" toggleGroup="$metodo"/>
+	        <RadioButton text="Relogio" toggleGroup="$metodo"/>
+	    </children>
+	</HBox>
 
 </GridPane>
 
