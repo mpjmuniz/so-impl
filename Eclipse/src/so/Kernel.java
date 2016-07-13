@@ -189,5 +189,8 @@ public class Kernel {
 	public List<Processo> todosProcessos(){
 		return Collections.list(Collections.enumeration(this.listaProcessos.values()));
 	}
-
+	
+	public List<Processo> processosModificados(){
+		return swp.processosModificados;
+	}
 }

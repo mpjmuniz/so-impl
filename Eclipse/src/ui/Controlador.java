@@ -255,10 +255,6 @@ public class Controlador {
 				
 				kernel.le(partes[0].charAt(1)-'0', 
 						Integer.parseInt(partes[2].substring(inicio + 1, fim)));
-				
-				abaMemoria.atualizar(atual.getTabela(), PaginaMP.class);
-				abaDisco.atualizar(atual.getTabela(), PaginaMS.class);
-				
 			} catch (NumberFormatException e) {
 				e.printStackTrace();
 			} catch (TamanhoInsuficiente e) {
@@ -271,7 +267,6 @@ public class Controlador {
 				inicio = partes[2].indexOf('(');
 				fim = partes[2].indexOf(')');
 				kernel.processa(partes[0].charAt(1)-'0', Integer.parseInt(partes[2].substring(inicio + 1, fim)));
-				
 				
 			} catch (NumberFormatException e) {
 				e.printStackTrace();
@@ -299,6 +294,12 @@ public class Controlador {
 			throw new ComandoInvalido("Comando \"" + partes[0] + "\" nao implementado. ");
 		}
 		
+		abaMemoria.atualizar(atual.getTabela(), PaginaMP.class);
+		abaDisco.atualizar(atual.getTabela(), PaginaMS.class);
+		for(Processo p : kernel.processosModificados()){
+			abaMemoria.atualizar(p.getTabela(), PaginaMP.class);
+			abaDisco.atualizar(p.getTabela(), PaginaMS.class);
+		}
 		abaProcessos.atualizarTabela(atual);
 	}
 
