@@ -172,33 +172,10 @@ public class Controlador {
 	private void zerar() {
 		Configuracao confs = Configuracao.obterInstancia();
 		
-		GerenciadorMemoria gm = new GerenciadorMemoria();
-		GerenciadorDisco gd = new GerenciadorDisco();
-		if(confs.getSwapper() == 0)
-			kernel = new Kernel(gm, gd, new SwapperRelogio(gm, gd));
-		else
-			kernel = new Kernel(gm, gd, new SwapperLRU(gm, gd));
+		confs.aplicarConfiguracoes();
 		
-		baseAbas.getTabs().removeAll(abaDisco, abaMemoria, abaProcessos, abaConfiguracao);
-		
-		abaMemoria = new AbaRecursos("Memória Principal", kernel.obterGerenciadorMP());
-		abaDisco = new AbaRecursos("Memória Secundária", kernel.obterGerenciadorMS());
-
-		// Swapper swp = new SwapperRelogio(gm, gd);
-
-		abaProcessos = new AbaProcessos("Processos", kernel);
-
-		abaConfiguracao = new AbaConfiguracao("Configurações");
-		baseAbas.getTabs().addAll(abaDisco, abaMemoria, abaProcessos, abaConfiguracao);
-		
-		if (arquivo == null)
-			return;
-		
-		try {
-			leitor = new Scanner(arquivo);
-		} catch (FileNotFoundException e) {
-			e.printStackTrace();
-		}
+		baseAbas.getTabs().remove(0, baseAbas.getTabs().size());
+		initialize();		
 		
 		emExecucao = false;
 	}
