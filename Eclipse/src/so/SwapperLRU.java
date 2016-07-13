@@ -16,7 +16,6 @@ public class SwapperLRU extends Swapper {
 
 	@Override
 	public void swapOut(int tamanho) throws TamanhoInsuficiente {
-		super.swapOut(tamanho);
 		Configuracao confs = Configuracao.obterInstancia();
 		int qtdPag = confs.getQuantidadePaginas(tamanho);
 		while(qtdPag > 0){
