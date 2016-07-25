@@ -7,6 +7,7 @@ import controle.Configuracao;
 import javafx.beans.value.ObservableValue;
 import javafx.fxml.FXML;
 import javafx.scene.control.Labeled;
+import javafx.scene.control.RadioButton;
 import javafx.scene.control.TextField;
 import javafx.scene.control.Toggle;
 import javafx.scene.control.ToggleGroup;
@@ -31,6 +32,10 @@ public class ControladorAbaConfiguracao {
 	ToggleGroup metodo;
 	
 	@FXML
+	RadioButton lru, 
+				rl;
+	
+	@FXML
 	private URL location;
 
 	@FXML
@@ -50,7 +55,12 @@ public class ControladorAbaConfiguracao {
 		tfEndLogico.setText(Integer.toString(conf.getEnderecoLogico()));
 		tfTamanhoMP.setText(Integer.toString(conf.getTamanhoTotalMP()));
 		tfTamanhoMS.setText(Integer.toString(conf.getTamanhoTotalMS()));
-		tfTamanhoPagina.setText(Integer.toString(conf.getTamanhoPagina()));		
+		tfTamanhoPagina.setText(Integer.toString(conf.getTamanhoPagina()));	
+		
+		if(conf.getSwapper() == 0)
+			metodo.selectToggle(rl);
+		else
+			metodo.selectToggle(lru);
 		
 		
 		tfQtdInicialPaginas.textProperty().addListener(this::qtdInicialMudou);
