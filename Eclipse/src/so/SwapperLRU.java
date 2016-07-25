@@ -40,7 +40,10 @@ public class SwapperLRU extends Swapper {
 				tempoEleito = Integer.MAX_VALUE;
 		
 		for(Pagina pg : gm.getQuadros()){
-			if(agora - pg.getUltimaUtilizacao().getTime() < tempoEleito){
+			if(pg.getUltimaUtilizacao() == null){
+				eleita = pg;
+				break;
+			} else 	if(agora - pg.getUltimaUtilizacao().getTime() < tempoEleito){
 				tempoEleito = agora - pg.getUltimaUtilizacao().getTime();
 				eleita = pg;
 			}

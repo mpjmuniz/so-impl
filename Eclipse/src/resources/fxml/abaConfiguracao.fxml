@@ -58,8 +58,8 @@
 	        <ToggleGroup fx:id="metodo"/>
 	    </fx:define>
 	    <children>
-	        <RadioButton text="Least Recently Used" toggleGroup="$metodo"/>
-	        <RadioButton text="Relogio" toggleGroup="$metodo"/>
+	        <RadioButton fx:id="lru" text="Least Recently Used" toggleGroup="$metodo"/>
+	        <RadioButton fx:id="rl" text="Relogio" toggleGroup="$metodo"/>
 	    </children>
 	</HBox>
 

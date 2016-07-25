@@ -265,7 +265,10 @@ public class Controlador {
 			}
 			break;
 		case 'I':
-			kernel.obterGerenciadorDP().ler(atual, Integer.parseInt(partes[2]));
+			inicio = partes[2].indexOf('(');
+			fim = partes[2].indexOf(')');
+			
+			kernel.obterGerenciadorDP().ler(atual, Integer.parseInt(partes[2].substring(inicio + 1, fim)));
 			break;
 		default:
 			throw new ComandoInvalido("Comando \"" + partes[0] + "\" nao implementado. ");
@@ -282,11 +285,14 @@ public class Controlador {
 
 	private void processarInstrucoes() throws ComandoInvalido {
 
+		if(leitor == null) alertar("É necessário um arquivo aberto.", "Erro de uso");
+		emExecucao = true;
+		
 		while (leitor.hasNextLine() && emExecucao) {
 
+			processarInstrucao(instrucao);
 			instrucao = leitor.nextLine();
 			tfComando.setText(instrucao);
-			processarInstrucao(instrucao);
 
 		}
 
