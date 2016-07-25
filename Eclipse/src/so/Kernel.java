@@ -36,6 +36,7 @@ public class Kernel {
 	}
 	
 	public void resetarEstados(){
+		this.swp.resetaProcessosModificados();
 		for(Processo p: listaProcessos.values()){
 			if(p.getEstado() != Estado.SUSPENSO)
 				p.pronto();

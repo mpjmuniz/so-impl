@@ -37,6 +37,10 @@ public abstract class Swapper {
 		return processosModificados;
 	}
 	
+	public void resetaProcessosModificados(){
+		this.processosModificados = new LinkedList<>();
+	}
+	
 	/*
 	 * 	swap-in-processo: Trazer da memória processo inteiro
 	 * */
@@ -75,9 +79,7 @@ public abstract class Swapper {
 	/*
 	 * 	Swap-out: Guarda pagina na memoria secundaria
 	 * */
-	public void swapOut(int tamanho) throws TamanhoInsuficiente {
-		this.processosModificados = new LinkedList<Processo>();
-	};
+	public abstract void swapOut(int tamanho) throws TamanhoInsuficiente;
 	
 	// Retira efetivamente uma pagina p da MP
 	protected void _swapOut(Pagina p) throws TamanhoInsuficiente{
